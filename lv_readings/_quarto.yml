@@ -1,0 +1,38 @@
+project:
+  type: website
+  render: 
+    - "*.qmd"
+    - "!working/*"
+    - "!working/archive/*"    
+  output-dir: ../docs/
+
+website:  
+  title: "Latent Variable Modelling"
+  page-footer: © Copyright 2019-2025 [The University of Edinburgh](https://www.ed.ac.uk/). Site licensed under the [GNU AGPLv3](https://www.gnu.org/licenses/agpl-3.0.en.html) license.  
+  sidebar:
+    style: "floating"
+    search: true
+    collapse-level: 1
+    contents:
+      - 01_datawrangle.qmd
+      - 02_dimension_reduction.qmd
+      - 03_efa.qmd
+      - 04_cfa.qmd
+      - 05_reliability.qmd
+      - 06_sem.qmd
+      - section: "Additional Docs"
+        contents:
+          - 00_lgc_lmm.qmd
+
+format:
+  html:
+    toc: true
+    toc_float: true
+    link-citations: true
+    theme: 
+      - cosmo
+      - assets/style-labs.scss
+    include-in-header: "assets/toggling.html"
+    number-sections: false
+
+

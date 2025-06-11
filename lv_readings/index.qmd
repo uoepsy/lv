@@ -1,0 +1,10 @@
+---
+title: "Latent Variable Modelling"
+---
+
+These readings and walkthroughs show ....
+
+...
+
+Readings and walkthroughs are presented with accompanying R code.  
+

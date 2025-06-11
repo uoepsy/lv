@@ -1,0 +1,107 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Latent Variable Modelling",
+    "section": "",
+    "text": "These readings and walkthroughs show ….\n…\nReadings and walkthroughs are presented with accompanying R code."
+  },
+  {
+    "objectID": "02_dimension_reduction.html",
+    "href": "02_dimension_reduction.html",
+    "title": "2: Dimension Reduction",
+    "section": "",
+    "text": "This reading:\n\nbuild the intuition for thinking about “dimensions” of data\nintroduce some key goals and methods that researchers use, and how these differ in relation to finding and using dimensions of data",
+    "crumbs": [
+      "2: Dimension Reduction"
+    ]
+  },
+  {
+    "objectID": "02_dimension_reduction.html#naive-scale-scores",
+    "href": "02_dimension_reduction.html#naive-scale-scores",
+    "title": "2: Dimension Reduction",
+    "section": "naive scale scores",
+    "text": "naive scale scores\ne.g., rowMeans\nGoal: pragmatic. i want 1 thing to use in some other setting (e.g., in a further analysis, or in a clinical setting)\n\nhow do we find the dimensions?\n\nthere’s only one\n\nhow many dimensions should we retain?\n\nthere’s only one\n\nhow does each dimension relate back to the original measured variables?\n\nequally",
+    "crumbs": [
+      "2: Dimension Reduction"
+    ]
+  },
+  {
+    "objectID": "02_dimension_reduction.html#pca",
+    "href": "02_dimension_reduction.html#pca",
+    "title": "2: Dimension Reduction",
+    "section": "PCA",
+    "text": "PCA\nGoal: pragmatic. i need fewer things for use in a subsequent analysis but don’t want to lose too much variability.\n\nhow do we find the dimensions?\n\nset of orthogonal (i.e., perpendicular3) dimensions that sequentially capture most variability\n\nhow many dimensions should we retain?\n\npragmatic: defined by either the number of dimensions we want, or the proportion of variability we want to retain\n\nhow does each dimension relate back to the original measured variables?\n\nexamine correlations between dimensions and variables\nsomewhat irrelevant for ‘pure’ PCA, where we are agnostic/don’t care about what the dimensions are.",
+    "crumbs": [
+      "2: Dimension Reduction"
+    ]
+  },
+  {
+    "objectID": "02_dimension_reduction.html#efa",
+    "href": "02_dimension_reduction.html#efa",
+    "title": "2: Dimension Reduction",
+    "section": "EFA",
+    "text": "EFA\nGoal: scale development. i want to make a measure of construct X / I want to explore if/how many underlying dimensions there are to this measure.\n\nhow do we find the dimensions?\n\nestimation\nmodels with different numbers of (possibly correlated) latent dimensions are compared\n\nhow many dimensions should we retain?\n\nthe model that best explains our observed relationships between variables\n“best explains” = a theoretical question as much as a numerical one!\n\n\nhow does each dimension relate back to the original measured variables?\n\nexamine “loadings” between dimensions and variables",
+    "crumbs": [
+      "2: Dimension Reduction"
+    ]
+  },
+  {
+    "objectID": "02_dimension_reduction.html#cfa",
+    "href": "02_dimension_reduction.html#cfa",
+    "title": "2: Dimension Reduction",
+    "section": "CFA",
+    "text": "CFA\nGoal: theory testing. I have a theoretical model of how these variables relate to these constructs. I want to test how well that model is reflected in these data\n\nhow do we find the dimensions?\n\nwe define them\n\nhow many dimensions should we retain?\n\nirrelevant, the dimensions are pre-defined\n\nhow does each dimension relate back to the original measured variables?\n\npre-defined",
+    "crumbs": [
+      "2: Dimension Reduction"
+    ]
+  },
+  {
+    "objectID": "02_dimension_reduction.html#footnotes",
+    "href": "02_dimension_reduction.html#footnotes",
+    "title": "2: Dimension Reduction",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nEven if we cut open someone’s brain, it’s unclear what we would be looking for in order to ‘measure’ it. It is unclear whether anxiety even exists as a physical thing, or rather if it is simply the overarching concept we apply to a set of behaviours and feelings.↩︎\nRotate the 3-d plot to make it match the 2-d plots below!↩︎\nlike all those that we’ve seen above↩︎",
+    "crumbs": [
+      "2: Dimension Reduction"
+    ]
+  },
+  {
+    "objectID": "00_lgc_lmm.html",
+    "href": "00_lgc_lmm.html",
+    "title": "Latent Growth Curve Models",
+    "section": "",
+    "text": "Below are various datasets from these readings and from lectures and exercises across our courses. For each one, there is a quick explanation of the study design which also details the research aims of the project.\nPick one of the datasets to test yourself with fitting, checking, interpreting, and reporting on multilevel models.",
+    "crumbs": [
+      "Additional Docs",
+      "Latent Growth Curve Models"
+    ]
+  },
+  {
+    "objectID": "01_datawrangle.html",
+    "href": "01_datawrangle.html",
+    "title": "1: Data Wrangling for Questionnaires",
+    "section": "",
+    "text": "Questionnaire data often comes to us in ‘wide’ format, which is often how we want it for many of the analytical methods we use with questionnaire data. However, working with data in the wide format comes with some specific challenges that generally arise because we have lots and lots of variables.\nBelow we will walk through some of the common ways we want to wrangle and clean questionnaire data.",
+    "crumbs": [
+      "1: Data Wrangling for Questionnaires"
+    ]
+  },
+  {
+    "objectID": "01_datawrangle.html#footnotes",
+    "href": "01_datawrangle.html#footnotes",
+    "title": "1: Data Wrangling for Questionnaires",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nTechnically this is pronounced “LICK-URT” and not “LIE-KURT”. It’s named after Dr Rensis Likert, and that’s how he pronounced his name!↩︎",
+    "crumbs": [
+      "1: Data Wrangling for Questionnaires"
+    ]
+  },
+  {
+    "objectID": "csstests.html",
+    "href": "csstests.html",
+    "title": "Tests",
+    "section": "",
+    "text": "learning obj\n\n\nimportant\n\n\nsticky\n\n\n\n\n\nr tips\n\n\nstatbox\n\n\ninterprtation interprtation interprtation\n\n\nQuestion\n\n\nquestion\n\n\n\n\n\nSolution\n\n\n\nSolution 1. solution\n\n\n\n\n\nOptional hello my optional friend\n\n\n\nit’s nice to see you again\n\n\n\n\n\nthis is not a panel\n\n\nthis is a panel\n\n\nthis is a panel"
+  }
+]
