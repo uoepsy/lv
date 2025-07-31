@@ -24,7 +24,6 @@ qcounter <- function(){
   }
   qcounter_i
 }
-library(lme4)
 ```
 
 :::lo

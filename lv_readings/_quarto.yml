@@ -22,7 +22,8 @@ website:
       - 06_sem.qmd
       - section: "Additional Docs"
         contents:
-          - 00_lgc_lmm.qmd
+          - z_eigen.qmd
+          # - z_lgc_lmm.qmd
 
 format:
   html:

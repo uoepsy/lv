@@ -20,9 +20,10 @@ xaringanExtra::use_panelset()
 
 Doing data reduction can feel a bit like magic, and in part that's just because it's quite complicated. 
 
-**The intuition**  
+## A bit of the maths
 
-Consider one way we might construct a correlation matrix - as the product of vector $\mathbf{f}$ with $\mathbf{f'}$ (f transposed): 
+A correlation matrix is a square matrix (i.e. same number of columns as rows), and it is symmetric on the diagonals. One way in which we could create this sort of matrix is to take the product of some vector $\mathbf{f}$ with $\mathbf{f'}$ (f "transposed").^[this is just how you might "square" a vector. To multiple two vectors you take each entry of the first and multiply it with each entry of the second TODO]  
+For instance:  
 $$
 \begin{equation*}
 \mathbf{f} = 
@@ -56,10 +57,10 @@ $$
 0.45, 0.40, 0.35, 0.30, 0.25, 0.20 \\
 0.36, 0.32, 0.28, 0.24, 0.20, 0.16 \\
 \end{bmatrix} 
-\end{equation*} 
+\end{equation*}
 $$
 
-But we constrain this such that the diagonal has values of 1 (the correlation of a variable with itself is 1), and lets call it **R**.
+The one thing about a correlation matrix is that the diagonal values are all 1 (the correlation of a variable with itself is 1). So let us suppose we have a correlation matrix (lets call it **R**) that looks like this:  
 $$
 \begin{equation*}
 \mathbf{R} = 
@@ -74,9 +75,9 @@ $$
 \end{equation*} 
 $$
 
-PCA is about trying to determine a vector **f** which generates the correlation matrix **R**. a bit like unscrambling eggs!  
+PCA is about trying to get at a set of vectors which could generate the correlation matrix **R**.  
 
-in PCA, we express $\mathbf{R = CC'}$, where $\mathbf{C}$ are our principal components.  
+We express $\mathbf{R = CC'}$, where $\mathbf{C}$ are our principal components.  
 If $n$ is number of variables in $R$, then $i^{th}$ component $C_i$ is the linear sum of each variable multiplied by some weighting:  
 $$
 C_i = \sum_{j=1}^{n}w_{ij}x_{j}
