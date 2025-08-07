@@ -99,7 +99,7 @@ Note that the idea of a 'composite' requires us to use a special shape (the hexa
 knitr::include_graphics("images/diag_pca.png")
 ```
 
-::: {.callout-caution collapse="true"}
+::: {.callout-tip collapse="true"}
 #### optional: PCA in full
 
 Principal components sequentially capture the orthogonal (i.e., perpendicular) dimensions of the dataset with the most variance. The data reduction comes when we retain fewer components than we have dimensions in our original data. So if we were being pedantic, the diagram for PCA would look something like the diagram below. 
@@ -939,24 +939,24 @@ ph_efa1 <- fa(phdat, nfactors = 1, fm = "ml")
 ph_efa2 <- fa(phdat, nfactors = 2, fm = "ml", rotate = "oblimin")
 ```
 
-
 Both solutions look reasonable _apart from item 9_ (which we could have guessed right at the beginning).  
 
-::: {.callout-tip collapse="true"}
-#### 1 factor solution
+::::{.columns}
+:::{.column width="50%"}
+__1 factor solution__  
 
 ```{r}
 print(ph_efa1$loadings, cutoff=.2)
 ```
 :::
-
-::: {.callout-tip collapse="true"}
-#### 2 factor solution
+:::{.column width="50%"}
+__2 factor solution__  
 
 ```{r}
 print(ph_efa2$loadings, cutoff=.2)
 ```
 :::
+::::
 
 Looking at item9, the wording is "`r itemqs[9]`". This maybe represents something slightly different from just "being addicted to your phone" - it also contains a self-consciousness / feeling judged by others etc, which is something completely different.  
 
@@ -971,7 +971,7 @@ If our goal here is to design a nice questionnaire for future research that capt
 
 Removing item9, and doing the **entire** process over again, we end up still finding that it's between a 1 or a 2 factor solution. 
 
-::: {.callout-tip collapse="true"}
+::: {.callout-note collapse="true"}
 #### determining the number of factors  
 
 ```{r}
@@ -982,23 +982,24 @@ VSS(phdat, rotate = "oblimin", plot = FALSE, fm = "ml")
 
 :::
 
-::: {.callout-tip collapse="true"}
-#### 1 factor solution (excluding item 9)
+::::{.columns}
+:::{.column width="50%"}
+__1 factor solution (excluding item 9)__  
+
 ```{r}
 ph_efa1a <- fa(phdat[,-9], nfactors = 1, rotate = "oblimin", fm = "ml")
 ph_efa1a
 ```
-
 :::
+:::{.column width="50%"}
+__2 factor solution (excluding item 9)__  
 
-::: {.callout-tip collapse="true"}
-#### 2 factor solution (excluding item 9)
 ```{r}
 ph_efa2a <- fa(phdat[,-9], nfactors = 2, rotate = "oblimin", fm = "ml")
 ph_efa2a
 ```
-
 :::
+::::
 
 Finally, we now have a judgment call. Both solutions look okay in terms of the numbers of items on each factor etc. One thing to consider is whether we prefer the idea of 1 thing that explains 28% of the variance, or 2 *related* things (the two factors are fairly correlated in the 2 factor solution) that together explain 35%. Is that a big enough increase?   
 

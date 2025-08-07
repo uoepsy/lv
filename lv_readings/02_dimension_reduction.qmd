@@ -444,7 +444,7 @@ fullpca$Vaccounted
 
 There are lots of methods to help us decide how many components we should keep. 
 
-::: {.callout-note collapse="true"}
+::: {.callout-tip collapse="true"}
 #### Scree plot 
 
 Scree plots show the eigenvalues for each dimension. A typical scree plot features higher variances for the initial components and quickly drops to small variances where the curve is almost flat. The flat part of the curve represents the noise components, which are not able to capture the main sources of variability in the system. 
@@ -461,7 +461,7 @@ The horizontal line is an additional suggestion that we should keep all componen
 
 :::
 
-::: {.callout-note collapse="true"}
+::: {.callout-tip collapse="true"}
 #### Parallel analysis
 
  
@@ -480,7 +480,7 @@ __NOTE: Parallel analysis will sometimes tend to over-extract (suggest too many 
 
 :::
 
-::: {.callout-note collapse="true"}
+::: {.callout-tip collapse="true"}
 #### MAP
 
 The Minimum Average Partial (MAP) test computes the partial correlation matrix (adjusting for and removing a component from the correlation matrix), sequentially partialling out each component. At each step, the partial correlations are squared and their average is computed.  
