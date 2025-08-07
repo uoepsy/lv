@@ -29,10 +29,13 @@ library(lme4)
 
 :::lo
 
+- start thinking about factor analysis as a model of the underlying constructs that *explain* variability in the variables that we observe
+- learn about 'rotations' as a way to transform factors in order to be able to provide a clearer interpretation of what those factors represent
+- all of the different parts of the EFA output in R
 
 :::
 
-# from pure dimension reduction to EFA  
+# From pure dimension reduction to EFA  
 
 Most of our introduction to dimension reduction in [Chapter 2](02_dimension_reduction.html){target="_blank"} was conceptually similar to the process of **Principal Component Analysis (PCA)** - the simplest analogy here is to take a real three-dimensional object in your hands (like your phone, for instance), and measure it with two perpendicular dimensions (like its width and height). 
 
@@ -702,6 +705,7 @@ Recall again the rough steps of EFA we introduced earlier. Note that this explor
 5. do EFA, extracting from $n_{min}$ to $n_{max}$ factors. Compare each of these 'solutions' in terms of structure, variance explained, and --- by examining how the factors from each solution relate to the observed items --- assess how much theoretical sense they make.  
 6. _if the aim is to develop a scale for future use_ - consider removing "problematic" items and start over again.
 
+:::
 
 There are various sets of criteria proposed to set out what makes a certain factor solution "theoretically coherent".  
 

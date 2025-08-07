@@ -210,5 +210,15 @@
       "Additional Docs",
       "optional extra: eigen decomposition"
     ]
+  },
+  {
+    "objectID": "03_efa.html",
+    "href": "03_efa.html",
+    "title": "3: Exploratory Factor Analysis",
+    "section": "",
+    "text": "start thinking about factor analysis as a model of the underlying constructs that explain variability in the variables that we observe\nlearn about ‘rotations’ as a way to transform factors in order to be able to provide a clearer interpretation of what those factors represent\nall of the different parts of the EFA output in R",
+    "crumbs": [
+      "3: Exploratory Factor Analysis"
+    ]
   }
 ]
