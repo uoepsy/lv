@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -38,7 +72,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-62c1652b34ae9a2de33228fa1b7328a0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-af8acd9e0062ec246c222f4d4317722b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -102,7 +136,80 @@ if(f.classList.contains('jk-circle-right')) {
 
 <script src="site_libs/panelset-0.3.0/panelset.js"></script>
 
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 
+<script src="site_libs/rglWebGL-binding-1.3.18/rglWebGL.js"></script>
+
+<link href="site_libs/rglwidgetClass-1.3.18/rgl.css" rel="stylesheet">
+
+<script src="site_libs/rglwidgetClass-1.3.18/rglClass.src.js"></script>
+
+<script src="site_libs/rglwidgetClass-1.3.18/utils.src.js"></script>
+
+<script src="site_libs/rglwidgetClass-1.3.18/buffer.src.js"></script>
+
+<script src="site_libs/rglwidgetClass-1.3.18/subscenes.src.js"></script>
+
+<script src="site_libs/rglwidgetClass-1.3.18/shaders.src.js"></script>
+
+<script src="site_libs/rglwidgetClass-1.3.18/shadersrc.src.js"></script>
+
+<script src="site_libs/rglwidgetClass-1.3.18/textures.src.js"></script>
+
+<script src="site_libs/rglwidgetClass-1.3.18/projection.src.js"></script>
+
+<script src="site_libs/rglwidgetClass-1.3.18/mouse.src.js"></script>
+
+<script src="site_libs/rglwidgetClass-1.3.18/init.src.js"></script>
+
+<script src="site_libs/rglwidgetClass-1.3.18/pieces.src.js"></script>
+
+<script src="site_libs/rglwidgetClass-1.3.18/draw.src.js"></script>
+
+<script src="site_libs/rglwidgetClass-1.3.18/controls.src.js"></script>
+
+<script src="site_libs/rglwidgetClass-1.3.18/selection.src.js"></script>
+
+<script src="site_libs/rglwidgetClass-1.3.18/rglTimer.src.js"></script>
+
+<script src="site_libs/rglwidgetClass-1.3.18/pretty.src.js"></script>
+
+<script src="site_libs/rglwidgetClass-1.3.18/axes.src.js"></script>
+
+<script src="site_libs/rglwidgetClass-1.3.18/animation.src.js"></script>
+
+<script src="site_libs/CanvasMatrix4-1.3.18/CanvasMatrix.src.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -198,8 +305,28 @@ if(f.classList.contains('jk-circle-right')) {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#from-pure-dimension-reduction-to-efa" id="toc-from-pure-dimension-reduction-to-efa" class="nav-link active" data-scroll-target="#from-pure-dimension-reduction-to-efa">from pure dimension reduction to EFA</a></li>
+  <li><a href="#thinking-in-diagrams" id="toc-thinking-in-diagrams" class="nav-link" data-scroll-target="#thinking-in-diagrams">Thinking in diagrams</a>
+  <ul class="collapse">
+  <li><a href="#pca-as-a-diagram" id="toc-pca-as-a-diagram" class="nav-link" data-scroll-target="#pca-as-a-diagram">PCA as a diagram</a></li>
+  <li><a href="#efa-as-a-diagram" id="toc-efa-as-a-diagram" class="nav-link" data-scroll-target="#efa-as-a-diagram">EFA as a diagram</a></li>
+  </ul></li>
+  <li><a href="#exploratory-factor-analysis" id="toc-exploratory-factor-analysis" class="nav-link" data-scroll-target="#exploratory-factor-analysis"><em>Exploratory</em> Factor Analysis</a>
+  <ul class="collapse">
+  <li><a href="#efa-in-r" id="toc-efa-in-r" class="nav-link" data-scroll-target="#efa-in-r">EFA in R</a></li>
+  <li><a href="#model-based-thinking" id="toc-model-based-thinking" class="nav-link" data-scroll-target="#model-based-thinking">Model based thinking</a></li>
+  <li><a href="#factor-extraction-methods" id="toc-factor-extraction-methods" class="nav-link" data-scroll-target="#factor-extraction-methods">factor extraction methods</a></li>
+  <li><a href="#rotations" id="toc-rotations" class="nav-link" data-scroll-target="#rotations">Rotations</a></li>
+  </ul></li>
+  <li><a href="#the-fa-output" id="toc-the-fa-output" class="nav-link" data-scroll-target="#the-fa-output">The fa() Output</a></li>
+  <li><a href="#what-makes-a-good-factor-solution" id="toc-what-makes-a-good-factor-solution" class="nav-link" data-scroll-target="#what-makes-a-good-factor-solution">What makes a good factor solution?</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -226,10 +353,2972 @@ if(f.classList.contains('jk-circle-right')) {
 <div class="lo">
 
 </div>
+<section id="from-pure-dimension-reduction-to-efa" class="level1">
+<h1>from pure dimension reduction to EFA</h1>
+<p>Most of our introduction to dimension reduction in <a href="02_dimension_reduction.html" target="_blank">Chapter 2</a> was conceptually similar to the process of <strong>Principal Component Analysis (PCA)</strong> - the simplest analogy here is to take a real three-dimensional object in your hands (like your phone, for instance), and measure it with two perpendicular dimensions (like its width and height).</p>
+<p>This is going to be our starting point for the more commonly used method in psychology - <strong>Factor Analysis (FA)</strong>. These two methods are very similar to one another, so much so that distinction between the two can get a little blurred (a lot of it just depends on our goals - see <a href="02_dimension_reduction.html#the-key-methods" target="_blank">Chapter 2 #the-key-methods</a>). Ultimately they are both methods aimed to get at the dimensions that capture “variability” in the data.</p>
+<p>It’s important to think about what we mean by “variability” here - it is variability across a whole set of variables. So if we start with just 3 variables, we can think of all the data visualised in 3-dimensional space. We can see in <a href="#fig-scat" class="quarto-xref">Figure&nbsp;1</a> that the observations vary in all variables. But they vary in a specific way - observations that are high on one tend to be higher on the others. Observations that are lower, tend to be lower on all of them.</p>
+<div class="cell" data-layout-align="center">
+<div id="fig-scat" class="cell-output-display quarto-float quarto-figure quarto-figure-center anchored no-overflow-x">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-scat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div id="rgl27248" style="width:100%;height:325px;" class="rglWebGL html-widget" role="img" aria-labelledby="rgl27248-aria"></div>
+<script type="application/json" data-for="rgl27248">{"x":{"material":{"color":"#000000","alpha":1,"lit":true,"ambient":"#000000","specular":"#FFFFFF","emission":"#000000","shininess":50,"smooth":true,"front":"filled","back":"filled","size":3,"lwd":1,"fog":true,"point_antialias":false,"line_antialias":false,"texture":null,"textype":"rgb","texmode":"modulate","texmipmap":false,"texminfilter":"linear","texmagfilter":"linear","texenvmap":false,"depth_mask":true,"depth_test":"less","isTransparent":false,"polygon_offset":[0,0],"margin":"","floating":false,"tag":"","blend":["src_alpha","one_minus_src_alpha"]},"rootSubscene":6,"objects":{"13":{"id":13,"type":"points","material":{"lit":false},"vertices":"0","colors":"1","centers":"2","ignoreExtent":false,"flags":34816},"15":{"id":15,"type":"text","material":{"lit":false,"margin":0,"floating":true,"edge":[0,1,1]},"vertices":"3","colors":"4","texts":[["Mental Fatigue"]],"cex":[[1]],"adj":[[0.5,0.5,0.5]],"centers":"5","family":[["sans"]],"font":[[1]],"ignoreExtent":true,"flags":33808},"16":{"id":16,"type":"text","material":{"lit":false,"margin":1,"floating":true,"edge":[1,1,1]},"vertices":"6","colors":"7","texts":[["Physical Fatigue"]],"cex":[[1]],"adj":[[0.5,0.5,0.5]],"centers":"8","family":[["sans"]],"font":[[1]],"ignoreExtent":true,"flags":33808},"17":{"id":17,"type":"text","material":{"lit":false,"margin":2,"floating":true,"edge":[1,1,1]},"vertices":"9","colors":"10","texts":[["Sleepiness"]],"cex":[[1]],"adj":[[0.5,0.5,0.5]],"centers":"11","family":[["sans"]],"font":[[1]],"ignoreExtent":true,"flags":33808},"10":{"id":10,"type":"light","vertices":[[0,0,1]],"colors":[[1,1,1,1],[1,1,1,1],[1,1,1,1]],"viewpoint":true,"finite":false},"12":{"id":12,"type":"background","material":{"lit":false,"back":"lines"},"colors":"12","centers":"13","sphere":false,"fogtype":"none","fogscale":1,"flags":32768},"14":{"id":14,"type":"bboxdeco","material":{"front":"lines","back":"lines"},"vertices":"14","colors":"15","axes":{"mode":["pretty","pretty","pretty"],"step":[2,2,2],"nticks":[5,5,5],"marklen":[15,15,15],"expand":[1.029999971389771,1.029999971389771,1.029999971389771]},"draw_front":false,"flags":32769},"6":{"id":6,"type":"subscene","par3d":{"antialias":8,"FOV":30,"ignoreExtent":false,"listeners":6,"mouseMode":{"none":"none","left":"trackball","right":"zoom","middle":"fov","wheel":"pull"},"observer":[0,0,33.90679168701172],"modelMatrix":[[1,0,0,-5],[0,0.3420201539993286,0.9396926164627075,-6.408563613891602],[0,-0.9396926164627075,0.3420201539993286,-30.91843032836914],[0,0,0,1]],"projMatrix":[[3.732050895690918,0,0,0],[0,3.732050895690918,0,0],[0,0,-3.863702774047852,-122.2300643920898],[0,0,-1,0]],"skipRedraw":false,"userMatrix":[[1,0,0,0],[0,0.3420201433256682,0.9396926207859085,0],[0,-0.9396926207859085,0.3420201433256682,0],[0,0,0,1]],"userProjection":[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]],"scale":[1,1,1],"viewport":{"x":0,"y":0,"width":1,"height":1},"zoom":1,"bbox":[1,9,1,9,1,9],"windowRect":[138,161,394,417],"family":"sans","font":1,"cex":1,"useFreeType":false,"fontname":"TT Arial","maxClipPlanes":8,"glVersion":4.6,"activeSubscene":0},"embeddings":{"viewport":"replace","projection":"replace","model":"replace","mouse":"replace"},"objects":[12,14,13,15,16,17,10],"subscenes":[],"flags":36113}},"crosstalk":{"key":[],"group":[],"id":[],"options":[]},"width":672,"height":336,"buffer":{"accessors":[{"bufferView":0,"componentType":5121,"count":500,"type":"VEC3"},{"bufferView":1,"componentType":5121,"count":1,"type":"VEC4"},{"bufferView":2,"componentType":5121,"count":500,"type":"VEC3"},{"bufferView":3,"componentType":5126,"count":1,"type":"VEC3"},{"bufferView":4,"componentType":5121,"count":1,"type":"VEC4"},{"bufferView":5,"componentType":5126,"count":1,"type":"VEC3"},{"bufferView":6,"componentType":5126,"count":1,"type":"VEC3"},{"bufferView":7,"componentType":5121,"count":1,"type":"VEC4"},{"bufferView":8,"componentType":5126,"count":1,"type":"VEC3"},{"bufferView":9,"componentType":5126,"count":1,"type":"VEC3"},{"bufferView":10,"componentType":5121,"count":1,"type":"VEC4"},{"bufferView":11,"componentType":5126,"count":1,"type":"VEC3"},{"bufferView":12,"componentType":5121,"count":1,"type":"VEC4"},{"bufferView":13,"componentType":5121,"count":1,"type":"VEC3"},{"bufferView":14,"componentType":5126,"count":12,"type":"VEC3"},{"bufferView":15,"componentType":5121,"count":1,"type":"VEC4"}],"bufferViews":[{"buffer":0,"byteLength":1500,"byteOffset":0},{"buffer":0,"byteLength":4,"byteOffset":1500},{"buffer":0,"byteLength":1500,"byteOffset":1504},{"buffer":0,"byteLength":12,"byteOffset":3004},{"buffer":0,"byteLength":4,"byteOffset":3016},{"buffer":0,"byteLength":12,"byteOffset":3020},{"buffer":0,"byteLength":12,"byteOffset":3032},{"buffer":0,"byteLength":4,"byteOffset":3044},{"buffer":0,"byteLength":12,"byteOffset":3048},{"buffer":0,"byteLength":12,"byteOffset":3060},{"buffer":0,"byteLength":4,"byteOffset":3072},{"buffer":0,"byteLength":12,"byteOffset":3076},{"buffer":0,"byteLength":4,"byteOffset":3088},{"buffer":0,"byteLength":3,"byteOffset":3092},{"buffer":0,"byteLength":144,"byteOffset":3096},{"buffer":0,"byteLength":4,"byteOffset":3240}],"buffers":[{"byteLength":3244,"bytes":"BAYFBQYGBAUDBQMFAwMDBQQEBwcHBgQGAgMCBAEDBAQEBQUFBQUEBgUFBQYFBQUFBAMEBQUF\nBwQGBwUFBAMDBQYFBQMCBAIEBAQEBgUFBAMDBQQEBwcGBAMEBQUFBQMDBwUHBgkHBQMEBgUG\nBwYEBQIEBgYFBgYHAwQDBQQFBAMDBwgIBwYGBwYGBQQGBwUGBQMFBgkIBgYGBwUGBwQEBAUF\nBQECBgYGBgYGBAQEBgUFAwMDCAUHAwMFCAcGAwEDBQUFBgUFBQYGBAMEBQQEBgUFBAUFBgYF\nCQUGBgQFBAMFBgcFBQUEBgYGBgcGBwQFBAMEBgUGBwYGBwcHBgcHCQUHBwUGCAYGBQQFBgQG\nBwYHBwYGBgMGBQQEBQYDBgYFAwECBQcGAwMFBgYFAwYEBgYFBwUGBgYEBAYFCAkGBQIDBQME\nBgcHCAcIBQQFBQQEBQMEBQQFBQcFBgMEBwUGBgYGAwIDBgYGBgYFBwUHAwIDBgUGBQMEBAME\nBwcGBAYEBgUHCQgJBAQEBQQEBwYGBwgIBwUFBQMEBQQEBgUGCAcHBAMDAwQEBQQDBwYGBAQE\nBwYGBAcGBwcHBgQEBQcGBgMEBQQDBgYHBAMCAwQDBQUHBQQFCAUHBgYGBwgIBQMDBQQEBgME\nBwYGCAUHBAMECQcHBgUFBwYGBQcFBgYFAwEDBwYFBgYGCQcJBAIDBgUFBwUGBAUEBgcGBwcG\nBwYHBgUEBQQFBwgHBAICBwUGBgQEAwYEBAYFBgUFBwYGBQUFBAUEBwcHBgYFBwUGBgYHAwMD\nBwcHBAIDBAMDCAgHBgQGBAQEBwUHBAMDCQgIBQQEAwUEBQUFBgYFBgYFBgUGAwEDBAIDBwYG\nBgQFBwgGBAUGBgYGBwQFBQMFBgUFBQQFBAMEBggHBQMFBwQGBAMDBwMFBwcHBQQEBgQFBQUE\nBwYGBgYFBQYFBgYFBwQGBgQFBwUHBgUFBgcGBQQECAUGAwQEBwMFBQUFBQQEBQQEBAQFCAYG\nBwUGCQcHBQUFAwMECAYGBgQEBQUEBgQFBwgGBgYGBAMDBAMFBAUEAQMCBgUFBgUEBgMDBAUG\nBAMEBgMEBgUFBAcFCAkIBgYGBgUEBAMDBwYGCQYHBgUFBgUFCAcHCAgHBgcGBAIDBwgHBQUE\nBwMEBAUEBQMFAQMBBQMGBQYHBQUFBwcGBQYGBgcGBgUFBgcHCQkJBAIDAwQDBQQFBgcGBQQF\nBgUGBQUFBgUGBQUFBwUFBQMEBQUECQgIBwYFBgMFBgYGBwgHBAQEAwUEBQUFBAQEBwUGCAUG\nBQYGBAQFBwcGCAYGBwUFBAMEBQMDAwQDBQMEBwcFBgUGBQIDBQUFBgUGCQYGBgYFBQQEBQQF\nCAcIBQUFBwYHBwQFBQUEBAMEAwQFBgcHBwUGBQQEBQUEBgQFBAQEBgUGBgQFBAQEAwQEBgUG\nBQIEBgIEBwgGBgUGBwgIBQUFCQcIBQYEBQUFBwUGBAMEBgUFAwMEBgcHAwQCBwYHBwMECAcH\nBAYFBwQGAQMCBAMDBQQEBAQEBwYGCAYHBAUFBwcHCAgHBgcHBwQFBgQEAwQECAcHBQQGBgcG\nBgcGBwUGBAYFBgUFBwcGBgQEBgUFBAMFBgcGCQgIBAQEBAMEAwQFBAIDBQUFCAUFBgQGBwUE\nBgUFBgYGBgQFBQMDCAQFBgUEBgUGBwgGBgUEBAUGBgYFBgUGBQUGBwgIBgYEBAUEBAIDAQIB\nCQcHCAYHAgICBgQEAwUFBgMEBwYHBAYEBwUGAwMEBAEEBAUFAwIDAwQDBQYEBgYFBwcHBQYF\nBwYHBgUFCAYFBQMDBQIDCQgJBgYHBAUFBwUHBQcFBQUGBQQEBQQFBQQEBwUGBAYFBwQGBAMD\nBgYGBQgGCAYHBQUEBgUGBgYGBAMEBQUEAwMEAwQEBwYGBgkIBwcIBgQFCQcHBwQGBgUGBwcH\nBgUGBQQDBgUFBgYGBgUFBQQEBwYGBQQFBgYGBQQEBwQFBgUGBwUFBwUGAAAAAQQGBQUGBgQF\nAwUDBQMDAwUEBAcHBwYEBgIDAgQBAwQEBAUFBQUFBAYFBQUGBQUFBQQDBAUFBQcEBgcFBQQD\nAwUGBQUDAgQCBAQEBAYFBQQDAwUEBAcHBgQDBAUFBQUDAwcFBwYJBwUDBAYFBgcGBAUCBAYG\nBQYGBwMEAwUEBQQDAwcICAcGBgcGBgUEBgcFBgUDBQYJCAYGBgcFBgcEBAQFBQUBAgYGBgYG\nBgQEBAYFBQMDAwgFBwMDBQgHBgMBAwUFBQYFBQUGBgQDBAUEBAYFBQQFBQYGBQkFBgYEBQQD\nBQYHBQUFBAYGBgYHBgcEBQQDBAYFBgcGBgcHBwYHBwkFBwcFBggGBgUEBQYEBgcGBwcGBgYD\nBgUEBAUGAwYGBQMBAgUHBgMDBQYGBQMGBAYGBQcFBgYGBAQGBQgJBgUCAwUDBAYHBwgHCAUE\nBQUEBAUDBAUEBQUHBQYDBAcFBgYGBgMCAwYGBgYGBQcFBwMCAwYFBgUDBAQDBAcHBgQGBAYF\nBwkICQQEBAUEBAcGBgcICAcFBQUDBAUEBAYFBggHBwQDAwMEBAUEAwcGBgQEBAcGBgQHBgcH\nBwYEBAUHBgYDBAUEAwYGBwQDAgMEAwUFBwUEBQgFBwYGBgcICAUDAwUEBAYDBAcGBggFBwQD\nBAkHBwYFBQcGBgUHBQYGBQMBAwcGBQYGBgkHCQQCAwYFBQcFBgQFBAYHBgcHBgcGBwYFBAUE\nBQcIBwQCAgcFBgYEBAMGBAQGBQYFBQcGBgUFBQQFBAcHBwYGBQcFBgYGBwMDAwcHBwQCAwQD\nAwgIBwYEBgQEBAcFBwQDAwkICAUEBAMFBAUFBQYGBQYGBQYFBgMBAwQCAwcGBgYEBQcIBgQF\nBgYGBgcEBQUDBQYFBQUEBQQDBAYIBwUDBQcEBgQDAwcDBQcHBwUEBAYEBQUFBAcGBgYGBQUG\nBQYGBQcEBgYEBQcFBwYFBQYHBgUEBAgFBgMEBAcDBQUFBQUEBAUEBAQEBQgGBgcFBgkHBwUF\nBQMDBAgGBgYEBAUFBAYEBQcIBgYGBgQDAwQDBQQFBAEDAgYFBQYFBAYDAwQFBgQDBAYDBAYF\nBQQHBQgJCAYGBgYFBAQDAwcGBgkGBwYFBQYFBQgHBwgIBwYHBgQCAwcIBwUFBAcDBAQFBAUD\nBQEDAQUDBgUGBwUFBQcHBgUGBgYHBgYFBQYHBwkJCQQCAwMEAwUEBQYHBgUEBQYFBgUFBQYF\nBgUFBQcFBQUDBAUFBAkICAcGBQYDBQYGBgcIBwQEBAMFBAUFBQQEBAcFBggFBgUGBgQEBQcH\nBggGBgcFBQQDBAUDAwMEAwUDBAcHBQYFBgUCAwUFBQYFBgkGBgYGBQUEBAUEBQgHCAUFBQcG\nBwcEBQUFBAQDBAMEBQYHBwcFBgUEBAUFBAYEBQQEBAYFBgYEBQQEBAMEBAYFBgUCBAYCBAcI\nBgYFBgcICAUFBQkHCAUGBAUFBQcFBgQDBAYFBQMDBAYHBwMEAgcGBwcDBAgHBwQGBQcEBgED\nAgQDAwUEBAQEBAcGBggGBwQFBQcHBwgIBwYHBwcEBQYEBAMEBAgHBwUEBgYHBgYHBgcFBgQG\nBQYFBQcHBgYEBAYFBQQDBQYHBgkICAQEBAQDBAMEBQQCAwUFBQgFBQYEBgcFBAYFBQYGBgYE\nBQUDAwgEBQYFBAYFBgcIBgYFBAQFBgYGBQYFBgUFBgcICAYGBAQFBAQCAwECAQkHBwgGBwIC\nAgYEBAMFBQYDBAcGBwQGBAcFBgMDBAQBBAQFBQMCAwMEAwUGBAYGBQcHBwUGBQcGBwYFBQgG\nBQUDAwUCAwkICQYGBwQFBQcFBwUHBQUFBgUEBAUEBQUEBAcFBgQGBQcEBgQDAwYGBgUIBggG\nBwUFBAYFBgYGBgQDBAUFBAMDBAMEBAcGBgYJCAcHCAYEBQkHBwcEBgYFBgcHBwYFBgUEAwYF\nBQYGBgYFBQUEBAcGBgUEBQYGBgUEBAcEBQYFBgcFBQcFBgAAwH8AAIBAAACAPwAAAAEAAMB/\nAACAQAAAgD8AAMB/AACAQAAAgD8AAAABAADAfwAAgEAAAIA/AADAfwAAgEAAAIA/AAAAAQAA\nwH8AAIBAAACAPwEBAQEAAAAAAAAAQAAAwH8AAMB/AACAQAAAwH8AAMB/AADAQAAAwH8AAMB/\nAAAAQQAAwH8AAMB/AADAfwAAAEAAAMB/AADAfwAAgEAAAMB/AADAfwAAwEAAAMB/AADAfwAA\nAEEAAMB/AADAfwAAwH8AAABAAADAfwAAwH8AAIBAAADAfwAAwH8AAMBAAADAfwAAwH8AAABB\nAAAAAQ=="}]},"context":{"shiny":false,"rmarkdown":null},"vertexShader":"#line 2 1\n// File 1 is the vertex shader\n#ifdef GL_ES\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#endif\n\nattribute vec3 aPos;\nattribute vec4 aCol;\nuniform mat4 mvMatrix;\nuniform mat4 prMatrix;\nvarying vec4 vCol;\nvarying vec4 vPosition;\n\n#ifdef NEEDS_VNORMAL\nattribute vec3 aNorm;\nuniform mat4 normMatrix;\nvarying vec4 vNormal;\n#endif\n\n#if defined(HAS_TEXTURE) || defined (IS_TEXT)\nattribute vec2 aTexcoord;\nvarying vec2 vTexcoord;\n#endif\n\n#ifdef FIXED_SIZE\nuniform vec3 textScale;\n#endif\n\n#ifdef FIXED_QUADS\nattribute vec3 aOfs;\n#endif\n\n#ifdef IS_TWOSIDED\n#ifdef HAS_NORMALS\nvarying float normz;\nuniform mat4 invPrMatrix;\n#else\nattribute vec3 aPos1;\nattribute vec3 aPos2;\nvarying float normz;\n#endif\n#endif // IS_TWOSIDED\n\n#ifdef FAT_LINES\nattribute vec3 aNext;\nattribute vec2 aPoint;\nvarying vec2 vPoint;\nvarying float vLength;\nuniform float uAspect;\nuniform float uLwd;\n#endif\n\n#ifdef USE_ENVMAP\nvarying vec3 vReflection;\n#endif\n\nvoid main(void) {\n  \n#ifndef IS_BRUSH\n#if defined(NCLIPPLANES) || !defined(FIXED_QUADS) || defined(HAS_FOG) || defined(USE_ENVMAP)\n  vPosition = mvMatrix * vec4(aPos, 1.);\n#endif\n  \n#ifndef FIXED_QUADS\n  gl_Position = prMatrix * vPosition;\n#endif\n#endif // !IS_BRUSH\n  \n#ifdef IS_POINTS\n  gl_PointSize = POINTSIZE;\n#endif\n  \n  vCol = aCol;\n  \n// USE_ENVMAP implies NEEDS_VNORMAL\n\n#ifdef NEEDS_VNORMAL\n  vNormal = normMatrix * vec4(-aNorm, dot(aNorm, aPos));\n#endif\n\n#ifdef USE_ENVMAP\n  vReflection = normalize(reflect(vPosition.xyz/vPosition.w, \n                        normalize(vNormal.xyz/vNormal.w)));\n#endif\n  \n#ifdef IS_TWOSIDED\n#ifdef HAS_NORMALS\n  /* normz should be calculated *after* projection */\n  normz = (invPrMatrix*vNormal).z;\n#else\n  vec4 pos1 = prMatrix*(mvMatrix*vec4(aPos1, 1.));\n  pos1 = pos1/pos1.w - gl_Position/gl_Position.w;\n  vec4 pos2 = prMatrix*(mvMatrix*vec4(aPos2, 1.));\n  pos2 = pos2/pos2.w - gl_Position/gl_Position.w;\n  normz = pos1.x*pos2.y - pos1.y*pos2.x;\n#endif\n#endif // IS_TWOSIDED\n  \n#ifdef NEEDS_VNORMAL\n  vNormal = vec4(normalize(vNormal.xyz), 1);\n#endif\n  \n#if defined(HAS_TEXTURE) || defined(IS_TEXT)\n  vTexcoord = aTexcoord;\n#endif\n  \n#if defined(FIXED_SIZE) && !defined(ROTATING)\n  vec4 pos = prMatrix * mvMatrix * vec4(aPos, 1.);\n  pos = pos/pos.w;\n  gl_Position = pos + vec4(aOfs*textScale, 0.);\n#endif\n  \n#if defined(IS_SPRITES) && !defined(FIXED_SIZE)\n  vec4 pos = mvMatrix * vec4(aPos, 1.);\n  pos = pos/pos.w + vec4(aOfs,  0.);\n  gl_Position = prMatrix*pos;\n#endif\n  \n#ifdef FAT_LINES\n  /* This code was inspired by Matt Deslauriers' code in \n   https://mattdesl.svbtle.com/drawing-lines-is-hard */\n  vec2 aspectVec = vec2(uAspect, 1.0);\n  mat4 projViewModel = prMatrix * mvMatrix;\n  vec4 currentProjected = projViewModel * vec4(aPos, 1.0);\n  currentProjected = currentProjected/currentProjected.w;\n  vec4 nextProjected = projViewModel * vec4(aNext, 1.0);\n  vec2 currentScreen = currentProjected.xy * aspectVec;\n  vec2 nextScreen = (nextProjected.xy / nextProjected.w) * aspectVec;\n  float len = uLwd;\n  vec2 dir = vec2(1.0, 0.0);\n  vPoint = aPoint;\n  vLength = length(nextScreen - currentScreen)/2.0;\n  vLength = vLength/(vLength + len);\n  if (vLength > 0.0) {\n    dir = normalize(nextScreen - currentScreen);\n  }\n  vec2 normal = vec2(-dir.y, dir.x);\n  dir.x /= uAspect;\n  normal.x /= uAspect;\n  vec4 offset = vec4(len*(normal*aPoint.x*aPoint.y - dir), 0.0, 0.0);\n  gl_Position = currentProjected + offset;\n#endif\n  \n#ifdef IS_BRUSH\n  gl_Position = vec4(aPos, 1.);\n#endif\n}","fragmentShader":"#line 2 2\n// File 2 is the fragment shader\n#ifdef GL_ES\n#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n#endif\nvarying vec4 vCol; // carries alpha\nvarying vec4 vPosition;\n#if defined(HAS_TEXTURE) || defined (IS_TEXT)\nvarying vec2 vTexcoord;\nuniform sampler2D uSampler;\n#endif\n\n#ifdef HAS_FOG\nuniform int uFogMode;\nuniform vec3 uFogColor;\nuniform vec4 uFogParms;\n#endif\n\n#if defined(IS_LIT) && !defined(FIXED_QUADS)\nvarying vec4 vNormal;\n#endif\n\n#if NCLIPPLANES > 0\nuniform vec4 vClipplane[NCLIPPLANES];\n#endif\n\n#if NLIGHTS > 0\nuniform mat4 mvMatrix;\n#endif\n\n#ifdef IS_LIT\nuniform vec3 emission;\nuniform float shininess;\n#if NLIGHTS > 0\nuniform vec3 ambient[NLIGHTS];\nuniform vec3 specular[NLIGHTS]; // light*material\nuniform vec3 diffuse[NLIGHTS];\nuniform vec3 lightDir[NLIGHTS];\nuniform bool viewpoint[NLIGHTS];\nuniform bool finite[NLIGHTS];\n#endif\n#endif // IS_LIT\n\n#ifdef IS_TWOSIDED\nuniform bool front;\nvarying float normz;\n#endif\n\n#ifdef FAT_LINES\nvarying vec2 vPoint;\nvarying float vLength;\n#endif\n\n#ifdef USE_ENVMAP\nvarying vec3 vReflection;\n#endif\n\nvoid main(void) {\n  vec4 fragColor;\n#ifdef FAT_LINES\n  vec2 point = vPoint;\n  bool neg = point.y < 0.0;\n  point.y = neg ? (point.y + vLength)/(1.0 - vLength) :\n                 -(point.y - vLength)/(1.0 - vLength);\n#if defined(IS_TRANSPARENT) && defined(IS_LINESTRIP)\n  if (neg && length(point) <= 1.0) discard;\n#endif\n  point.y = min(point.y, 0.0);\n  if (length(point) > 1.0) discard;\n#endif // FAT_LINES\n  \n#ifdef ROUND_POINTS\n  vec2 coord = gl_PointCoord - vec2(0.5);\n  if (length(coord) > 0.5) discard;\n#endif\n  \n#if NCLIPPLANES > 0\n  for (int i = 0; i < NCLIPPLANES; i++)\n    if (dot(vPosition, vClipplane[i]) < 0.0) discard;\n#endif\n    \n#ifdef FIXED_QUADS\n    vec3 n = vec3(0., 0., 1.);\n#elif defined(IS_LIT)\n    vec3 n = normalize(vNormal.xyz);\n#endif\n    \n#ifdef IS_TWOSIDED\n    if ((normz <= 0.) != front) discard;\n#endif\n\n#ifdef IS_LIT\n    vec3 eye = normalize(-vPosition.xyz/vPosition.w);\n    vec3 lightdir;\n    vec4 colDiff;\n    vec3 halfVec;\n    vec4 lighteffect = vec4(emission, 0.);\n    vec3 col;\n    float nDotL;\n#ifdef FIXED_QUADS\n    n = -faceforward(n, n, eye);\n#endif\n    \n#if NLIGHTS > 0\n    // Simulate two-sided lighting\n    if (n.z < 0.0)\n      n = -n;\n    for (int i=0;i<NLIGHTS;i++) {\n      colDiff = vec4(vCol.rgb * diffuse[i], vCol.a);\n      lightdir = lightDir[i];\n      if (!viewpoint[i]) {\n        if (finite[i]) {\n          lightdir = (mvMatrix * vec4(lightdir, 1.)).xyz;\n        } else {\n          lightdir = (mvMatrix * vec4(lightdir, 0.)).xyz;\n        }\n      }\n      if (!finite[i]) {\n        halfVec = normalize(lightdir + eye);\n      } else {\n        lightdir = normalize(lightdir - vPosition.xyz/vPosition.w);\n        halfVec = normalize(lightdir + eye);\n      }\n      col = ambient[i];\n      nDotL = dot(n, lightdir);\n      col = col + max(nDotL, 0.) * colDiff.rgb;\n      col = col + pow(max(dot(halfVec, n), 0.), shininess) * specular[i];\n      lighteffect = lighteffect + vec4(col, colDiff.a);\n    }\n#endif\n    \n#else // not IS_LIT\n    vec4 colDiff = vCol;\n    vec4 lighteffect = colDiff;\n#endif\n    \n#ifdef IS_TEXT\n    vec4 textureColor = lighteffect*texture2D(uSampler, vTexcoord);\n#endif\n    \n#ifdef HAS_TEXTURE\n\n// These calculations use the definitions from \n// https://docs.gl/gl3/glTexEnv\n\n#ifdef USE_ENVMAP\n    float m = 2.0 * sqrt(dot(vReflection, vReflection) + 2.0*vReflection.z + 1.0);\n    vec4 textureColor = texture2D(uSampler, vReflection.xy / m + vec2(0.5, 0.5));\n#else\n    vec4 textureColor = texture2D(uSampler, vTexcoord);\n#endif\n\n#ifdef TEXTURE_rgb\n\n#if defined(TEXMODE_replace) || defined(TEXMODE_decal)\n    textureColor = vec4(textureColor.rgb, lighteffect.a);\n#endif \n\n#ifdef TEXMODE_modulate\n    textureColor = lighteffect*vec4(textureColor.rgb, 1.);\n#endif\n\n#ifdef TEXMODE_blend\n    textureColor = vec4((1. - textureColor.rgb) * lighteffect.rgb, lighteffect.a);\n#endif\n\n#ifdef TEXMODE_add\n    textureColor = vec4(lighteffect.rgb + textureColor.rgb, lighteffect.a);\n#endif\n\n#endif //TEXTURE_rgb\n        \n#ifdef TEXTURE_rgba\n\n#ifdef TEXMODE_replace\n// already done\n#endif \n\n#ifdef TEXMODE_modulate\n    textureColor = lighteffect*textureColor;\n#endif\n\n#ifdef TEXMODE_decal\n    textureColor = vec4((1. - textureColor.a)*lighteffect.rgb) +\n                     textureColor.a*textureColor.rgb, \n                     lighteffect.a);\n#endif\n\n#ifdef TEXMODE_blend\n    textureColor = vec4((1. - textureColor.rgb) * lighteffect.rgb,\n                    lighteffect.a*textureColor.a);\n#endif\n\n#ifdef TEXMODE_add\n    textureColor = vec4(lighteffect.rgb + textureColor.rgb,\n                    lighteffect.a*textureColor.a);\n#endif\n    \n#endif //TEXTURE_rgba\n    \n#ifdef TEXTURE_alpha\n    float luminance = dot(vec3(1.,1.,1.),textureColor.rgb)/3.;\n\n#if defined(TEXMODE_replace) || defined(TEXMODE_decal)\n    textureColor = vec4(lighteffect.rgb, luminance);\n#endif \n\n#if defined(TEXMODE_modulate) || defined(TEXMODE_blend) || defined(TEXMODE_add)\n    textureColor = vec4(lighteffect.rgb, lighteffect.a*luminance);\n#endif\n \n#endif // TEXTURE_alpha\n    \n// The TEXTURE_luminance values are not from that reference    \n#ifdef TEXTURE_luminance\n    float luminance = dot(vec3(1.,1.,1.),textureColor.rgb)/3.;\n\n#if defined(TEXMODE_replace) || defined(TEXMODE_decal)\n    textureColor = vec4(luminance, luminance, luminance, lighteffect.a);\n#endif \n\n#ifdef TEXMODE_modulate\n    textureColor = vec4(luminance*lighteffect.rgb, lighteffect.a);\n#endif\n\n#ifdef TEXMODE_blend\n    textureColor = vec4((1. - luminance)*lighteffect.rgb,\n                        lighteffect.a);\n#endif\n\n#ifdef TEXMODE_add\n    textureColor = vec4(luminance + lighteffect.rgb, lighteffect.a);\n#endif\n\n#endif // TEXTURE_luminance\n \n    \n#ifdef TEXTURE_luminance_alpha\n    float luminance = dot(vec3(1.,1.,1.),textureColor.rgb)/3.;\n\n#if defined(TEXMODE_replace) || defined(TEXMODE_decal)\n    textureColor = vec4(luminance, luminance, luminance, textureColor.a);\n#endif \n\n#ifdef TEXMODE_modulate\n    textureColor = vec4(luminance*lighteffect.rgb, \n                        textureColor.a*lighteffect.a);\n#endif\n\n#ifdef TEXMODE_blend\n    textureColor = vec4((1. - luminance)*lighteffect.rgb,\n                        textureColor.a*lighteffect.a);\n#endif\n\n#ifdef TEXMODE_add\n    textureColor = vec4(luminance + lighteffect.rgb, \n                        textureColor.a*lighteffect.a);\n\n#endif\n\n#endif // TEXTURE_luminance_alpha\n    \n    fragColor = textureColor;\n\n#elif defined(IS_TEXT)\n    if (textureColor.a < 0.1)\n      discard;\n    else\n      fragColor = textureColor;\n#else\n    fragColor = lighteffect;\n#endif // HAS_TEXTURE\n    \n#ifdef HAS_FOG\n    // uFogParms elements: x = near, y = far, z = fogscale, w = (1-sin(FOV/2))/(1+sin(FOV/2))\n    // In Exp and Exp2: use density = density/far\n    // fogF will be the proportion of fog\n    // Initialize it to the linear value\n    float fogF;\n    if (uFogMode > 0) {\n      fogF = (uFogParms.y - vPosition.z/vPosition.w)/(uFogParms.y - uFogParms.x);\n      if (uFogMode > 1)\n        fogF = mix(uFogParms.w, 1.0, fogF);\n      fogF = fogF*uFogParms.z;\n      if (uFogMode == 2)\n        fogF = 1.0 - exp(-fogF);\n      // Docs are wrong: use (density*c)^2, not density*c^2\n      // https://gitlab.freedesktop.org/mesa/mesa/-/blob/master/src/mesa/swrast/s_fog.c#L58\n      else if (uFogMode == 3)\n        fogF = 1.0 - exp(-fogF*fogF);\n      fogF = clamp(fogF, 0.0, 1.0);\n      gl_FragColor = vec4(mix(fragColor.rgb, uFogColor, fogF), fragColor.a);\n    } else gl_FragColor = fragColor;\n#else\n    gl_FragColor = fragColor;\n#endif // HAS_FOG\n    \n}","players":[],"webGLoptions":{"preserveDrawingBuffer":true},"fastTransparency":true},"evals":[],"jsHooks":[]}</script>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: 3 measured variables
+</figcaption>
+</figure>
+</div>
+</div>
+<p>The methods we are looking at now are concerned with capturing this variability in fewer “dimensions” - i.e., without having to refer to all variables “Mental Fatigue”,“Physical Fatigue”, and “Sleepiness”, couldn’t we instead simply say that an observation is high/low on the dimension of ‘tiredness’.</p>
+<p>Where <strong>Principal Component Analysis (PCA)</strong> aims to summarise a set of measured variables into a set of orthogonal (uncorrelated) dimensions, <strong>Factor Analysis (FA)</strong> is more of an <em>explanatory</em> tool, in that we are assuming that the relationships between a set of measured variables can be <strong>explained by</strong> a number of underlying <em>latent factors</em>. This distinction is a little subtle, but essentially as soon as we start to give <em>meaning</em> to the dimensions, we are in the world of factor analysis.</p>
+<div class="sticky">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 2%">
+<col style="width: 63%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Principal Component Analysis</th>
+<th>Factor Analysis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>what it does</strong></td>
+<td>take a set of correlated variables, reduce to orthogonal dimensions that capture variability</td>
+<td>take a set of correlated variables, ask what set of dimensions (not necessarily orthogonal!) <strong>explain</strong> variability</td>
+</tr>
+<tr class="even">
+<td><strong>what the dimensions are</strong></td>
+<td>dimensions are referred to as “components” - they are simply “composites” and do not necessarily exist</td>
+<td>dimensions are referred to as “factors”. They are assumed to be underlying latent variables that are the cause of why people have different scores on the observed variables</td>
+</tr>
+<tr class="odd">
+<td><strong>example</strong></td>
+<td>Socioeconomic status (SES) might be a composite measure of family income, parental education, etc. If my SES increases, that doesn’t mean my parents suddenly get more education (it’s the other way around)</td>
+<td>Anxiety (the unmeasurable construct) is a latent factor. My underlying anxiety is what causes me to respond “strongly agree” to “I am often on edge”</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="thinking-in-diagrams" class="level1">
+<h1>Thinking in diagrams</h1>
+<p>One way to think about this is to draw the two approaches in diagrammatic form, mapping the relationships between variables. There are conventions for these sort of diagrams:</p>
+<ul>
+<li>squares = variables we observe</li>
+<li>circles = variables we don’t observe</li>
+<li>single-headed arrows = regression paths (pointed at outcome)</li>
+<li>double-headed arrows = correlation</li>
+</ul>
+<p>In the diagrams below, note how the directions of the arrows are different between PCA and FA - in PCA, each component <span class="math inline">\(C_i\)</span> is the weighted combination of the observed variables <span class="math inline">\(y_1, ...,y_n\)</span>, whereas in FA, each measured variable <span class="math inline">\(y_i\)</span> is seen as <em>generated by</em> some latent factor(s) <span class="math inline">\(F_i\)</span> plus some unexplained variance <span class="math inline">\(u_i\)</span>.</p>
+<section id="pca-as-a-diagram" class="level3">
+<h3 class="anchored" data-anchor-id="pca-as-a-diagram">PCA as a diagram</h3>
+<p>Note that the idea of a ‘composite’ requires us to use a special shape (the hexagon), but many people would just use a square.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/diag_pca.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+optional: PCA in full
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Principal components sequentially capture the orthogonal (i.e., perpendicular) dimensions of the dataset with the most variance. The data reduction comes when we retain fewer components than we have dimensions in our original data. So if we were being pedantic, the diagram for PCA would look something like the diagram below.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/diag_pca2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="efa-as-a-diagram" class="level3">
+<h3 class="anchored" data-anchor-id="efa-as-a-diagram">EFA as a diagram</h3>
+<p>Exploratory Factor Analysis as a diagram has arrows going from the factors to the observed variables. Unlike PCA, we also have ‘uniqueness’ factors for each variable, representing the various stray causes that are specific to each variable. Sometimes, these uniqueness are represented by an arrow only, but they are technically themselves latent variables, and so can be drawn as circles.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/diag_efa1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>It might help to read the <span class="math inline">\(\lambda\)</span>s as beta-weights (<span class="math inline">\(b\)</span>, or <span class="math inline">\(\beta\)</span>), because that’s all they really are. The equation <span class="math inline">\(y_i = \lambda_{1i} F_1 + \lambda_{2i} F_2 + u_i\)</span> is just our way of saying that the variable <span class="math inline">\(y_i\)</span> is the manifestation of some amount (<span class="math inline">\(\lambda_{1i}\)</span>) of an underlying factor <span class="math inline">\(F_1\)</span>, some amount (<span class="math inline">\(\lambda_{2i}\)</span>) of some other underlying factor <span class="math inline">\(F_2\)</span>, and some error (<span class="math inline">\(u_i\)</span>). It’s just a set of regressions!</p>
+</section>
+</section>
+<section id="exploratory-factor-analysis" class="level1">
+<h1><em>Exploratory</em> Factor Analysis</h1>
+<p>The “Exploratory” in Exploratory Factor Analysis reflects that we are <strong>not</strong> wanting to test any specific hypothesis about the structure of the dimensions underlying our variables. Instead, we are interested in discovery of that structure.</p>
+<p>Consider extending our example of tiredness to a situation in which we ask people to rate agreement on 10 statements:</p>
+<ol type="1">
+<li>I find it difficult to concentrate on mentally demanding tasks.</li>
+<li>I feel mentally drained after cognitive work.</li>
+<li>I am experiencing mental exhaustion or “brain fog.”</li>
+<li>It takes significant effort for me to think clearly.</li>
+<li>My muscles feel tired even without physical activity.</li>
+<li>I feel physically drained and lacking energy.</li>
+<li>My limbs feel heavy or weak.</li>
+<li>Simple physical tasks would require considerable effort.</li>
+<li>I would likely fall asleep if sitting quietly right now.</li>
+<li>I have a strong urge to lie down and rest.</li>
+</ol>
+<p>Initially you might be happy to think “these questions all ask about just one thing - being tired”, but then you might also on reflection feel that some subset of the questions are slightly more similar to one another than to others (e.g., the first 4 seem like they are getting at something slightly different from the next 4, and final 2 seem possibly different again). Exploratory Factor Analysis can help us to understand if our set of 10 questions is “unidimensional”, or whether there are actually two (or more) “subdimensions” to the questionnaire.</p>
+<p>This technique will help us better understand a) what exactly it <strong>is</strong> that we’ve measured, and b) how we can create composite score(s) (i.e.&nbsp;can we give everybody just 1 score, or do we really need a number of scores - one for each dimension?)</p>
+<div class="frame">
+<p><strong>The process of EFA:</strong></p>
+<ol type="1">
+<li>check suitability of items (“items” is often used to refer to the set of measured variables in a questionnaire)</li>
+<li>decide on appropriate rotation and factor extraction method</li>
+<li>examine plausible number of factors</li>
+<li>based on 3, choose the range to examine from <span class="math inline">\(n_{min}\)</span> factors to <span class="math inline">\(n_{max}\)</span> factors</li>
+<li>do EFA, extracting from <span class="math inline">\(n_{min}\)</span> to <span class="math inline">\(n_{max}\)</span> factors. Compare each of these ‘solutions’ in terms of structure, variance explained, and — by examining how the factors from each solution relate to the observed items — assess how much theoretical sense they make.<br>
+</li>
+<li><em>if the aim is to develop a scale for future use</em> - consider removing “problematic” items and start over again.</li>
+</ol>
+</div>
+<section id="efa-in-r" class="level2">
+<h2 class="anchored" data-anchor-id="efa-in-r">EFA in R</h2>
+<p>The code to perform an EFA is very straightforward. It’s just one line:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>my_efa <span class="ot">&lt;-</span> <span class="fu">fa</span>(data, <span class="at">nfactors =</span> ?? , <span class="at">rotate =</span> ??, <span class="at">fm =</span> ??)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The first two things we’re giving the <code>fa()</code> function are straightforward - we give it the dataset and we tell it how many factors we want.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>my_efa <span class="ot">&lt;-</span> <span class="fu">fa</span>(data, <span class="at">nfactors =</span> ?? , <span class="at">rotate =</span> ??, <span class="at">fm =</span> ??)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The latter two things - <code>rotate</code> and <code>fm</code>, are a bit more involved.</p>
+<p>Before we get to them, we’ll take our first look at the output of <code>fa()</code>. We’ll go into this in a lot more detail later on, but for now, all we need to really get our heads around is that there are two main bits to the output: the relationships between each item and each factor (“loadings”), and the variance explained by each factor.</p>
+<p>Below, we have data on our 10 questions about tiredness, and we have extracted <em>two</em> factors:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>my_efa</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><img src="images/efa_output_overview.png" class="img-fluid"></p>
+</section>
+<section id="model-based-thinking" class="level2">
+<h2 class="anchored" data-anchor-id="model-based-thinking">Model based thinking</h2>
+<p>It’s worth noting that exploratory factor analysis is a model-based approach to dimension reduction. This differs subtley from something like PCA which is more like a calculation or ‘re-expression’.</p>
+<p>At a very broad level, most of statistical modelling is of the form:</p>
+<p><span class="math display">\[
+\text{outcome} = \text{model} + \text{error}
+\]</span></p>
+<p>Typically with methods we have looked at before such as <code>lm()</code> and <code>lmer()</code>, the “outcome” was a vector of everybody’s values on an outcome variable, which we predict (or ‘model’) based on the values on a set of explanatory variables.</p>
+<p>The shift in factor analysis is that our “outcome” is going to be our covariance matrix. The “model” is going to be some function of our “factor loadings” (the associations between each item and the factor), and the “error” is going to be the ‘how far off is the model from the outcome?’</p>
+<p>In the example below, we have three observed variables, meaning that we have a 3x3 covariance matrix. We are modelling this with just one factor, so our model is just 3 numbers (the loadings of each variable onto the single factor). We’re using <span class="math inline">\(\mathbf{\Lambda}\)</span> to denote those 3 numbers, and our “model” is <span class="math inline">\(\mathbf{\Lambda \Lambda'}\)</span> (Don’t worry too much about what this means, just note that a) it is just a function of <span class="math inline">\(\mathbf{\Lambda}\)</span> and b) it results in a 3x3 matrix that is <em>close</em> to (but not quite identical) our observed covariance matrix!</p>
+<p><span class="math display">\[
+\begin{align}
+\text{Outcome} &amp;= \text{Model}\, +\, \text{Error}  \\
+\quad \\
+\text{Covariance Matrix} &amp;= \text{Factor Loadings}^2 \,+\, \text{Uniqueness} \\
+\quad \\
+\mathbf{\Sigma} &amp;= \mathbf{\Lambda}\mathbf{\Lambda'} \,+\, \mathbf{\Psi}   \\
+\quad \\
+\begin{bmatrix}
+0.27 &amp; 0.22 &amp; 0.44 \\
+0.22 &amp; 0.17 &amp; 0.35 \\
+0.44 &amp; 0.35 &amp; 0.73 \\
+\end{bmatrix} &amp;=
+\begin{bmatrix}
+0.520 \\ 0.415 \\ 0.854 \\
+\end{bmatrix}
+\begin{bmatrix}
+0.520 &amp; 0.415 &amp; 0.854 \\
+\end{bmatrix} \,+\,
+\begin{bmatrix}
+0.73 &amp; 0 &amp; 0  \\
+0 &amp; 0.83 &amp; 0 \\
+0 &amp; 0 &amp; 0.27 \\
+\end{bmatrix} \\
+\quad \\
+&amp;=
+\begin{bmatrix}
+0.27 &amp; 0.22 &amp; 0.44 \\
+0.22 &amp; 0.17 &amp; 0.35 \\
+0.44 &amp; 0.35 &amp; 0.73 \\
+\end{bmatrix} \,+\,
+\begin{bmatrix}
+0.73 &amp; 0 &amp; 0  \\
+0 &amp; 0.83 &amp; 0 \\
+0 &amp; 0 &amp; 0.27 \\
+\end{bmatrix} \\
+\end{align}
+\]</span> Note that what is being captured by the model is the co-variance — i.e, the “common” or “shared” variance. The ‘leftover’ bits in the error is the variance that is “unique” to each observed variable, and this will include some stuff that is specific to that variable, and some stuff that is just measurement error.</p>
+<p>Suppose our four variables were all questions about anxiety. For agreement with a statement like like “I struggle to say still and am often fidgeting”, people will vary in their responses due to 1) their level of anxiety, 2) their general fidgeting behaviours that are separate from their anxiety, and 3) measurement error (responses of “agree” and “strongly agree” are very inexact measurements here!)</p>
+<p>Factor analysis is concerned with the first of these - the variance shared across multiple items. So a way to think of the factor model is as trying to separate out common variance from unique variance (which could be ‘true’ variability or just error):</p>
+<p><span class="math display">\[
+\begin{equation}
+var(\text{total}) = var(\text{common}) + var(\text{specific}) + var(\text{error})
+\end{equation}
+\]</span></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>common variance</td>
+<td>variance shared across items</td>
+<td>true and shared</td>
+</tr>
+<tr class="even">
+<td>specific variance</td>
+<td>variance specific to an item that is not shared with any other items</td>
+<td>true and unique</td>
+</tr>
+<tr class="odd">
+<td>error variance</td>
+<td>variance due to measurement error</td>
+<td>not ‘true’, unique</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="factor-extraction-methods" class="level2">
+<h2 class="anchored" data-anchor-id="factor-extraction-methods">factor extraction methods</h2>
+<p>We’re not going to delve too much into factor extraction methods here, beyond noting that there are various different methods.</p>
+<p>PCA (using eigendecomposition) is itself a method of extracting the different dimensions from our data. However, there are lots more available for factor analysis.</p>
+<p>You can find a lot of discussion about different methods both in the help documentation for the <code>fa()</code> function from the psych package, and there are lots of discussions both in papers and on <a href="https://stats.stackexchange.com/questions/50745/best-factor-extraction-methods-in-factor-analysis">forums</a>. This is a complicated issue, but when you have a large sample size, a large number of items, for which each has a similar amount of shared variance, then the extraction methods tend to agree. Don’t fret too much about the factor extraction method - it’s a <em>bit</em> like the optimiser issue in the multi-level model block.</p>
+<p>The main contenders are <strong>Maximum Likelihood (ml)</strong>, <strong>Minimum Residuals (minres)</strong> and <strong>Principal Axis Factoring (paf)</strong>.</p>
+<p><strong>Maximum Likelihood</strong> has the benefit of providing standard errors and fit indices that are useful for model testing, but the disadvantage is that it is sensitive to violations of normality, and can sometimes fail to converge, or produce solutions with impossible values such as factor loadings &gt;1 (known as “Heywood cases”), or factor correlations &gt;1.<br>
+<strong>Minimum Residuals (minres)</strong> and <strong>Principal Axis Factoring (paf)</strong> will both work even when maximum likelihood fails to converge, and are slightly less susceptible to deviations from normality. They are a bit more sensitive to the extent to which the observed variables share variance with one another.</p>
+</section>
+<section id="rotations" class="level2">
+<h2 class="anchored" data-anchor-id="rotations">Rotations</h2>
+<p>A much more conceptual part of factor analysis that we need to devote some time to is the idea of “rotations”.</p>
+<p>Recall that there are often two main aspects of the dimensions that we are quantifying:</p>
+<ol type="1">
+<li>the amount of the total variance that is captured by the dimensions</li>
+<li>the relationship between each measured variable and each of the dimensions.</li>
+</ol>
+<p>Now think back to how we can scale a predictor in a linear model without actually changing the model: <code>lm(y ~ x)</code> is identical to <code>lm(y ~ scale(x))</code>. In a similar way, we can actually <em>transform</em> the set of relationships between measured variables and dimensions, without really ‘changing the model’ (i.e., without changing what the model predicts).<br>
+This idea is termed as “rotational indeterminacy” because there are infinitely many sets of numbers that can reproduce the same thing! So it’s a little bit like ‘scaling’ in the sense that it is a transformation applied to the set of loadings.</p>
+<p>The reason for applying these transformations is because it can make the factors a whole lot more theoretically feasible. If we return to our 10 questions on tiredness where we extract 2 factors, note that we might have a fairly difficult time trying to make sense of what those factors represent.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#todo read_csv()</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>tired_fa1 <span class="ot">&lt;-</span> <span class="fu">fa</span>(tiredq, <span class="at">nfactors=</span><span class="dv">2</span>, <span class="at">rotate =</span> <span class="st">"none"</span>, <span class="at">fm=</span><span class="st">"ml"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(tired_fa1<span class="sc">$</span>loadings, <span class="at">cutoff =</span> .<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Loadings:
+                         ML1    ML2   
+difficulty_concentrating  0.526 -0.355
+mentally_drained          0.484       
+brain_fog                 0.525       
+effort_to_think           0.570 -0.365
+tired_muscles             0.454       
+physically_drained        0.560  0.320
+heavy limbs               0.516  0.320
+effort_physical_tasks     0.467  0.333
+would_likely_sleep        0.622       
+urge to rest              0.600       
+
+                 ML1   ML2
+SS loadings    2.863 0.790
+Proportion Var 0.286 0.079
+Cumulative Var 0.286 0.365</code></pre>
+</div>
+</div>
+<p>The first factor is associated fairly highly with all 10 variables (these numbers can range from -1 to 1). The second factor is more confusing - it’s negatively associated with four questions on mental fatigue, and positively associated with physical fatigue. So we end up trying to conclude that the questions are capturing one underlying dimension of “general fatigue” and another confusing dimension that is sort of “being physically fatigued but not mentally fatigued (or vice versa)”. It’s not the clearest idea, especially as when we introduced these questions we actually had a clearer notion (i.e., some questions about mental fatigue, some questions about physical fatigue, and a couple of others)</p>
+<p>And this is where <strong>rotation</strong> comes in. We can transform those sets of loadings in such a way that aims to make each variable load high on to one factor and low on to other factors, without changing the amount of variability we’re explaining.</p>
+<p>One way to <em>see</em> this rotation is to take a little plot of the loadings for each variable on to each factor: <a href="#fig-biplot-none" class="quarto-xref">Figure&nbsp;2</a> (this is only really possible here because we have just two factors). We can rotate the factor axes, so that the loadings on these new axes are generally higher on one axis and lower on the other, as in <a href="#fig-biplot-orth" class="quarto-xref">Figure&nbsp;3</a>.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-biplot-none" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-biplot-none-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03_efa_files/figure-html/fig-biplot-none-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-biplot-none-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Loadings of each variable onto the two factors (no rotation)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-biplot-orth" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-biplot-orth-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03_efa_files/figure-html/fig-biplot-orth-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-biplot-orth-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Loadings of each variable onto the two factors (orthogonal rotation)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Note that these new set of loadings make it a lot easier to provide a meaningful interpretation of our factors - we have one factor that seems to represent mental fatigue + sleepiness, and another factor that seems to represent physical fatigue + sleepiness.<br>
+The total variance explained by this rotated solution is just the same as our unrotated solution (this is the 0.365 in “Cumulative Var” that tells us that cumulatively, the two factors capture 36.5% of the total variance).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>tired_fa2 <span class="ot">&lt;-</span> <span class="fu">fa</span>(tiredq, <span class="at">nfactors=</span><span class="dv">2</span>, <span class="at">rotate =</span> <span class="st">"varimax"</span>, <span class="at">fm=</span><span class="st">"ml"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(tired_fa2<span class="sc">$</span>loadings, <span class="at">cutoff =</span> .<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Loadings:
+                         ML1   ML2  
+difficulty_concentrating 0.625      
+mentally_drained         0.530      
+brain_fog                0.525      
+effort_to_think          0.663      
+tired_muscles                  0.519
+physically_drained             0.619
+heavy limbs                    0.589
+effort_physical_tasks          0.564
+would_likely_sleep       0.359 0.523
+urge to rest             0.484 0.362
+
+                 ML1   ML2
+SS loadings    1.833 1.820
+Proportion Var 0.183 0.182
+Cumulative Var 0.183 0.365</code></pre>
+</div>
+</div>
+<p>Note that even when we are doing this rotation we are working under the constraint that the two factors are “orthogonal”. We might be rotating but we are preserving the right angle between them, meaning that whether or not someone is low/high on the first factor is <em>unrelated</em> to their position on the second factor.</p>
+<p>Hopefully you are uncomfortable with this assumption — why should we have to assume that someone’s level of physical fatigue is uncorrelated with their level of mental fatigue? Surely we’d expect them to be correlated!?</p>
+<p>Well, we can do this, with what is known as an “oblique rotation”. The idea is much the same as the “orthogonal rotation” above, but we don’t have to keep the right angle between the factors:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-biplot-orth2" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-biplot-orth2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03_efa_files/figure-html/fig-biplot-orth2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-biplot-orth2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Loadings of each variable onto the two factors (orthogonal rotation)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-biplot-obl" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-biplot-obl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03_efa_files/figure-html/fig-biplot-obl-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-biplot-obl-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Loadings of each variable onto the two factors (oblique rotation)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>What we get out now is a lovely clean structure where each variable is clearly linked to one factor and not as much to the other, and we have let the factors be correlated - so for someone who is high on factor 1 (now the ‘physical fatigue’ factor) we would also expect them to be high on factor 2 (‘mental fatigue’).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>tired_fa3 <span class="ot">&lt;-</span> <span class="fu">fa</span>(tiredq, <span class="at">nfactors=</span><span class="dv">2</span>, <span class="at">rotate =</span> <span class="st">"oblimin"</span>, <span class="at">fm=</span><span class="st">"ml"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(tired_fa3<span class="sc">$</span>loadings, <span class="at">cutoff =</span> .<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Loadings:
+                         ML2    ML1   
+difficulty_concentrating         0.659
+mentally_drained                 0.541
+brain_fog                        0.515
+effort_to_think                  0.693
+tired_muscles             0.545       
+physically_drained        0.642       
+heavy limbs               0.617       
+effort_physical_tasks     0.602       
+would_likely_sleep        0.486       
+urge to rest                     0.423
+
+                 ML2   ML1
+SS loadings    1.773 1.710
+Proportion Var 0.177 0.171
+Cumulative Var 0.177 0.348</code></pre>
+</div>
+</div>
+<p>In this situation, we also get out the correlation between the factors<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. We can extract the specific part using:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>tired_fa3<span class="sc">$</span>Phi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          ML2       ML1
+ML2 1.0000000 0.4968943
+ML1 0.4968943 1.0000000</code></pre>
+</div>
+</div>
+<div class="sticky">
+<p><strong>Rotations &amp; Simple Structures</strong></p>
+<p>The idea of rotations in EFA is ultimately to help us get to a solution that “makes more sense”.</p>
+<p><strong>Important Note:</strong> “makes more sense” here is largely a theory driven idea. We need to think whether the proposed sets of factor loadings fit with what we know about the variables (how they’re worded etc) and the underlying construct that we are trying to measure.</p>
+<p>In the discussion of rotations above, we talked about a ‘cleaner’ solution - where each variable tends to have one high loading and the other loadings are small. In essence we are trying to make a pattern that looks a bit like this, in diagrammatic form:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/diag_efa2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This idea is typically referred to as a <strong>“simple structure”</strong>, where each variable is “univocal” (it speaks to one factor only, and not to the others). This simplifies the interpretation of factors, making them more distinct and more easily understandable.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 29%">
+<col style="width: 23%">
+<col style="width: 46%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>type</th>
+<th>common methods</th>
+<th>what happens &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>no rotation</td>
+<td>rotate = “none”</td>
+<td>Tries to maximise loadings on to the first factor</td>
+</tr>
+<tr class="even">
+<td>orthogonal rotation</td>
+<td>rotate = “varimax”</td>
+<td>Keeping factors uncorrelated (orthogonal), tries to maximise the variance of loadings (i.e.&nbsp;have lots of high loadings and lots of low loadings)</td>
+</tr>
+<tr class="odd">
+<td>oblique rotation</td>
+<td>rotate = “oblimin”<br>rotate = “promax”</td>
+<td>Tries to find a balance between a simple factor structure and the degree of correlation between factors</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Optional: Explanation with matrices
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>TODO</p>
+<ul>
+<li>5x5 matrix, 2 factors, lambda phi lambda’</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">07</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>RR <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,.<span class="dv">5</span>,.<span class="dv">5</span>,.<span class="dv">2</span>,.<span class="dv">2</span>,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>              .<span class="dv">5</span>,<span class="dv">1</span>,.<span class="dv">5</span>,.<span class="dv">2</span>,.<span class="dv">2</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>              .<span class="dv">5</span>,.<span class="dv">5</span>,<span class="dv">1</span>,.<span class="dv">2</span>,.<span class="dv">2</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>              .<span class="dv">2</span>,.<span class="dv">2</span>,.<span class="dv">2</span>,<span class="dv">1</span>,.<span class="dv">5</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>              .<span class="dv">2</span>,.<span class="dv">2</span>,.<span class="dv">2</span>,.<span class="dv">5</span>,<span class="dv">1</span>), <span class="at">nrow=</span><span class="dv">5</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>tdf <span class="ot">=</span> MASS<span class="sc">::</span><span class="fu">mvrnorm</span>(<span class="fl">2e2</span>,<span class="at">mu=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>),<span class="at">Sigma=</span>RR)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(tdf) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4] [,5]
+[1,] 1.00 0.52 0.51 0.06 0.06
+[2,] 0.52 1.00 0.55 0.12 0.10
+[3,] 0.51 0.55 1.00 0.17 0.21
+[4,] 0.06 0.12 0.17 1.00 0.50
+[5,] 0.06 0.10 0.21 0.50 1.00</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ll <span class="ot">=</span> <span class="fu">fa</span>(tdf, <span class="at">nfactors=</span><span class="dv">2</span>,<span class="at">rotate=</span><span class="st">"none"</span>)<span class="sc">$</span>loadings[,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>uu <span class="ot">=</span> <span class="fu">fa</span>(tdf, <span class="at">nfactors=</span><span class="dv">2</span>,<span class="at">rotate=</span><span class="st">"none"</span>)<span class="sc">$</span>uniqueness</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>ll_orth <span class="ot">=</span> <span class="fu">fa</span>(tdf, <span class="at">nfactors=</span><span class="dv">2</span>,<span class="at">rotate=</span><span class="st">"varimax"</span>)<span class="sc">$</span>loadings[,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>ll_obl <span class="ot">=</span> <span class="fu">fa</span>(tdf, <span class="at">nfactors=</span><span class="dv">2</span>,<span class="at">rotate=</span><span class="st">"oblimin"</span>)<span class="sc">$</span>loadings[,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>phi_obl <span class="ot">=</span> <span class="fu">fa</span>(tdf, <span class="at">nfactors=</span><span class="dv">2</span>,<span class="at">rotate=</span><span class="st">"oblimin"</span>)<span class="sc">$</span>Phi</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(tdf) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4] [,5]
+[1,] 1.00 0.52 0.51 0.06 0.06
+[2,] 0.52 1.00 0.55 0.12 0.10
+[3,] 0.51 0.55 1.00 0.17 0.21
+[4,] 0.06 0.12 0.17 1.00 0.50
+[5,] 0.06 0.10 0.21 0.50 1.00</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>( ll <span class="sc">%*%</span> <span class="fu">t</span>(ll), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4] [,5]
+[1,] 0.49 0.52 0.51 0.07 0.05
+[2,] 0.52 0.56 0.55 0.11 0.11
+[3,] 0.51 0.55 0.56 0.17 0.20
+[4,] 0.07 0.11 0.17 0.35 0.50
+[5,] 0.05 0.11 0.20 0.50 0.71</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>( ll_orth <span class="sc">%*%</span> <span class="fu">t</span>(ll_orth), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4] [,5]
+[1,] 0.49 0.52 0.51 0.07 0.05
+[2,] 0.52 0.56 0.55 0.11 0.11
+[3,] 0.51 0.55 0.56 0.17 0.20
+[4,] 0.07 0.11 0.17 0.35 0.50
+[5,] 0.05 0.11 0.20 0.50 0.71</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>( ll_obl <span class="sc">%*%</span> phi_obl <span class="sc">%*%</span> <span class="fu">t</span>(ll_obl), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3] [,4] [,5]
+[1,] 0.49 0.52 0.51 0.07 0.05
+[2,] 0.52 0.56 0.55 0.11 0.11
+[3,] 0.51 0.55 0.56 0.17 0.20
+[4,] 0.07 0.11 0.17 0.35 0.50
+[5,] 0.05 0.11 0.20 0.50 0.71</code></pre>
+</div>
+</div>
+<p>Furthermore, we could relax the constraint that these sets of loadings are ‘orthogonal’, and add in another</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="the-fa-output" class="level1">
+<h1>The fa() Output</h1>
+<p>Now that we’ve got a rough sense of the idea of factor analysis and rotations, we can take a closer look at the output that we get in R.</p>
+<p>we can simply print the name of our model in order to see <strong>a lot</strong> of information. Below are a series of slides (the full deck as a .pdf is <a href="https://uoepsy.github.io/lv/misc/efa_output.pdf" target="_blank">here if you want it</a>) that step-by-step talk through each part of the output of an EFA.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Pattern Matrix
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/efa_output/Slide2.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Communalities
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/efa_output/Slide3.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Uniqueness
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/efa_output/Slide4.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Complexities
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/efa_output/Slide5.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+SS loadings &amp; Variance Accounted for
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/efa_output/Slide6.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/efa_output/Slide7.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/efa_output/Slide8.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/efa_output/Slide9.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Factor Correlations
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/efa_output/Slide10.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Optional Extras: Fit indices etc.
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/efa_output/Slide11.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/efa_output/Slide12.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/efa_output/Slide13.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="what-makes-a-good-factor-solution" class="level1">
+<h1>What makes a good factor solution?</h1>
+<p>Recall again the rough steps of EFA we introduced earlier. Note that this exploratory method will typically involve fitting multiple EFA models for a range of possibly numbers of factors, and then comparing and evaluating them with regards to which is most theoretically coherent.</p>
+<div class="frame">
+<p><strong>The process of EFA:</strong></p>
+<ol type="1">
+<li>check suitability of items</li>
+<li>decide on appropriate rotation and factor extraction method</li>
+<li>examine plausible number of factors</li>
+<li>based on 3, choose the range to examine from <span class="math inline">\(n_{min}\)</span> factors to <span class="math inline">\(n_{max}\)</span> factors</li>
+<li>do EFA, extracting from <span class="math inline">\(n_{min}\)</span> to <span class="math inline">\(n_{max}\)</span> factors. Compare each of these ‘solutions’ in terms of structure, variance explained, and — by examining how the factors from each solution relate to the observed items — assess how much theoretical sense they make.<br>
+</li>
+<li><em>if the aim is to develop a scale for future use</em> - consider removing “problematic” items and start over again.</li>
+</ol>
+<p>There are various sets of criteria proposed to set out what makes a certain factor solution “theoretically coherent”.</p>
+<p>Ultimately, a big part of it is subjective, and based on what we know about the observed variables (e.g., if it’s a questionnaire, then our interpretation of the wording of each question is key here). However, there are some key things to consider that relate to the utility of a factor solution:</p>
+<ul>
+<li>how much variance is accounted for by a solution?
+<ul>
+<li>this is a good starting point as it shows us an overall metric of how much the factor(s) are actually capturing something that is meaningfully shared between the items.</li>
+<li>more variance in the items explained by the solution is better, but more factors will always explain more variance.<br>
+</li>
+</ul></li>
+<li>do all factors load on 3+ items at a “salient” level?
+<ul>
+<li>“salient” here is somewhat arbitrary, but convention uses loadings that are <span class="math inline">\(&gt;0.3\)</span> or <span class="math inline">\(&lt;-0.3\)</span></li>
+<li>we want our factors to be meaningful things that don’t simply represent the same thing as a single variable. If a factor has only 1 item that loads very highly on to it, and all other item loadings are small, then that factor is really just capturing a very similar thing to the observed item.<br>
+</li>
+</ul></li>
+<li>do all items have at least one loading at a salient level?
+<ul>
+<li>we want our solution to capture the full breadth of our scale - i.e.&nbsp;all aspects of our construct. So we ideally want each item to be related to at least one factor.</li>
+<li>depending on our purpose here, an item that doesn’t have a high loading could point us to look at the item in more detail, and think about <em>why</em> it is doing something different. If we are developing a scale then we may even decide that the item was badly worded, and we could drop it from the analysis and start over with the process on the subset of items.<br>
+</li>
+</ul></li>
+<li>are there any highly complex items?
+<ul>
+<li>we ideally want items to be linked mainly to one factor and not to others. Item complexity represents the extent to which they load across multiple factors. This isn’t necessarily a problem per se, but it can make it harder to define exactly what our factors represent.<br>
+</li>
+</ul></li>
+<li>are there any “Heywood cases” (communalities or standardised loadings that are &gt;1)?
+<ul>
+<li>this can happen if we use maximum likelihood as an estimation technique, and we should check for these because they reflect that the solution may fit well numerically, but make absolutely no sense (you can’t have correlations &gt;1).<br>
+</li>
+</ul></li>
+<li>is the factor structure (items that load on to each factor) coherent, and does it make theoretical sense?
+<ul>
+<li>this is possibly the biggest question. Broadly speaking, it is asking “can you give a name to each factor?”. It requires us looking at the item wordings carefully and considering how they are grouped in loadings on to each factor. This is the fun bit!</li>
+</ul></li>
+</ul>
+<section id="demonstration-efa-in-practice" class="level1">
+<h1>Demonstration: EFA in practice</h1>
+<div class="frame">
+<p><strong>Dataset: phoneaddiction.csv</strong></p>
+<p>The dataset at <a href="https://uoepsy.github.io/data/phoneaddiction.csv" target="_blank">https://uoepsy.github.io/data/phoneaddiction.csv</a> comes from a (fake) study that is interested in developing a scale of “phone-attachment/addiction” - i.e., the idea of being overly attached to a phone.</p>
+<p>We have a set of 10 statements (<a href="#tbl-phdict" class="quarto-xref">Table&nbsp;1</a>) that get at different aspects of this idea, and we asked 240 people to rate how much they agreed with each of the 10 statements on a 1-5 scale (1 = strongly disagree, 5 = strongly agree).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>phdat <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://uoepsy.github.io/data/phoneaddiction.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div id="tbl-phdict" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-phdict-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Item wordings for phoneaddiction.csv
+</figcaption>
+<div aria-describedby="tbl-phdict-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div id="yaaqstbqbg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#yaaqstbqbg table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#yaaqstbqbg thead, #yaaqstbqbg tbody, #yaaqstbqbg tfoot, #yaaqstbqbg tr, #yaaqstbqbg td, #yaaqstbqbg th {
+  border-style: none;
+}
+
+#yaaqstbqbg p {
+  margin: 0;
+  padding: 0;
+}
+
+#yaaqstbqbg .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#yaaqstbqbg .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#yaaqstbqbg .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#yaaqstbqbg .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#yaaqstbqbg .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#yaaqstbqbg .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yaaqstbqbg .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#yaaqstbqbg .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#yaaqstbqbg .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#yaaqstbqbg .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#yaaqstbqbg .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#yaaqstbqbg .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#yaaqstbqbg .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#yaaqstbqbg .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#yaaqstbqbg .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#yaaqstbqbg .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#yaaqstbqbg .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#yaaqstbqbg .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#yaaqstbqbg .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yaaqstbqbg .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#yaaqstbqbg .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#yaaqstbqbg .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#yaaqstbqbg .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yaaqstbqbg .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#yaaqstbqbg .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#yaaqstbqbg .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yaaqstbqbg .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yaaqstbqbg .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#yaaqstbqbg .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yaaqstbqbg .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#yaaqstbqbg .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yaaqstbqbg .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#yaaqstbqbg .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yaaqstbqbg .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#yaaqstbqbg .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yaaqstbqbg .gt_left {
+  text-align: left;
+}
+
+#yaaqstbqbg .gt_center {
+  text-align: center;
+}
+
+#yaaqstbqbg .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#yaaqstbqbg .gt_font_normal {
+  font-weight: normal;
+}
+
+#yaaqstbqbg .gt_font_bold {
+  font-weight: bold;
+}
+
+#yaaqstbqbg .gt_font_italic {
+  font-style: italic;
+}
+
+#yaaqstbqbg .gt_super {
+  font-size: 65%;
+}
+
+#yaaqstbqbg .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#yaaqstbqbg .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#yaaqstbqbg .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#yaaqstbqbg .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#yaaqstbqbg .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#yaaqstbqbg .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#yaaqstbqbg .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#yaaqstbqbg .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#yaaqstbqbg div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th id="variable" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">variable</th>
+<th id="question" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">question</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">item1</td>
+<td class="gt_row gt_left" headers="question">I often reach for my phone even when I don’t have a specific reason to use it.</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">item2</td>
+<td class="gt_row gt_left" headers="question">I feel a strong urge to check my phone frequently, even during meals or social interactions.</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">item3</td>
+<td class="gt_row gt_left" headers="question">I spend a large portion of my day using my phone, often for more hours than I intend.</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">item4</td>
+<td class="gt_row gt_left" headers="question">My phone use has interfered with my ability to complete tasks or responsibilities at school, work, or home.</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">item5</td>
+<td class="gt_row gt_left" headers="question">When I cannot use my phone (e.g., no battery or no signal), I feel anxious or uncomfortable.</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">item6</td>
+<td class="gt_row gt_left" headers="question">My phone use has negatively affected my sleep schedule, such as staying up late scrolling.</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">item7</td>
+<td class="gt_row gt_left" headers="question">I find it difficult to avoid checking my phone immediately upon waking up or right before bed.</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">item8</td>
+<td class="gt_row gt_left" headers="question">I often check my phone even in situations where it’s distracting or socially inappropriate (e.g., meetings or classes).</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">item9</td>
+<td class="gt_row gt_left" headers="question">I sometimes feel that others are overly concerned about my phone use in social situations.</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">item10</td>
+<td class="gt_row gt_left" headers="question">I have tried to reduce my phone usage but find it challenging to do so.</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<section id="initial-checks" class="level2">
+<h2 class="anchored" data-anchor-id="initial-checks">1. Initial checks</h2>
+<p>There are various ways of assessing the suitability of our items for exploratory factor analysis, and most of them rely on examining the observed correlations between items.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Look at the correlation matrix
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Use a function such as <code>cor</code> or <code>corr.test(data)</code> (from the <strong>psych</strong> package) to create the correlation matrix. If it’s a big matrix (they get big quite quickly!) then we can make some sort of visual to get a better sense.</p>
+<p><strong>phoneaddiction.csv example:</strong><br>
+Most of the correlations are in the range from 0.2 to 0.4. So they aren’t hugely strong correlations, but they <em>are</em> all related. From the plot below item9 already looks to be a weird one, which is something to keep in mind.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pheatmap)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(<span class="fu">cor</span>(phdat), <span class="at">cluster_rows =</span> F, <span class="at">cluster_cols =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="03_efa_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Bartlett’s Test
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The function <code>cortest.bartlett(cor(data), n = nrow(data))</code> conducts “Bartlett’s test”. This tests against the null that the correlation matrix is proportional to the identity matrix (a matrix of all 0s except for 1s on the diagonal).</p>
+<ul>
+<li>Null hypothesis: observed correlation matrix is equivalent to the identity matrix<br>
+</li>
+<li>Alternative hypothesis: observed correlation matrix is not equivalent to the identity matrix.</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+What is the identity matrix?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The “Identity matrix” is a matrix of all 0s except for 1s on the diagonal.<br>
+e.g.&nbsp;for a 3x3 matrix:<br>
+<span class="math display">\[
+\begin{bmatrix}
+1 &amp; 0 &amp; 0 \\
+0 &amp; 1 &amp; 0 \\
+0 &amp; 0 &amp; 1 \\
+\end{bmatrix}
+\]</span> If a correlation matrix looks like this, then it means there is <strong>no</strong> shared variance between the items, so it is not suitable for factor analysis.</p>
+</div>
+</div>
+</div>
+<p><strong>phoneaddiction.csv example:</strong><br>
+The Bartlett test is significant here, meaning that we reject the null hypothesis that our correlation matrix is equivalent to the identity matrix.<br>
+This is a good thing - we <em>want</em> it to be different in order to justify doing factor analysis.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cortest.bartlett</span>(phdat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$chisq
+[1] 408.3897
+
+$p.value
+[1] 4.531271e-60
+
+$df
+[1] 45</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Kaiser, Meyer, Olkin Measure of Sampling Adequacy
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-14" class="callout-14-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>You can check the “factorability” of the correlation matrix using <code>KMO(data)</code> (also from <strong>psych</strong>!).</p>
+<ul>
+<li>Rules of thumb:
+<ul>
+<li><span class="math inline">\(0.8 &lt; MSA &lt; 1\)</span>: the sampling is adequate</li>
+<li><span class="math inline">\(MSA &lt;0.6\)</span>: sampling is not adequate</li>
+<li><span class="math inline">\(MSA \sim 0\)</span>: large partial correlations compared to the sum of correlations. Not good for FA</li>
+</ul></li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Kaiser’s suggested cuts
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>These are Kaiser’s corresponding adjectives suggested for each level of the KMO:</p>
+<ul>
+<li>0.00 to 0.49 “unacceptable”<br>
+</li>
+<li>0.50 to 0.59 “miserable”<br>
+</li>
+<li>0.60 to 0.69 “mediocre”<br>
+</li>
+<li>0.70 to 0.79 “middling”<br>
+</li>
+<li>0.80 to 0.89 “meritorious”<br>
+</li>
+<li>0.90 to 1.00 “marvelous”</li>
+</ul>
+</div>
+</div>
+</div>
+<p><strong>phoneaddiction.csv example:</strong><br>
+Overall KMO is good here at 0.83, and individual item KMOs are also looking pretty ‘meritorious’ too! The only thorny one is item9, again!</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">KMO</span>(phdat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Kaiser-Meyer-Olkin factor adequacy
+Call: KMO(r = phdat)
+Overall MSA =  0.83
+MSA for each item = 
+ item1  item2  item3  item4  item5  item6  item7  item8  item9 item10 
+  0.86   0.85   0.83   0.82   0.83   0.81   0.85   0.83   0.53   0.82 </code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Check for linearity
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-15" class="callout-15-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>It also makes sense to check for linearity of relationships prior to conducting EFA. EFA is all based on correlations, which assume the relations we are capturing are linear.</p>
+<p>You can check linearity of relations using <code>pairs.panels(data)</code> (also from <strong>psych</strong>), and you can view the histograms on the diagonals, allowing you to check univariate normality (which is usually a good enough proxy for multivariate normality).</p>
+<p><strong>phoneaddiction.csv example:</strong><br>
+Because these items are measured on likert scales of 1-5, looking at scatterplots can be a bit harder. The red lines on the plots are essentially “smooth” lines, which follow the mean of the variable on the y-axis as it moves across the x-axis. So we want them to all be straight-ish, which they are. We can see from the diagonals of this plot that the items are all fairly normally distributed too.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs.panels</span>(phdat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="03_efa_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="rotations-and-factor-extraction" class="level2">
+<h2 class="anchored" data-anchor-id="rotations-and-factor-extraction">2. Rotations and Factor Extraction</h2>
+<p>If we are thinking that there might be two or more factors that underly our scale of ‘phone-addiction’, then we would probably expect those two factors to be correlated (all the questions are about phone usage, after all). For that reason, we are going to use an <strong>oblique rotation</strong><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>As all of the correlations between individual items are low to medium (0.2 - 0.4), and the item distributions look fairly normal, we’re going to opt to use maximum likelihood here.</p>
+</section>
+<section id="how-many-factors" class="level2">
+<h2 class="anchored" data-anchor-id="how-many-factors">3 &amp; 4. How many factors?</h2>
+<p>The question of how many factors to extract is very similar to the methods discussed in the PCA demonstration in <a href="02_dimension_reduction.html#the-key-methods" target="_blank">Chapter 2#the-key-methods</a>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Scree plot
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-16" class="callout-16-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">scree</span>(phdat, <span class="at">pc =</span> <span class="cn">TRUE</span>, <span class="at">factors =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="03_efa_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-17-contents" aria-controls="callout-17" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Parallel analysis
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-17" class="callout-17-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>We can set <code>fa = "both"</code> to do the parallel analysis method for both factor extraction and principal components.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fa.parallel</span>(phdat, <span class="at">fa =</span> <span class="st">"both"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="03_efa_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Parallel analysis suggests that the number of factors =  2  and the number of components =  1 </code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-18-contents" aria-controls="callout-18" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+MAP
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-18" class="callout-18-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VSS</span>(phdat, <span class="at">rotate =</span> <span class="st">"oblimin"</span>, <span class="at">plot =</span> <span class="cn">FALSE</span>, <span class="at">fm =</span> <span class="st">"ml"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Very Simple Structure
+Call: vss(x = x, n = n, rotate = rotate, diagonal = diagonal, fm = fm, 
+    n.obs = n.obs, plot = plot, title = title, use = use, cor = cor)
+VSS complexity 1 achieves a maximimum of 0.61  with  1  factors
+VSS complexity 2 achieves a maximimum of 0.59  with  3  factors
+
+The Velicer MAP achieves a minimum of 0.02  with  1  factors 
+BIC achieves a minimum of  -122.63  with  2  factors
+Sample Size adjusted BIC achieves a minimum of  -40.21  with  2  factors
+
+Statistics by number of factors 
+  vss1 vss2   map dof   chisq    prob sqresid  fit RMSEA  BIC SABIC complex
+1 0.61 0.00 0.023  35 7.5e+01 9.9e-05     6.2 0.61 0.069 -117  -5.9     1.0
+2 0.57 0.59 0.031  26 2.0e+01 8.0e-01     6.6 0.59 0.000 -123 -40.2     1.0
+3 0.56 0.59 0.061  18 8.9e+00 9.6e-01     6.0 0.62 0.000  -90 -32.7     1.3
+4 0.42 0.53 0.087  11 4.5e+00 9.5e-01     7.2 0.54 0.000  -56 -20.9     1.4
+5 0.47 0.58 0.121   5 1.4e+00 9.3e-01     6.2 0.61 0.000  -26 -10.2     1.3
+6 0.49 0.55 0.175   0 2.9e-01      NA     6.0 0.62    NA   NA    NA     1.4
+7 0.37 0.41 0.279  -4 6.6e-08      NA     7.9 0.50    NA   NA    NA     1.6
+8 0.34 0.39 0.493  -7 6.1e-12      NA     8.2 0.48    NA   NA    NA     1.6
+   eChisq    SRMR eCRMS eBIC
+1 1.0e+02 6.8e-02 0.077  -91
+2 2.0e+01 3.0e-02 0.040 -123
+3 8.2e+00 1.9e-02 0.031  -90
+4 5.1e+00 1.5e-02 0.031  -55
+5 1.1e+00 7.1e-03 0.021  -26
+6 2.3e-01 3.3e-03    NA   NA
+7 6.1e-08 1.7e-06    NA   NA
+8 5.5e-12 1.6e-08    NA   NA</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>method</th>
+<th>suggestion</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>kaiser</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>scree plot</td>
+<td>1 or 2? or 5? quite hard to tell</td>
+</tr>
+<tr class="odd">
+<td>MAP</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>parallel analysis</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>From this I would say that it is worth considering both a 1 factor and a 2 factor solution.</p>
+</section>
+<section id="doing-efa-comparing-solutions" class="level2">
+<h2 class="anchored" data-anchor-id="doing-efa-comparing-solutions">5. Doing EFA &amp; Comparing solutions</h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>ph_efa1 <span class="ot">&lt;-</span> <span class="fu">fa</span>(phdat, <span class="at">nfactors =</span> <span class="dv">1</span>, <span class="at">fm =</span> <span class="st">"ml"</span>)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>ph_efa2 <span class="ot">&lt;-</span> <span class="fu">fa</span>(phdat, <span class="at">nfactors =</span> <span class="dv">2</span>, <span class="at">fm =</span> <span class="st">"ml"</span>, <span class="at">rotate =</span> <span class="st">"oblimin"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Both solutions look reasonable <em>apart from item 9</em> (which we could have guessed right at the beginning).</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-19-contents" aria-controls="callout-19" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+1 factor solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-19" class="callout-19-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(ph_efa1<span class="sc">$</span>loadings, <span class="at">cutoff=</span>.<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Loadings:
+       ML1  
+item1  0.559
+item2  0.574
+item3  0.529
+item4  0.439
+item5  0.511
+item6  0.501
+item7  0.531
+item8  0.519
+item9       
+item10 0.548
+
+                 ML1
+SS loadings    2.481
+Proportion Var 0.248</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-20-contents" aria-controls="callout-20" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+2 factor solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-20" class="callout-20-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(ph_efa2<span class="sc">$</span>loadings, <span class="at">cutoff=</span>.<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Loadings:
+       ML1    ML2   
+item1   0.525       
+item2   0.556       
+item3   0.580       
+item4          0.536
+item5          0.633
+item6          0.512
+item7   0.569       
+item8   0.655       
+item9               
+item10         0.677
+
+                 ML1   ML2
+SS loadings    1.681 1.441
+Proportion Var 0.168 0.144
+Cumulative Var 0.168 0.312</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Looking at item9, the wording is “I sometimes feel that others are overly concerned about my phone use in social situations.”. This maybe represents something slightly different from just “being addicted to your phone” - it also contains a self-consciousness / feeling judged by others etc, which is something completely different.</p>
+<p>So where have we got to? We started with loads of responses to a set of 10 questions, and we wanted to understand the underlying structure of the thing they were intended to measure (“phone addiction”).<br>
+We’ve ended by identifying one question that didn’t really fit with the rest (item9), and with a question mark between whether the scale captures 2 underlying factors or just 1.</p>
+<p>A lot of where we go next depends on what our overarching research aims are. If we want to <strong>use</strong> the construct “phone-addiction” in a subsequent analysis, then we’ll need to extract scores, and we have a decision of what structure (1 factor or 2 factors) we want to use - and so how many scores each person will have.</p>
+</section>
+<section id="are-we-doing-scale-development" class="level2">
+<h2 class="anchored" data-anchor-id="are-we-doing-scale-development">6 - are we doing scale development?</h2>
+<p>If our goal here is to design a nice questionnaire for future research that captures stuff about people’s addiction to their phones, then item 9 isn’t proving very useful here. At this point we may also want to consider if there are any other items that are maybe redundant (it’s always good to try and keep a questionnaire short to reduce participant burden!).</p>
+<p>Removing item9, and doing the <strong>entire</strong> process over again, we end up still finding that it’s between a 1 or a 2 factor solution.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-21-contents" aria-controls="callout-21" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+determining the number of factors
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-21" class="callout-21-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">scree</span>(phdat[,<span class="sc">-</span><span class="dv">9</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="03_efa_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fa.parallel</span>(phdat, <span class="at">fa =</span> <span class="st">"both"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="03_efa_files/figure-html/unnamed-chunk-40-2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Parallel analysis suggests that the number of factors =  2  and the number of components =  1 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VSS</span>(phdat, <span class="at">rotate =</span> <span class="st">"oblimin"</span>, <span class="at">plot =</span> <span class="cn">FALSE</span>, <span class="at">fm =</span> <span class="st">"ml"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Very Simple Structure
+Call: vss(x = x, n = n, rotate = rotate, diagonal = diagonal, fm = fm, 
+    n.obs = n.obs, plot = plot, title = title, use = use, cor = cor)
+VSS complexity 1 achieves a maximimum of 0.61  with  1  factors
+VSS complexity 2 achieves a maximimum of 0.59  with  3  factors
+
+The Velicer MAP achieves a minimum of 0.02  with  1  factors 
+BIC achieves a minimum of  -122.63  with  2  factors
+Sample Size adjusted BIC achieves a minimum of  -40.21  with  2  factors
+
+Statistics by number of factors 
+  vss1 vss2   map dof   chisq    prob sqresid  fit RMSEA  BIC SABIC complex
+1 0.61 0.00 0.023  35 7.5e+01 9.9e-05     6.2 0.61 0.069 -117  -5.9     1.0
+2 0.57 0.59 0.031  26 2.0e+01 8.0e-01     6.6 0.59 0.000 -123 -40.2     1.0
+3 0.56 0.59 0.061  18 8.9e+00 9.6e-01     6.0 0.62 0.000  -90 -32.7     1.3
+4 0.42 0.53 0.087  11 4.5e+00 9.5e-01     7.2 0.54 0.000  -56 -20.9     1.4
+5 0.47 0.58 0.121   5 1.4e+00 9.3e-01     6.2 0.61 0.000  -26 -10.2     1.3
+6 0.49 0.55 0.175   0 2.9e-01      NA     6.0 0.62    NA   NA    NA     1.4
+7 0.37 0.41 0.279  -4 6.6e-08      NA     7.9 0.50    NA   NA    NA     1.6
+8 0.34 0.39 0.493  -7 6.1e-12      NA     8.2 0.48    NA   NA    NA     1.6
+   eChisq    SRMR eCRMS eBIC
+1 1.0e+02 6.8e-02 0.077  -91
+2 2.0e+01 3.0e-02 0.040 -123
+3 8.2e+00 1.9e-02 0.031  -90
+4 5.1e+00 1.5e-02 0.031  -55
+5 1.1e+00 7.1e-03 0.021  -26
+6 2.3e-01 3.3e-03    NA   NA
+7 6.1e-08 1.7e-06    NA   NA
+8 5.5e-12 1.6e-08    NA   NA</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-22-contents" aria-controls="callout-22" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+1 factor solution (excluding item 9)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-22" class="callout-22-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>ph_efa1a <span class="ot">&lt;-</span> <span class="fu">fa</span>(phdat[,<span class="sc">-</span><span class="dv">9</span>], <span class="at">nfactors =</span> <span class="dv">1</span>, <span class="at">rotate =</span> <span class="st">"oblimin"</span>, <span class="at">fm =</span> <span class="st">"ml"</span>)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>ph_efa1a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Factor Analysis using method =  ml
+Call: fa(r = phdat[, -9], nfactors = 1, rotate = "oblimin", fm = "ml")
+Standardized loadings (pattern matrix) based upon correlation matrix
+        ML1   h2   u2 com
+item1  0.56 0.32 0.68   1
+item2  0.57 0.33 0.67   1
+item3  0.53 0.28 0.72   1
+item4  0.44 0.19 0.81   1
+item5  0.51 0.26 0.74   1
+item6  0.50 0.25 0.75   1
+item7  0.53 0.28 0.72   1
+item8  0.52 0.27 0.73   1
+item10 0.55 0.30 0.70   1
+
+                ML1
+SS loadings    2.48
+Proportion Var 0.28
+
+Mean item complexity =  1
+Test of the hypothesis that 1 factor is sufficient.
+
+df null model =  36  with the objective function =  1.72 with Chi Square =  404.03
+df of  the model are 27  and the objective function was  0.3 
+
+The root mean square of the residuals (RMSR) is  0.07 
+The df corrected root mean square of the residuals is  0.09 
+
+The harmonic n.obs is  240 with the empirical chi square  94.35  with prob &lt;  2.1e-09 
+The total n.obs was  240  with Likelihood Chi Square =  70.73  with prob &lt;  8.8e-06 
+
+Tucker Lewis Index of factoring reliability =  0.841
+RMSEA index =  0.082  and the 90 % confidence intervals are  0.059 0.106
+BIC =  -77.24
+Fit based upon off diagonal values = 0.93
+Measures of factor score adequacy             
+                                                   ML1
+Correlation of (regression) scores with factors   0.88
+Multiple R square of scores with factors          0.78
+Minimum correlation of possible factor scores     0.55</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-23-contents" aria-controls="callout-23" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+2 factor solution (excluding item 9)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-23" class="callout-23-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>ph_efa2a <span class="ot">&lt;-</span> <span class="fu">fa</span>(phdat[,<span class="sc">-</span><span class="dv">9</span>], <span class="at">nfactors =</span> <span class="dv">2</span>, <span class="at">rotate =</span> <span class="st">"oblimin"</span>, <span class="at">fm =</span> <span class="st">"ml"</span>)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>ph_efa2a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Factor Analysis using method =  ml
+Call: fa(r = phdat[, -9], nfactors = 2, rotate = "oblimin", fm = "ml")
+Standardized loadings (pattern matrix) based upon correlation matrix
+         ML1   ML2   h2   u2 com
+item1   0.52  0.10 0.33 0.67 1.1
+item2   0.55  0.08 0.36 0.64 1.0
+item3   0.58  0.00 0.34 0.66 1.0
+item4  -0.01  0.54 0.28 0.72 1.0
+item5  -0.01  0.63 0.39 0.61 1.0
+item6   0.07  0.52 0.31 0.69 1.0
+item7   0.57  0.01 0.33 0.67 1.0
+item8   0.66 -0.08 0.38 0.62 1.0
+item10  0.00  0.67 0.45 0.55 1.0
+
+                       ML1  ML2
+SS loadings           1.71 1.47
+Proportion Var        0.19 0.16
+Cumulative Var        0.19 0.35
+Proportion Explained  0.54 0.46
+Cumulative Proportion 0.54 1.00
+
+ With factor correlations of 
+     ML1  ML2
+ML1 1.00 0.58
+ML2 0.58 1.00
+
+Mean item complexity =  1
+Test of the hypothesis that 2 factors are sufficient.
+
+df null model =  36  with the objective function =  1.72 with Chi Square =  404.03
+df of  the model are 19  and the objective function was  0.07 
+
+The root mean square of the residuals (RMSR) is  0.03 
+The df corrected root mean square of the residuals is  0.04 
+
+The harmonic n.obs is  240 with the empirical chi square  14.93  with prob &lt;  0.73 
+The total n.obs was  240  with Likelihood Chi Square =  16.33  with prob &lt;  0.64 
+
+Tucker Lewis Index of factoring reliability =  1.014
+RMSEA index =  0  and the 90 % confidence intervals are  0 0.048
+BIC =  -87.81
+Fit based upon off diagonal values = 0.99
+Measures of factor score adequacy             
+                                                   ML1  ML2
+Correlation of (regression) scores with factors   0.86 0.85
+Multiple R square of scores with factors          0.74 0.73
+Minimum correlation of possible factor scores     0.49 0.45</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Finally, we now have a judgment call. Both solutions look okay in terms of the numbers of items on each factor etc. One thing to consider is whether we prefer the idea of 1 thing that explains 28% of the variance, or 2 <em>related</em> things (the two factors are fairly correlated in the 2 factor solution) that together explain 35%. Is that a big enough increase?</p>
+<p>The other thing we should definitely be considering is the theoretical coherence of the solutions. The 1 factor solution is easy - we have just one factor, and that represents “addiction to your phone”.<br>
+In the 2 factor solution we need to pay more attention to which items go with which factor.</p>
+<p>Given the item wordings below - we might try to define Factor 1 as “frequency of use” and Factor 2 as “impact on life”.<br>
+Are these distinct enough for you? Personally I would say maybe not - some of the wordings of items in Factor 1 are still related to “impact on life” (i.e., “often for more hours than I intend”?)</p>
+<div class="columns">
+<div class="column" style="width:48%;">
+<p><strong>Factor 1</strong></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="mptkjbyhqf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#mptkjbyhqf table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#mptkjbyhqf thead, #mptkjbyhqf tbody, #mptkjbyhqf tfoot, #mptkjbyhqf tr, #mptkjbyhqf td, #mptkjbyhqf th {
+  border-style: none;
+}
+
+#mptkjbyhqf p {
+  margin: 0;
+  padding: 0;
+}
+
+#mptkjbyhqf .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#mptkjbyhqf .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#mptkjbyhqf .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#mptkjbyhqf .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#mptkjbyhqf .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mptkjbyhqf .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mptkjbyhqf .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mptkjbyhqf .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#mptkjbyhqf .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#mptkjbyhqf .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#mptkjbyhqf .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#mptkjbyhqf .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#mptkjbyhqf .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#mptkjbyhqf .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#mptkjbyhqf .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#mptkjbyhqf .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#mptkjbyhqf .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#mptkjbyhqf .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#mptkjbyhqf .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mptkjbyhqf .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#mptkjbyhqf .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#mptkjbyhqf .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#mptkjbyhqf .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mptkjbyhqf .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#mptkjbyhqf .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#mptkjbyhqf .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mptkjbyhqf .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mptkjbyhqf .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#mptkjbyhqf .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mptkjbyhqf .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#mptkjbyhqf .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mptkjbyhqf .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mptkjbyhqf .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mptkjbyhqf .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mptkjbyhqf .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mptkjbyhqf .gt_left {
+  text-align: left;
+}
+
+#mptkjbyhqf .gt_center {
+  text-align: center;
+}
+
+#mptkjbyhqf .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#mptkjbyhqf .gt_font_normal {
+  font-weight: normal;
+}
+
+#mptkjbyhqf .gt_font_bold {
+  font-weight: bold;
+}
+
+#mptkjbyhqf .gt_font_italic {
+  font-style: italic;
+}
+
+#mptkjbyhqf .gt_super {
+  font-size: 65%;
+}
+
+#mptkjbyhqf .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#mptkjbyhqf .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#mptkjbyhqf .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#mptkjbyhqf .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#mptkjbyhqf .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#mptkjbyhqf .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#mptkjbyhqf .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#mptkjbyhqf .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#mptkjbyhqf div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th id="variable" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">variable</th>
+<th id="question" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">question</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">item1</td>
+<td class="gt_row gt_left" headers="question">I often reach for my phone even when I don’t have a specific reason to use it.</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">item2</td>
+<td class="gt_row gt_left" headers="question">I feel a strong urge to check my phone frequently, even during meals or social interactions.</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">item3</td>
+<td class="gt_row gt_left" headers="question">I spend a large portion of my day using my phone, often for more hours than I intend.</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">item7</td>
+<td class="gt_row gt_left" headers="question">I find it difficult to avoid checking my phone immediately upon waking up or right before bed.</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">item8</td>
+<td class="gt_row gt_left" headers="question">I often check my phone even in situations where it’s distracting or socially inappropriate (e.g., meetings or classes).</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div><div class="column" style="width:4%;">
+
+</div><div class="column" style="width:48%;">
+<p><strong>Factor 2</strong></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="wkegtalbkv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#wkegtalbkv table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#wkegtalbkv thead, #wkegtalbkv tbody, #wkegtalbkv tfoot, #wkegtalbkv tr, #wkegtalbkv td, #wkegtalbkv th {
+  border-style: none;
+}
+
+#wkegtalbkv p {
+  margin: 0;
+  padding: 0;
+}
+
+#wkegtalbkv .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#wkegtalbkv .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#wkegtalbkv .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#wkegtalbkv .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#wkegtalbkv .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#wkegtalbkv .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wkegtalbkv .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#wkegtalbkv .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#wkegtalbkv .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#wkegtalbkv .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#wkegtalbkv .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#wkegtalbkv .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#wkegtalbkv .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#wkegtalbkv .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#wkegtalbkv .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#wkegtalbkv .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#wkegtalbkv .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#wkegtalbkv .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#wkegtalbkv .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wkegtalbkv .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#wkegtalbkv .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#wkegtalbkv .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#wkegtalbkv .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wkegtalbkv .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#wkegtalbkv .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#wkegtalbkv .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wkegtalbkv .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wkegtalbkv .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#wkegtalbkv .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wkegtalbkv .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#wkegtalbkv .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wkegtalbkv .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#wkegtalbkv .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wkegtalbkv .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#wkegtalbkv .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wkegtalbkv .gt_left {
+  text-align: left;
+}
+
+#wkegtalbkv .gt_center {
+  text-align: center;
+}
+
+#wkegtalbkv .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#wkegtalbkv .gt_font_normal {
+  font-weight: normal;
+}
+
+#wkegtalbkv .gt_font_bold {
+  font-weight: bold;
+}
+
+#wkegtalbkv .gt_font_italic {
+  font-style: italic;
+}
+
+#wkegtalbkv .gt_super {
+  font-size: 65%;
+}
+
+#wkegtalbkv .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#wkegtalbkv .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#wkegtalbkv .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#wkegtalbkv .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#wkegtalbkv .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#wkegtalbkv .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#wkegtalbkv .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#wkegtalbkv .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#wkegtalbkv div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th id="variable" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">variable</th>
+<th id="question" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">question</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">item4</td>
+<td class="gt_row gt_left" headers="question">My phone use has interfered with my ability to complete tasks or responsibilities at school, work, or home.</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">item5</td>
+<td class="gt_row gt_left" headers="question">When I cannot use my phone (e.g., no battery or no signal), I feel anxious or uncomfortable.</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="variable">item6</td>
+<td class="gt_row gt_left" headers="question">My phone use has negatively affected my sleep schedule, such as staying up late scrolling.</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="variable">item10</td>
+<td class="gt_row gt_left" headers="question">I have tried to reduce my phone usage but find it challenging to do so.</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Scale development is lot of back and forth, and at this point we might consider re-wording some of the items to make the two factors more clearly distinct, then giving the edited questionnaire to a whole load of new people, and going through the whole process again until we’re happy with a coherent structure!</p>
+<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;">
+
+</div>
 
 
+</section>
+</section>
+</div>
+</section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>If you’re a trigonometry fan (I’m not!), it’s the cosine of the angle between the axes!<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>additional point here is that even if these two factors are not correlated, then an oblique rotation could estimate that too.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
