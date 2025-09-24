@@ -171,7 +171,7 @@ Often it helps to take this to the extremes, so think about what these would loo
 ```{r}
 #| echo: false
 #| label: fig-pcano
-#| fig-cap: "Principal components for 3 uncorrelated variables"
+#| fig-cap: "Dimensions of 3 uncorrelated variables"
 set.seed(33)
 S = runif(3,.4,2)
 f = runif(3,0,.1)
@@ -199,7 +199,7 @@ rglwidget()
 ```{r}
 #| echo: false
 #| label: fig-pcaff
-#| fig-cap: "Principal components for 3 perfectly correlated variables"
+#| fig-cap: "3 perfectly correlated variables"
 S = runif(3,.4,2)
 f = runif(3,1,1)
 R = f %*% t(f)

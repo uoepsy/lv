@@ -1,0 +1,185 @@
+---
+title: "5: Reliability"
+params: 
+    SHOW_SOLS: FALSE
+    TOGGLE: TRUE
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+#| label: setup
+#| include: false
+source('assets/setup.R')
+library(xaringanExtra)
+library(tidyverse)
+library(patchwork)
+library(ggdist)
+xaringanExtra::use_panelset()
+qcounter <- function(){
+  if(!exists("qcounter_i")){
+    qcounter_i <<- 1
+  }else{
+    qcounter_i <<- qcounter_i + 1
+  }
+  qcounter_i
+}
+library(lme4)
+```
+
+:::lo
+
+- conceptual ideas about how we measure things
+
+![](images/montoya.jpg)
+
+:::
+
+Bad measurement is sometimes a bit like the rotten apple that spoils the entire barrel. 
+
+
+
+Very loosely, we can differentiate between two measurement related threats to research. 
+
+1 - whether our measurement instrument actually measures the thing we think it measures.  
+2 - how consistently our measurement instrument measures whatever it is measuring.  
+
+The first of these is termed "construct validity" and essentially is concerned with whether, when we get people to fill out the questionnaire in @fig-qitems in order to assess people's anxiety, we are actually capturing respondents' levels of "anxiety". If you take a look at the wordings of the questions, you could argue that they are all statements about behaviours we consider to be a result of being anxious (i.e., avoidance behaviours, excessive worry, reassurance seeking, etc). But switch your perspective and consider how they could be seen as behaviours that represent healthy coping strategies (i.e., proactive stress management, social support utilization etc.). So what do these 5 questionnaire items measure? "Anxiety"? "Coping Stragies"? Neither? Both?  
+
+The second measurement related threat is the idea of the "consistency" or "reliability" of measurement. This is the concern that if I filled out the questionnaire in @fig-qitems multiple times, I'm not going to score very differently (unless I have actually changed in my underlying "Anxiety" or "Coping strategies" or whatever we are supposedly measuring). 
+
+```{r}
+#| label: fig-qitems
+#| fig-cap: "5 questionnaire items that measure something. Maybe."
+knitr::include_graphics("images/qitems.png")
+```
+
+![](images/qitems.png)
+
+TODO 
+
+validity is the ceiling for reliability
+
+
+Within each of these threats of "validity" and "reliability", there are lots of different forms. We will go through a selection of these and how we might try and assess them.  
+
+# construct validity
+
+
+Validity is types
+how to assess
+
+## face validity
+
+:::sticky
+Face validity: The extent to which a test appears, on the surface, to measure what it claims to measure. For example, a maths test that contains only arithmetic problems has good face validity.
+:::
+
+## convergent & discriminant validity
+
+:::sticky
+Convergent validity - The degree to which scores on a test are related to scores on other measures of the same construct. For instance, a new depression inventory correlating strongly with the Beck Depression Inventory.
+Discriminant validity - The extent to which a test does not correlate strongly with measures of unrelated constructs. For example, a depression test showing weak correlation with an anxiety test.
+:::
+
+## predictive/criterion validity
+
+:::sticky
+Criterion validity - The extent to which test scores are related to an external criterion. For example, aptitude test scores predicting job performance.
+:::
+
+
+# reliability
+
+why the focus here?
+
+the superficial idea: 
+reliable, consistent, etc etc. 
+all just words. 
+
+the easiest way to think of this a little more specifically = test re-test. 
+"if we measure person i on X and then we measure person i on X a second time, a perfectly reliable measure would give us the exact same scores"  
+
+correlation between scores on the same tests
+plot time 1 vs time 2
+
+
+but the idea of reliability can be looked at in different ways 
+- reliability across different forms of the same test
+
+
+let's start thinking about measurement in a diagrammatic way, because we love diagrams!
+
+back to basics, if i measure something, then i get a number.  
+but the number is rarely perfectly correct as a measurement of --. there are two things that are resulting in that number being what it is
+truth, and error. 
+
+T -> S <- E
+
+> love truth but pardon error (Voltaire)
+
+now imagine all the possible measurements i could have taken just then, using the same tool.  
+print df, with ... to infinity  
+
+my scores vary   
+this variance comes from somewhere - it comes from the amount that true X varies plus the amount that error varies. T+E
+
+worse / better measure would be one where the error varies very little relative to the truth - i.e., it is more reliable
+
+so we can quantify reliability as the amount of true variance that contributes to score variance  
+T/(T+E)
+
+
+but somewhere along teh way we've lost the whole idea of "consistency across repeated assessment"? is that reliability? or is it about the ratio of true variance to score variance? 
+
+it's both! 
+let's draw a diagram where we measure twice. it looks something like this: 
+
+T -> S1 <- E1
+T -> S2 <- E2
+
+cor(S1,S2) ends up the same thing, because cor(e1,e2)=0, and sd(e1)==sd(e2) by assumption, 
+
+these end up at the same thing.  
+
+parallel tests come from where:  
+
+
+## test-retest reliability
+
+:::sticky
+- Test-retest - Consistency of test scores when the same test is administered to the same group on two different occasions.
+:::
+
+## parallel forms reliability
+
+:::sticky
+- Parallel forms/alternate forms - Consistency of scores between two equivalent versions of a test that measure the same construct.
+:::
+
+## inter-rater reliability
+
+:::sticky
+- Inter-rater - Degree of agreement or consistency between two or more raters/observers scoring the same behaviour or responses.
+:::
+
+## internal consistency 
+
+:::sticky
+- Internal consistency - Consistency of responses across items within the same test
+:::
+### coefficient alpha
+
+### mcdonald's omega
+
+# the impact of reliability
+
+attenuation
+
+
+
+
+
+
+
+

@@ -1,0 +1,90 @@
+---
+title: "5: Thinking in diagrams"
+params: 
+    SHOW_SOLS: FALSE
+    TOGGLE: TRUE
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+#| label: setup
+#| include: false
+source('assets/setup.R')
+library(xaringanExtra)
+library(tidyverse)
+library(patchwork)
+library(ggdist)
+xaringanExtra::use_panelset()
+qcounter <- function(){
+  if(!exists("qcounter_i")){
+    qcounter_i <<- 1
+  }else{
+    qcounter_i <<- qcounter_i + 1
+  }
+  qcounter_i
+}
+library(lme4)
+```
+
+:::lo
+
+
+:::
+
+
+# Diagrams thus far:  
+
+
+![](images/diag_cfa.png)
+
+The conventions:  
+
+- squares = variables we observe
+- circles = variables we don't observe^[hexagons = composite variables, like our diagrams for PCA but these are rarely used tbh!]
+- single-headed arrows = regression paths (pointed at outcome)
+- double-headed arrows = covariance/correlation  
+
+
+## covariance modelling and graphical models 
+
+The logic behind path analysis is to estimate a system of equations that best reproduce the covariance structure that we see in the data. 
+
+1. We specify our theoretical model of the world as a system of paths between variables that represent which variables influence which other variables. This is simply a diagramatic way of specifying a set of equations. 
+    - A single headed arrow from $X \rightarrow Y$ indicates that Y "listens to" X - if X changes, then Y will change accordingly (but not vice versa)
+    - A double headed arrow between $X \leftrightarrow Y$ indicates that these two variables are related, not because one causes the other, but because there is some mechanism outside of our model that results in these two variables being associated.
+2. We collect data on the relevant variables and we observe a covariance matrix (i.e. how each variable covaries with every other variable). 
+3. We fit our model to the data, and evaluate how well our theoretical model (the estimated values for our path coefficients) can reproduce the observed covariance matrix. 
+
+
+:::sticky
+**Terminology**  
+
+- **Exogenous variables** are a bit like what we have been describing with words like "independent variable" or "predictor". In a path diagram, they have no arrows coming into them from other variables in the system, but have paths *going out* to other variables.  
+- **Endogenous variables** are more like the "outcome"/"dependent"/"response" variables we are used to. They have some arrow coming into them from another variable in the system (and may also - but not necessarily - have paths going out from them).  
+:::
+
+## path tracing
+
+Thanks to [Sewal Wright](https://www.jstor.org/stable/pdf/2527551.pdf?casa_token=3QF0ad2ZoBcAAAAA:MbEkDNNdoLZr1SXE4LrnK--qrhhsTXLgsRtcWre1UvWxiQiGNUl5vWytGp34XIxhAYMZJe-MbIcBnEwXSfX6MAONevz04-sMXpEDI3IaYKk6mMX46QvX), we can express the correlation between any two variables in the system as the sum of all *compound paths* between the two variables^[if we were wanting covariances, and we didn't have standardised variables, then these would have to be multiplied by the corresponding variance estimates for the variables].  
+
+*compound paths* are the products of any paths you can trace between A and B for which there are: 
+
+- no loops. If you are tracing from one variable to another, you cannot pass through the same variable twice in a particular path. 
+- no going forward then backward (and no going forward then across a curved arrow)^[You can't go out of one arrow-head into another
+arrow-head. We can go heads-to-tails, or tails-to-heads, not heads-heads]
+- maximum of one curved arrow per path
+
+If we look at our path diagram and find all the distinct routes to get from A to B that adhere to the 3 rules above, and sum these routes up, then we get the implied covariance between A and B. 
+(routes are 'distinct' if they contain different coefficients, or encounter coefficients in a different order).  
+
+
+
+
+
+
+
+
+
+
+

@@ -939,25 +939,30 @@ From this I would say that it is worth considering both a 1 factor and a 2 facto
 ## 5. Doing EFA & Comparing solutions
 
 ```{r}
-ph_efa1 <- fa(phdat, nfactors = 1, fm = "ml")
-ph_efa2 <- fa(phdat, nfactors = 2, fm = "ml", rotate = "oblimin")
+ph_efa1 <- fa(phdat, nfactors = 1, 
+              fm = "ml")
+ph_efa2 <- fa(phdat, nfactors = 2, 
+              fm = "ml", rotate = "oblimin")
 ```
 
 Both solutions look reasonable _apart from item 9_ (which we could have guessed right at the beginning).  
 
 ::::{.columns}
-:::{.column width="50%"}
+:::{.column width="48%"}
 __1 factor solution__  
 
 ```{r}
 print(ph_efa1$loadings, cutoff=.2)
 ```
 :::
-:::{.column width="50%"}
+:::{.column width="4%"}
+:::
+:::{.column width="48%"}
 __2 factor solution__  
 
 ```{r}
 print(ph_efa2$loadings, cutoff=.2)
+ph_efa2$Phi
 ```
 :::
 ::::
@@ -987,20 +992,25 @@ VSS(phdat, rotate = "oblimin", plot = FALSE, fm = "ml")
 :::
 
 ::::{.columns}
-:::{.column width="50%"}
+:::{.column width="48%"}
 __1 factor solution (excluding item 9)__  
 
 ```{r}
-ph_efa1a <- fa(phdat[,-9], nfactors = 1, rotate = "oblimin", fm = "ml")
-ph_efa1a
+ph_efa1a <- fa(phdat[,-9], nfactors = 1, 
+               fm = "ml")
+print(ph_efa1a$loadings, cutoff = .3)
 ```
 :::
-:::{.column width="50%"}
+:::{.column width="4%"}
+:::
+:::{.column width="48%"}
 __2 factor solution (excluding item 9)__  
 
 ```{r}
-ph_efa2a <- fa(phdat[,-9], nfactors = 2, rotate = "oblimin", fm = "ml")
-ph_efa2a
+ph_efa2a <- fa(phdat[,-9], nfactors = 2, 
+               rotate = "oblimin", fm = "ml")
+print(ph_efa2a$loadings, cutoff = .3)
+ph_efa2a$Phi
 ```
 :::
 ::::

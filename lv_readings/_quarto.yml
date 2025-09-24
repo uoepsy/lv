@@ -8,7 +8,6 @@ project:
 
 website:  
   title: "Latent Variable Modelling"
-  page-footer: © Copyright 2019-2025 [The University of Edinburgh](https://www.ed.ac.uk/). Site licensed under the [GNU AGPLv3](https://www.gnu.org/licenses/agpl-3.0.en.html) license.  
   sidebar:
     style: "floating"
     search: true
@@ -19,7 +18,7 @@ website:
       - 03_efa.qmd
       - 04_cfa.qmd
       - 05_reliability.qmd
-      - 06_sem.qmd
+      # - 06_sem.qmd
       - section: "Additional Docs"
         contents:
           - z_eigen.qmd
@@ -33,7 +32,10 @@ format:
     theme: 
       - cosmo
       - assets/style-labs.scss
-    include-in-header: "assets/toggling.html"
+    include-in-header: 
+      - "assets/toggling.html"
+      - text: |
+          <link rel="stylesheet" href="https://uoepsy.github.io/assets/css/ccfooter.css" />
     number-sections: false
 
 
