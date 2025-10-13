@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 # ggplot settings
 library(ggplot2)
 theme_set(
-    theme_bw(base_size = 15)
+    theme_bw(base_size = 18)
 )
 
 
