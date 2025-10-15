@@ -137,41 +137,51 @@ ggplot(df1,aes(x=measurement_1, y = measurement_2))+
 :::
 ::::
 
-This is great as a way to think about reliability, but it is hard to think about in situations where we *haven't* measured the same units twice. A more generalisable way to conceive of reliability can be got at by thinking about measurement in a diagrammatic way. Which is great, because I love diagrams!
+This is great as a way to start thinking about reliability, but it is hard to think about in situations where we *haven't* measured the same units twice. A more generalisable way to conceive of reliability can be got at by thinking about measurement in a diagrammatic way. Which is great, because I love diagrams!
 
 So let's go back to basics. Whenever we measure something, we get a number^[(hooray, I love numbers almost as much as I love diagrams!]. But there are almost always two things that make that number what it is: there is the "true" value of the construct that we're measuring, and then there is error. This error might come from different things - it could be rounding error (our scales only display to the 10th of a kg), it could be random error due to a poor instrument (e.g., using our bathroom scales on some bumpy cobbles that happen to make it weigh higher/lower depending on where we position the scales), or it could be other stray causes that are unrelated to the construct we're trying to measure (e.g., measurements of anxiety often include a question about sleep habits, but there are lots of other things that influence sleep!).  
 
-Drawing our diagram then, when we measure something, we observe one thing (the score), but this is caused by two unobserved things (the truth and some error).  
-Following the conventions for drawing these sorts of diagram, things we observe are in squares, and unobservables are in circles.  
+Drawing our diagram then, when we measure something, we observe one thing (the score), but this is caused by two unobserved things (the truth and some error). Following the conventions for drawing these sorts of diagram, things we observe are in squares, and unobservables are in circles.  
 
 ```{r}
 #| label: fig-ctt1
 #| fig-cap: "When taking a measurement, the number (or 'score') that we get out is always one bit of truth, and one bit of error"
 #| echo: false
+#| fig-width: 12
 knitr::include_graphics("images/ctt/Slide1.PNG")
 ```
-![](images/ctt/Slide1.png)
 
-One way to make the idea of "truth" here a little more concrete, let's suppose that I took my shoddy bathroom scales and weighed Dougal over and over and over and over again (ad infinitum). The numbers I get out would probably follow this sort of distribution, the center of which we can think of as Dougal's "true" weight (assuming the scales aren't systematically biased)
+One way to make the idea of "truth" here a little more concrete, let's suppose that I took my shoddy bathroom scales and weighed Dougal over and over and over and over again (ad infinitum). The numbers I get out will follow a normal distribution, the center of which we can think of as Dougal's "true" weight (assuming the scales aren't systematically biased). We often see weights a little higher, often a little lower, less often do we see things a lot higher or lower, etc. So "Truth" here refers to the idea of the 'long run' measurement.  
 ```{r}
 #| echo: false
+#| column: margin
 plot(density(rnorm(1e4,mean=23.814346,sd=2)),main="10,000 measurements of Dougal's weight",xlab="observed weight")
 ```
 
-So let's expand from thinking about Dougal specifically to thinking about the measurement process of weighing dogs.  
+Now let's expand from thinking about Dougal specifically to thinking about the measurement process of weighing dogs.  
 
+We have our "instrument" for measuring dog's weights (our bathroom scales). We can imagine all the measurements we might use this instrument for.  
 
-- take a measurement instrument X
-- imagine all possible measurements
-- the true values have a variance
-- each observed score is a little bit above/below the corresponding true value. i.e., there is a little bit of error.
-- all these error vary - they have a variance
+For any dog we might use these scales to weigh, the observed number we see on the scales is going to be driven by 1) that dog's *true* weight, and 2) a little bit of error.  
 
-![](images/ctt/Slide2.png)
+Just like all the true weights of all our dogs have a variance (some weigh a lot, some weigh less etc.,), the errors that are contributing to our measurements also have a variance (some readings are a bit higher than truth, some are a bit lower).   
 
-- these diagrams are theoretical models that can be used to imply what we would expect to see in observed variables. 
-e.g., this model implies that observed scores we get out should also have a variance, and it is var(score) = var(truth) + var(error)
+If we add these to our diagram, we simply add curved lines to our "Truth" and "Error" variables: 
+```{r}
+#| label: fig-ctt2
+#| echo: false
+#| fig-width: 12
+knitr::include_graphics("images/ctt/Slide2.PNG")
+```
 
+These diagrams are theoretical models that can be used to *imply* what we would expect to see in our observed variables (we saw this idea in CFA). One crucial thing that this model implies that the variance we would see in our observed scores is going to be the variance in the true scores plus the variance in the errors.    
+
+Let's take these to the extreme: 
+
+If my measurement instrument is incredibly good in weighing dogs, then the variance in the errors is much much smaller (i.e., all measurements are within 0.1kg of the true score). 
+If my measurement instrument is incredibly bad at weighing dogs, then the variance in errors is much bigger (sometimes when I weigh Dougal I get 15kg, sometimes I get 28kg etc).  
+
+So reliability is about t
 
 
 - consider two different tools
