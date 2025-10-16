@@ -1,2 +1,3 @@
 /.quarto/
 /wipdocs/
+**/*.quarto_ipynb

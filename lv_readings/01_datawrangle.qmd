@@ -412,7 +412,11 @@ survdat |>
   mutate(q6 = 6-q6)
 ```
 
-But we're going to want to do this for all the negatively phrased questions in our survey. If we take a look at the [inventory page of the IPIP](https://ipip.ori.org/new_ipip-50-item-scale.htm){target="_blank"}, we can see that these are all the even questions from 2 to 38, and then questions 39, 44, 46, and 49.  
+We subtract from 6 because there are five steps along our scale.
+If we had a seven-point scale, we would subtract all the values from 8.
+In general, to reverse a scale that has $n$ steps, find $n+1$ and subtract each value from that.
+
+Back to the data: we're going to want to reverse the coding for all the negatively phrased questions in our survey. If we take a look at the [inventory page of the IPIP](https://ipip.ori.org/new_ipip-50-item-scale.htm){target="_blank"}, we can see that these are all the even questions from 2 to 38, and then questions 39, 44, 46, and 49.  
 
 That's a frustrating set!  
 Let's find a way to capture those. `seq(2,38,2)` will give us a sequence from 2 to 38 in steps of 2. So that gives us most of them. We can then just combine that with the other ones, and put "q" in front of each one to give us the variable names:  

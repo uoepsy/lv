@@ -493,7 +493,15 @@ library(psych)
 VSS(physfunc[,1:8], rotate = "none", 
     plot = FALSE, fm = "pc")
 ```
-(be aware there is a lot of other information in this output too! For now just focus on the map column), and the part of the output that says "The Velicer MAP achieves a minimum of 0.14  with 1 factors".  
+
+There is a lot of other information in this output too!
+For now just focus on the map column, and the part of the output that says "The Velicer MAP achieves a minimum of 0.14  with 1 factors".  
+This statement tells us that the minimum average squared partial correlation is achieved for 1 factor, which means that MAP suggests we keep only one factor.
+(The `map` column shows us the average squared partial correlation for each number of factors, and the MAP test will find the lowest value in that column and recommend to us the corresponding number of factors.)
+
+
+
+
 
 __NOTE: The MAP method will sometimes tend to under-extract (suggest too few components)__ 
  
