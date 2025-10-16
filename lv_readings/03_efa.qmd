@@ -43,6 +43,7 @@ This is going to be our starting point for the more commonly used method in psyc
 
 It's important to think about what we mean by "variability" here - it is variability across a whole set of variables. So if we start with just 3 variables, we can think of all the data visualised in 3-dimensional space. We can see in @fig-scat that the observations vary in all variables. But they vary in a specific way - observations that are high on one tend to be higher on the others. Observations that are lower, tend to be lower on all of them. 
 
+
 ```{r}
 #| echo: false
 #| label: fig-scat
@@ -81,6 +82,9 @@ Where **Principal Component Analysis (PCA)** aims to summarise a set of measured
 
  
 :::
+
+
+
 
 # Thinking in diagrams
 
@@ -225,11 +229,59 @@ $$
 
 Typically with methods we have looked at before such as `lm()` and `lmer()`, the "outcome" was a vector of everybody's values on an outcome variable, which we predict (or 'model') based on the values on a set of explanatory variables.  
 
-The shift in factor analysis is that **our "outcome" is going to be a covariance matrix.**
+What changes when we do factor analysis is that **our "outcome" is going to be a covariance matrix.**
 This covariance matrix represents how the items that we've collected data for co-vary with one another.
-You could think of covariance as how much you can predict about Item B when you already know Item A.
-For example, if responses to Item B are generally high when responses to Item A are also high, then the two co-vary quite a bit.
-On the other hand, if responses to Item B are all over the place when responses to Item A are high, then the two don't co-vary much at all.
+
+::: {.callout-tip collapse="true"}
+#### optional: what's "covariance" again?
+
+**Intuition:**
+
+You can think of the covariance of Item A and Item B as follows: If you already know the values of Item A, how well can you guess the values of Item B?
+
+- If responses to Item B are generally high when responses to Item A are also high, then the two items have positive covariance.
+- If responses to Item B are generally low when responses to Item A are high, then the two items have negative covariance.
+- If responses to Item B are all over the place when responses to Item A are high, then the two items have near-zero covariance.
+
+
+**Concretely:**
+
+Let's look back at our data on mental fatigue (M), physical fatigue (P), and sleepiness (S).
+We'll plot physical fatigue against mental fatigue.
+
+```{r}
+mydata |>
+  ggplot(aes(x = P, y = M)) +
+  geom_point()
+```
+
+This plot shows a positive association: 
+
+- low P co-occurs with low M, and not with high M; 
+- high P co-occurs with high M, and not with low M.
+
+In other words: if you've observed a high value of P, you can be fairly confident that you'll also observe a high value of M.
+This suggests that P and M co-vary in the positive direction.
+
+Let's check.
+
+```{r}
+cov(mydata$P, mydata$M)
+```
+
+Yes! The covariance is positive.
+
+<br>
+
+**Why is covariance different from correlation?**
+
+Covariance is on the scale of the original variable. 
+The 1.4 units of covariance between physical fatigue and mental fatigue represent 1.4 points on the original scale with which the data was gathered.
+
+Just like standard deviations are a standardised version of variance, you can think of correlations as a standardised version of covariance.
+Correlations are standardised to only take on values between –1 and 1, no matter what the original scale of the data was.
+
+:::
 
 The goal of an EFA model is to figure out what factors might underlie our data.
 It maps each item we observe onto each of the factors that we tell the model to find.
