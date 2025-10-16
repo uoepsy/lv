@@ -149,12 +149,12 @@ Initially you might be happy to think "these questions all ask about just one th
 This technique will help us better understand a) what exactly it **is** that we've measured, and b) how we can create composite score(s) (i.e. can we give everybody just 1 score, or do we really need a number of scores - one for each dimension?)  
 
 :::frame
-**The process of EFA:**  
+**The process of EFA (you don't need to understand everything here immediately—it'll make more sense after we see it in action):**  
 
 1. check suitability of items ("items" is often used to refer to the set of measured variables in a questionnaire)
 2. decide on appropriate rotation and factor extraction method
 3. examine plausible number of factors
-4. based on 3, choose the range to examine from $n_{min}$ factors to $n_{max}$ factors
+4. based on the plausible number of factors from (3), choose the range to examine from $n_{min}$ factors to $n_{max}$ factors
 5. do EFA, extracting from $n_{min}$ to $n_{max}$ factors. Compare each of these 'solutions' in terms of structure, variance explained, and --- by examining how the factors from each solution relate to the observed items --- assess how much theoretical sense they make.  
 6. _if the aim is to develop a scale for future use_ - consider removing "problematic" items and start over again.
 
@@ -172,11 +172,11 @@ my_efa <- fa(data, nfactors = ?? , rotate = ??, fm = ??)
 
 The first two things we're giving the `fa()` function are straightforward - we give it the dataset and we tell it how many factors we want.  
 
-```{r}
-#| eval: false
-library(psych)
-my_efa <- fa(data, nfactors = ?? , rotate = ??, fm = ??)
-```
+<!-- ```{r} -->
+<!-- #| eval: false -->
+<!-- library(psych) -->
+<!-- my_efa <- fa(data, nfactors = ?? , rotate = ??, fm = ??) -->
+<!-- ``` -->
 
 The latter two things - `rotate` and `fm`, are a bit more involved.  
 
@@ -215,19 +215,43 @@ names(tiredq) <- c("difficulty_concentrating",
 
 ## Model based thinking
 
-It's worth noting that exploratory factor analysis is a model-based approach to dimension reduction. This differs subtley from something like PCA which is more like a calculation or 're-expression'.  
+It's worth noting that exploratory factor analysis is a model-based approach to dimension reduction. This differs subtly from something like PCA which is more like a calculation or 're-expression'.  
 
 At a very broad level, most of statistical modelling is of the form:  
 
 $$
-\text{outcome} = \text{model} + \text{error}
+\text{Outcome} = \text{Model} + \text{Error}
 $$
 
 Typically with methods we have looked at before such as `lm()` and `lmer()`, the "outcome" was a vector of everybody's values on an outcome variable, which we predict (or 'model') based on the values on a set of explanatory variables.  
 
-The shift in factor analysis is that our "outcome" is going to be our covariance matrix. The "model" is going to be some function of our "factor loadings" (the associations between each item and the factor), and the "error" is going to be the 'how far off is the model from the outcome?'  
+The shift in factor analysis is that **our "outcome" is going to be a covariance matrix.**
+This covariance matrix represents how the items that we've collected data for co-vary with one another.
+You could think of covariance as how much you can predict about Item B when you already know Item A.
+For example, if responses to Item B are generally high when responses to Item A are also high, then the two co-vary quite a bit.
+On the other hand, if responses to Item B are all over the place when responses to Item A are high, then the two don't co-vary much at all.
 
-In the example below, we have three observed variables, meaning that we have a 3x3 covariance matrix. We are modelling this with just one factor, so our model is just 3 numbers (the loadings of each variable onto the single factor). We're using $\mathbf{\Lambda}$ to denote those 3 numbers, and our "model" is $\mathbf{\Lambda \Lambda'}$ (Don't worry too much about what this means, just note that a) it is just a function of $\mathbf{\Lambda}$ and b) it results in a 3x3 matrix that is *close* to (but not quite identical) our observed covariance matrix!  
+The goal of an EFA model is to figure out what factors might underlie our data.
+It maps each item we observe onto each of the factors that we tell the model to find.
+The associations between each item and the factor are called "factor loadings".
+**The "model" is going to be some function of our factor loadings, and the "error" is going to be the 'how far off is the model from the outcome?'**
+
+Let's make this a bit more concrete.
+In the tiredness example from above, we have ten observed variables, so our covariance matrix would be 10x10: ten rows by ten columns.
+But to keep things reasonable, we'll look at an example below with just three observed variables, meaning that we have a 3x3 covariance matrix.
+
+In our example with the 3x3 covariance matrix, we've decided that we'll model these items with just one factor.
+Our three variables each have one loading onto the single factor, so our model is represented by three numbers: the loadings of each variable onto the factor.
+We're using the symbol $\mathbf{\Lambda}$, which is a capital lambda, to denote those three numbers.
+
+(If you've never encountered linear algebra before, don't worry about how exactly the following maths happens.
+The equations are included for those who are interested—if you're not interested, that's OK.
+The maths is not essential for you to know.)
+
+We multiply those three numbers $\mathbf{\Lambda}$ by themselves in such a way that the outcome is a 3x3 matrix.^[In linear algebra terms, $\mathbf{\Lambda}$ is a column vector and $\mathbf{\Lambda'}$ is a row vector, and using matrix multiplication, their product $\mathbf{\Lambda}\mathbf{\Lambda'}$ is a 3x3 matrix.]
+This matrix is *close* but not quite identical to our observed covariance matrix.
+The difference between the model matrix and the covariance matrix is the uniqueness matrix, represented by $\mathbf{\Psi}$, a capital psi (pronounced like "sigh").
+The uniqueness matrix contains the "error", the variance that's unique to each observed item (whether because the item is different in some way than the others, or because there's measurement error associated with that item, or both—examples of this coming up below).
 
 ```{r}
 #| include: false
@@ -252,23 +276,27 @@ round(ll %*% t(ll), 2)
 
 $$
 \begin{align}
-\text{Outcome} &= \text{Model}\, +\, \text{Error}  \\
+\color{red}
+\text{Outcome} &= \color{blue} \text{Model}\, +\, \color{magenta} \text{Error}  \\
 \quad \\
-\text{Covariance Matrix} &= \text{Factor Loadings}^2 \,+\, \text{Uniqueness} \\
+\color{red} \text{Covariance Matrix} &= \color{blue} \text{Factor Loadings}^2 \,+\, \color{magenta} \text{Uniqueness} \\
 \quad \\
-\mathbf{\Sigma} &= \mathbf{\Lambda}\mathbf{\Lambda'} \,+\, \mathbf{\Psi}   \\
+\color{red} \mathbf{\Sigma} &= \color{blue} \mathbf{\Lambda}\mathbf{\Lambda'} \,+\, \color{magenta} \mathbf{\Psi}   \\
 \quad \\
+\color{red}
 \begin{bmatrix}
-0.27 & 0.22 & 0.44 \\
-0.22 & 0.17 & 0.35 \\
-0.44 & 0.35 & 0.73 \\
+   1 & 0.22 & 0.44 \\
+0.22 &    1 & 0.35 \\
+0.44 & 0.35 &    1 \\
 \end{bmatrix} &= 
+\color{blue}
 \begin{bmatrix}
 0.520 \\ 0.415 \\ 0.854 \\
 \end{bmatrix}
 \begin{bmatrix}
 0.520 & 0.415 & 0.854 \\
 \end{bmatrix} \,+\,
+ \color{magenta} 
 \begin{bmatrix}
 0.73 & 0 & 0  \\
 0 & 0.83 & 0 \\
@@ -276,11 +304,13 @@ $$
 \end{bmatrix} \\
 \quad \\
  &= 
+  \color{blue} 
 \begin{bmatrix}
 0.27 & 0.22 & 0.44 \\
 0.22 & 0.17 & 0.35 \\
 0.44 & 0.35 & 0.73 \\
 \end{bmatrix} \,+\,
+  \color{magenta} 
 \begin{bmatrix}
 0.73 & 0 & 0  \\
 0 & 0.83 & 0 \\
@@ -288,9 +318,9 @@ $$
 \end{bmatrix} \\
 \end{align}
 $$
-Note that what is being captured by the model is the co-variance --- i.e, the "common" or "shared" variance. The 'leftover' bits in the error is the variance that is "unique" to each observed variable, and this will include some stuff that is specific to that variable, and some stuff that is just measurement error. 
 
-Suppose our four variables were all questions about anxiety. For agreement with a statement like like "I struggle to say still and am often fidgeting", people will vary in their responses due to 1) their level of anxiety, 2) their general fidgeting behaviours that are separate from their anxiety, and 3) measurement error (responses of "agree" and "strongly agree" are very inexact measurements here!)  
+
+Suppose our three variables were all questions about anxiety. For agreement with a statement like like "I struggle to say still and am often fidgeting", people will vary in their responses due to 1) their level of anxiety, 2) their general fidgeting behaviours that are separate from their anxiety, and 3) measurement error (responses of "agree" and "strongly agree" are very inexact measurements here!)
 
 Factor analysis is concerned with the first of these - the variance shared across multiple items. So a way to think of the factor model is as trying to separate out common variance from unique variance (which could be 'true' variability or just error):    
 
@@ -307,18 +337,26 @@ $$
 |specific variance | variance specific to an item that is not shared with any other items | true and unique | 
 | error variance | variance due to measurement error | not 'true', unique |
 
-## factor extraction methods   
 
-We're not going to delve too much into factor extraction methods here, beyond noting that there are various different methods.  
+## Factor extraction methods   
 
-PCA (using eigendecomposition) is itself a method of extracting the different dimensions from our data. However, there are lots more available for factor analysis. 
+In EFA, the process of identifying how our variables map onto some number of factors is called "factor extraction".
+It's like how, in linear modelling, the process of identifying the values of the intercept and the slope is called "coefficient estimation".
+In linear modelling, we also saw that there are a few different ways to estimate coefficients (e.g., using different optimisers).
+And similarly, in EFA, there are a few different ways to extract factors.
 
-You can find a lot of discussion about different methods both in the help documentation for the `fa()` function from the psych package, and there are lots of discussions both in papers and on [forums](https://stats.stackexchange.com/questions/50745/best-factor-extraction-methods-in-factor-analysis). This is a complicated issue, but when you have a large sample size, a large number of items, for which each has a similar amount of shared variance, then the extraction methods tend to agree. Don't fret too much about the factor extraction method - it's a *bit* like the optimiser issue in the multi-level model block.  
+We're not going to delve too much into factor extraction methods here, beyond mentioning the top three choices below and when you might use them.
 
-The main contenders are **Maximum Likelihood (ml)**, **Minimum Residuals (minres)** and **Principal Axis Factoring (paf)**.  
+
+PCA (using eigendecomposition) is itself a method of extracting different dimensions from our data.
+But PCA isn't really factor analysis, because factor analysis focuses on *interpreting* the factors we extract.
+So, in factor analysis, the main contenders are **Maximum Likelihood (ml)**, **Minimum Residuals (minres)** and **Principal Axis Factoring (paf)**.  
 
 **Maximum Likelihood** has the benefit of providing standard errors and fit indices that are useful for model testing, but the disadvantage is that it is sensitive to violations of normality, and can sometimes fail to converge, or produce solutions with impossible values such as factor loadings >1 (known as "Heywood cases"), or factor correlations >1.  
 **Minimum Residuals (minres)** and **Principal Axis Factoring (paf)** will both work even when maximum likelihood fails to converge, and are slightly less susceptible to deviations from normality. They are a bit more sensitive to the extent to which the observed variables share variance with one another.  
+
+
+You can find a lot of discussion about different methods both in the help documentation for the `fa()` function from the psych package, and there are lots of discussions both in papers and on [forums](https://stats.stackexchange.com/questions/50745/best-factor-extraction-methods-in-factor-analysis). This is a complicated issue, but when you have a large sample size, a large number of items, for which each has a similar amount of shared variance, then the extraction methods tend to agree. Don't fret too much about the factor extraction method.
 
 ## Rotations
 
@@ -368,7 +406,8 @@ p1 <- mn$loadings[,1:2] |>
   geom_segment(data = original_axes, aes(x = 0, y = 0, xend = x, yend = y, color = axis), 
                arrow = arrow(length = unit(0.2, "cm")), size = 1) +
   geom_segment(data = original_axes, aes(x = 0, y = 0, xend = -x, yend = -y, color = axis), 
-               arrow = arrow(length = unit(0.2, "cm")), size = 1)
+               arrow = arrow(length = unit(0.2, "cm")), size = 1) +
+  scale_colour_manual(values = c('#f8766d', '#7cae00'))
   
 p2 <- mn$loadings[,1:2] |>
   as.data.frame() |>
@@ -390,7 +429,9 @@ p2 <- mn$loadings[,1:2] |>
   geom_segment(data = rotated_axes, aes(x = 0, y = 0, xend = x, yend = y, color = axis), 
                linetype = "dashed", arrow = arrow(length = unit(0.2, "cm")), size = 1) +
   geom_segment(data = rotated_axes, aes(x = 0, y = 0, xend = -x, yend = -y, color = axis), 
-               linetype = "dashed", arrow = arrow(length = unit(0.2, "cm")), size = 1)
+               linetype = "dashed", arrow = arrow(length = unit(0.2, "cm")), size = 1) +
+  labs(x="Loadings on Factor 1",
+       y="Loadings on Factor 2")
 
 p3 <- mn$loadings[,1:2] |>
   as.data.frame() |>
@@ -420,15 +461,26 @@ p3 <- mn$loadings[,1:2] |>
 
 A much more conceptual part of factor analysis that we need to devote some time to is the idea of "rotations".  
 
-Recall that there are often two main aspects of the dimensions that we are quantifying: 
+<!-- Recall that there are often two main aspects of the dimensions that we are quantifying:  -->
 
-1. the amount of the total variance that is captured by the dimensions
-2. the relationship between each measured variable and each of the dimensions.  
+<!-- 1. the amount of the total variance that is captured by the dimensions -->
+<!-- 2. the relationship between each measured variable and each of the dimensions.   -->
 
-Now think back to how we can scale a predictor in a linear model without actually changing the model: `lm(y ~ x)` is identical to `lm(y ~ scale(x))`. In a similar way, we can actually _transform_ the set of relationships between measured variables and dimensions, without really 'changing the model' (i.e., without changing what the model predicts).    
-This idea is termed as "rotational indeterminacy" because there are infinitely many sets of numbers that can reproduce the same thing! So it's a little bit like 'scaling' in the sense that it is a transformation applied to the set of loadings.  
+Think back to scaling predictors in a linear model, or choosing different contrast coding schemes.
+If we convert a continuous predictor to z-scores, or use either dummy coding or effect coding for a categorical predictor, then all that will change between versions of the model is the model's coefficients.
+The data itself does not change, and crucially, the predictions that the model makes (e.g., if you use `predict()` or `emmeans()`) also do not change.
+All that changes is the model's internal representation of things.
 
-The reason for applying these transformations is because it can make the factors a whole lot more theoretically feasible. If we return to our 10 questions on tiredness where we extract 2 factors, note that we might have a fairly difficult time trying to make sense of what those factors represent. 
+In a similar way, in EFA, we can transform the set of relationships between measured variables and factors (i.e., transform the set of loadings) without changing what the model predicts.^[In fact, there are infinitely many kinds of transformations that we could apply that would all result in models which make identical predictions!
+This idea is called "rotational indeterminacy".]
+
+Transforming predictors is about _interpretation_: transforming predictors can make the model's coefficients easier to interpret.
+In linear modelling, we might choose effect coding instead of dummy coding because we want to compare one group to the grand mean, rather than comparing one group to another group.
+In a similar way, to make factor loadings easier to interpret, we may wish to rotate them.
+
+Let's return to our tiredness example, where we had ten questions about tiredness and extracted two factors.
+(Notice that the factor extraction method used here is "ml", maximum likelihood.)
+Based on the factor loadings, which in principle can range from –1 to 1, how would we interpret the dimensions represented by the first factor (`ML1`) and the second factor (`ML2`)?
 
 ```{r}
 #todo read_csv()
@@ -436,72 +488,96 @@ tired_fa1 <- fa(tiredq, nfactors=2, rotate = "none", fm="ml")
 print(tired_fa1$loadings, cutoff = .3)
 ```
 
-The first factor is associated fairly highly with all 10 variables (these numbers can range from -1 to 1). The second factor is more confusing - it's negatively associated with four questions on mental fatigue, and positively associated with physical fatigue. So we end up trying to conclude that the questions are capturing one underlying dimension of "general fatigue" and another confusing dimension that is sort of "being physically fatigued but not mentally fatigued (or vice versa)". It's not the clearest idea, especially as when we introduced these questions we actually had a clearer notion (i.e., some questions about mental fatigue, some questions about physical fatigue, and a couple of others)
+(Some of the cells in the table are blank.
+They're not shown because they contain loadings that are close enough to zero that we deem them uninteresting.
+We defined our near-zero cutoff at 0.3.
+So only loadings more negative than –0.3 or more positive than 0.3 are shown.)
+
+The first factor is associated fairly highly with all 10 variables.
+So maybe it represents a scale of "general fatigue"?
+
+The second factor is even less clear.
+It only has loadings above 0.3 for three items: it's negatively associated with mental fatigue, and positively associated with physical fatigue.
+The resulting scale is kind of awkward to describe: at one end of this scale, you're physically fatigued but not mentally, and at the other end of this scale, you're mentally fatigued but not physically.
+It's not the clearest idea, especially as when we introduced these questions we actually had a clearer notion (i.e., some questions about mental fatigue, some questions about physical fatigue, and a couple of others)
 
 And this is where **rotation** comes in. We can transform those sets of loadings in such a way that aims to make each variable load high on to one factor and low on to other factors, without changing the amount of variability we're explaining.  
+The result will be factors that are much easier to interpret.
 
-One way to *see* this rotation is to take a little plot of the loadings for each variable on to each factor: @fig-biplot-none (this is only really possible here because we have just two factors). We can rotate the factor axes, so that the loadings on these new axes are generally higher on one axis and lower on the other, as in @fig-biplot-orth.  
+One way to *see* this rotation is to start by plotting the loadings for each variable on to each factor: @fig-biplot-none (this is only really possible here because we have just two factors, ML1 on the x axis and ML2 on the y axis).
+All ten variables are positively loaded on Factor 1, and they're split between positive and negative on Factor 2.
 
-::::{.columns}
-:::{.column width="50%"}
 ```{r}
 #| echo: false
 #| label: fig-biplot-none
 #| fig-cap: "Loadings of each variable onto the two factors (no rotation)"
-p1 + labs(title="No Rotation")
+p1 + labs(title="No Rotation") + coord_fixed()
 ```
-:::
-:::{.column width="50%"}
+
+Now, let's see what happens if we rotate these axes, as in @fig-biplot-orth.
+Tilt your head 45 degrees to the right to understand this plot: the dashed purple line is the new y axis (the new "vertical"), and the dashed cyan line is the new x axis (the new "horizontal").
+Now, the physical fatigue variables are high on the purple axis, while the mental fatigue variables are high on the cyan axis.
+Thus, each axis can be more easily interpreted with respect to the variables that load highly on it.
+We have one factor that seems to represent mental fatigue + sleepiness, and another factor that seems to represent physical fatigue + sleepiness.  
+
 ```{r}
 #| echo: false
 #| label: fig-biplot-orth
 #| fig-cap: "Loadings of each variable onto the two factors (orthogonal rotation)"
-p2 + labs(title="Orthogonal Rotation")
+p2 + labs(title="Orthogonal Rotation") + coord_fixed()
 ```
-:::
-::::
 
-Note that these new set of loadings make it a lot easier to provide a meaningful interpretation of our factors - we have one factor that seems to represent mental fatigue + sleepiness, and another factor that seems to represent physical fatigue + sleepiness.  
-The total variance explained by this rotated solution is just the same as our unrotated solution (this is the 0.365 in "Cumulative Var" that tells us that cumulatively, the two factors capture 36.5% of the total variance).  
+The total variance explained by this rotated solution is just the same as our unrotated solution.
+We can see this when we run the following R code, where the "varimax" rotation gives us the orthogonal rotation visualised above.
+Before, the cumulative variance explained after two factors was 0.366 (you can scroll up to double-check), and below, we see that the cumulative variance explained after two factors is still 0.366, even with the rotation.
+This number tells us that together, these two factors capture 36.6% of the total variance in our data.
 
 ```{r}
 tired_fa2 <- fa(tiredq, nfactors=2, rotate = "varimax", fm="ml")
 print(tired_fa2$loadings, cutoff = .3)
 ```
 
+Look at the orthogonal rotation plot again below.
+When two lines are orthogonal, they are at 90 degrees to one another—that's what "orthogonal" means.
+Our starting X and Y axes were orthogonal to one another, and when we choose an orthogonal rotation, our new axes are still orthogonal to one another.
 
-Note that even when we are doing this rotation we are working under the constraint that the two factors are "orthogonal". We might be rotating but we are preserving the right angle between them, meaning that whether or not someone is low/high on the first factor is *unrelated* to their position on the second factor.  
-
-Hopefully you are uncomfortable with this assumption --- why should we have to assume that someone's level of physical fatigue is uncorrelated with their level of mental fatigue? Surely we'd expect them to be correlated!?  
-
-Well, we can do this, with what is known as an "oblique rotation". The idea is much the same as the "orthogonal rotation" above, but we don't have to keep the right angle between the factors:  
-
-::::{.columns}
-:::{.column width="50%"}
 ```{r}
 #| echo: false
 #| label: fig-biplot-orth2
 #| fig-cap: "Loadings of each variable onto the two factors (orthogonal rotation)"
-p2 + labs(title="Orthogonal Rotation")
+p2 + labs(title="Orthogonal Rotation") + coord_fixed()
 ```
-:::
-:::{.column width="50%"}
+
+
+Requiring that the axes be orthogonal means that we're insisting that there is no correlation between the two factors.
+In other words, we assume that if someone is high on the mental fatigue dimension, we would have absolutely no idea whether they're high or low on the physical fatigue dimension.
+But this feels weird!
+Surely we'd expect mental and physical fatigue to be correlated?
+
+We can allow factors to be correlated by relaxing the constraint about orthogonal axes.
+Instead of choosing an orthogonal rotation, we use what's called an "oblique rotation".
+In R code, this means choosing the rotation method "oblimin".
+The idea is much the same as the "orthogonal rotation" above, but we don't have to keep the right angle between the factors:
+
 ```{r}
 #| echo: false
 #| label: fig-biplot-obl
 #| fig-cap: "Loadings of each variable onto the two factors (oblique rotation)"
-p3 + labs(title="Oblique Rotation")
+p3 + labs(title="Oblique Rotation") + coord_fixed()
 ```
-:::
-::::
 
-What we get out now is a lovely clean structure where each variable is clearly linked to one factor and not as much to the other, and we have let the factors be correlated - so for someone who is high on factor 1 (now the 'physical fatigue' factor) we would also expect them to be high on factor 2 ('mental fatigue').  
+
+The pattern of factor loadings that emerges now is a lovely clean structure!
+Each variable is clearly linked to one factor and not as much to the other: for each item, there is only one loading above our cutoff of 0.3.
+And we've let the factors be correlated – so for someone who is high on factor 1 (which now looks like the 'physical fatigue' factor) we would also expect them to be high on factor 2 ('mental fatigue').  
+
 ```{r}
 tired_fa3 <- fa(tiredq, nfactors=2, rotate = "oblimin", fm="ml")
 print(tired_fa3$loadings, cutoff = .3)
 ```
 
-In this situation, we also get out the correlation between the factors^[If you're a trigonometry fan (I'm not!), it's the cosine of the angle between the axes!]. We can extract the specific part using:
+In this situation, we also get out the correlation between the factors.^[If you're a trigonometry fan (I'm not!), the correlation between factors is the cosine of the angle between the axes!]
+We can extract the specific values using:
 
 ```{r}
 tired_fa3$Phi
@@ -587,6 +663,7 @@ file.copy("images/efa_output.pdf","../docs/misc/")
 ```
 
 
+<!-- EP NOTE: The Pattern Matrix and Communalities boxes make reference to the "structure matrix", which isn't mentioned/defined anywhere else. Probably add a box on it too? -->
 
 ::: {.callout-tip collapse="true"}
 #### Pattern Matrix
@@ -722,7 +799,9 @@ Ultimately, a big part of it is subjective, and based on what we know about the 
     - we want our solution to capture the full breadth of our scale - i.e. all aspects of our construct. So we ideally want each item to be related to at least one factor.
     - depending on our purpose here, an item that doesn't have a high loading could point us to look at the item in more detail, and think about _why_ it is doing something different. If we are developing a scale then we may even decide that the item was badly worded, and we could drop it from the analysis and start over with the process on the subset of items.  
 - are there any highly complex items?  
-    - we ideally want items to be linked mainly to one factor and not to others. Item complexity represents the extent to which they load across multiple factors. This isn't necessarily a problem per se, but it can make it harder to define exactly what our factors represent.  
+    - we ideally want items to be linked mainly to one factor and not to others.
+    If an item loads across multiple factors, then we say that item is "complex".
+ This isn't necessarily a problem per se, but it can make it harder to define exactly what our factors represent.  
 - are there any "Heywood cases" (communalities or standardised loadings that are >1)?  
     - this can happen if we use maximum likelihood as an estimation technique, and we should check for these because they reflect that the solution may fit well numerically, but make absolutely no sense (you can't have correlations >1).  
 - is the factor structure (items that load on to each factor) coherent, and does it make theoretical sense?
@@ -748,14 +827,14 @@ phdat <- read_csv("https://uoepsy.github.io/data/phoneaddiction.csv")
 #| echo: false
 #| label: tbl-phdict
 #| tbl-cap: "Item wordings for phoneaddiction.csv"
-itemqs = c("I often reach for my phone even when I don’t have a specific reason to use it.",
+itemqs = c("I often reach for my phone even when I don't have a specific reason to use it.",
 "I feel a strong urge to check my phone frequently, even during meals or social interactions.",
 "I spend a large portion of my day using my phone, often for more hours than I intend.",
 "My phone use has interfered with my ability to complete tasks or responsibilities at school, work, or home.",
 "When I cannot use my phone (e.g., no battery or no signal), I feel anxious or uncomfortable.",
 "My phone use has negatively affected my sleep schedule, such as staying up late scrolling.",
 "I find it difficult to avoid checking my phone immediately upon waking up or right before bed.",
-"I often check my phone even in situations where it’s distracting or socially inappropriate (e.g., meetings or classes).",
+"I often check my phone even in situations where it's distracting or socially inappropriate (e.g., meetings or classes).",
 "I sometimes feel that others are overly concerned about my phone use in social situations.",
 "I have tried to reduce my phone usage but find it challenging to do so.")
 
@@ -888,8 +967,10 @@ pairs.panels(phdat)
 
 ## 2. Rotations and Factor Extraction
 
-If we are thinking that there might be two or more factors that underly our scale of 'phone-addiction', then we would probably expect those two factors to be correlated (all the questions are about phone usage, after all). For that reason, we are going to use an **oblique rotation**^[additional point here is that even if these two factors are not correlated, then an oblique rotation could estimate that too.]  
+**Rotations:**
+If we are thinking that there might be two or more factors that underly our scale of 'phone-addiction', then we would probably expect those two factors to be correlated (all the questions are about phone usage, after all). For that reason, we are going to use an **oblique rotation**.^[Even if these two factors are not correlated, then an oblique rotation could estimate that too. The point of an oblique rotation is that we're not _forcing_ the factors to be uncorrelated.]  
 
+**Factor extraction:**
 As all of the correlations between individual items are low to medium (0.2 - 0.4), and the item distributions look fairly normal, we're going to opt to use maximum likelihood here.  
 
 ## 3 & 4. How many factors?
@@ -927,6 +1008,8 @@ VSS(phdat, rotate = "oblimin", plot = FALSE, fm = "ml")
 
 :::
 
+<!-- EP TODO: What's "kaiser"? Not mentioned elsewhere. -->
+
 | method  | suggestion |
 | ------ |------ |
 | kaiser |  3   |
@@ -946,6 +1029,9 @@ ph_efa2 <- fa(phdat, nfactors = 2,
 ```
 
 Both solutions look reasonable _apart from item 9_ (which we could have guessed right at the beginning).  
+In both solutions, item 9 has smaller loadings than the other items.
+The smaller the loading, the less well the item is targeting whatever construct the factor represents.
+
 
 ::::{.columns}
 :::{.column width="48%"}
@@ -967,10 +1053,10 @@ ph_efa2$Phi
 :::
 ::::
 
-Looking at item9, the wording is "`r itemqs[9]`". This maybe represents something slightly different from just "being addicted to your phone" - it also contains a self-consciousness / feeling judged by others etc, which is something completely different.  
+Looking at item9, the wording is "`r itemqs[9]`" This maybe represents something slightly different from just "being addicted to your phone" - it also contains a self-consciousness / feeling judged by others etc, which is something completely different.  
 
 So where have we got to? We started with loads of responses to a set of 10 questions, and we wanted to understand the underlying structure of the thing they were intended to measure ("phone addiction").  
-We've ended by identifying one question that didn't really fit with the rest (item9), and with a question mark between whether the scale captures 2 underlying factors or just 1.  
+We've ended by identifying one question that didn't really fit with the rest (item9), and with a question mark between whether the scale captures 2 underlying factors or just 1.
 
 A lot of where we go next depends on what our overarching research aims are. If we want to **use** the construct "phone-addiction" in a subsequent analysis, then we'll need to extract scores, and we have a decision of what structure (1 factor or 2 factors) we want to use - and so how many scores each person will have.  
 

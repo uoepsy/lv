@@ -354,9 +354,16 @@ Goal: Pragmatic. I want 1 thing to use in some other setting (e.g., in a further
     - There's only one
 3. How does each dimension relate back to the original measured variables?  
     - All variables equally related to dimension
+    
+For example, the [AQ10](https://embrace-autism.com/aq-10/) is a ten-question survey which (despite some well-established issues) is used by the NHS for autism screening.
+Participants essentially respond "agree" or "disagree" to each question, and the result is scored by summing up the number of responses in the expected direction.
+People must score above a 6 in order to be referred for autism diagnosis on the NHS.
+
+This is a naive scale score, because there is only one dimension (some measure of autism), and all questions are assumed to be equally related to this dimension.
+
   
 ::: {.callout-note collapse="true"}
-#### Demonstration
+#### Code demonstration
 
 Typically scale scores are either mean scores or sum scores. These are, for each person, the mean, or the sum, of their scores on each item.  
 
@@ -384,7 +391,7 @@ Goal: Pragmatic. I want fewer things for use in a subsequent analysis but don't 
     - Somewhat irrelevant for 'pure' PCA, where we are agnostic/don't care about what the dimensions _are._  
     
 ::: {.callout-note collapse="true"}
-#### Demonstration
+#### Code demonstration
 
 :::frame
 __Dataset: physfunc.csv__  
