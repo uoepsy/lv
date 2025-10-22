@@ -91,6 +91,8 @@ Criterion validity - The extent to which test scores are related to an external 
 
 # reliability
 
+> love truth but pardon error (Voltaire)
+
 The very high level idea of reliability can be captured by the various words we could use instead of 'reliability'. We are talking about how reliable/consistent/repeatable/precise/stable/dependable/\<insert-synonym-here\> a measurement is. However, we need a more specific, mathematical definition of "reliability" in order to be able to try and quantify it for a given measurement instrument.  
 
 The easiest way to get into thinking about reliability is probably to think about *repeated assessment*, as we have already hinted at earlier. If we measure person $i$ using instrument $X$ and then we measure person $i$ using instrument $X$ a second time (and we assume they haven't changed on the underlying construct), then a perfectly reliable measure would give us the exact same scores.  
@@ -106,13 +108,14 @@ So one initial way to think about reliability in mathematical terms is to suppos
 set.seed(3)
 df = tibble(
   true = rnorm(30,18,8),
-  measurement_1 = rnorm(30,true,.2),
-  measurement_2 = rnorm(30,true,.2)
+  measurement_1 = rnorm(30,true,.3),
+  measurement_2 = rnorm(30,true,.3)
 ) 
-df[17,] <- as.data.frame(cbind(23.80100,23.6,23.9))
+df[17,] <- as.data.frame(cbind(23.814346,23.6,23.9))
 
 ggplot(df,aes(x=measurement_1, y = measurement_2))+
-  geom_point(size=3,alpha=.4)+
+  geom_point(size=2,alpha=.4)+
+  geom_segment(aes(x=true,xend=measurement_1,y=true,yend=measurement_2),col="red")+
   annotate(geom="segment",x=20,y=25,xend=23.5,yend=23.9)+
   annotate(geom="text",x=20,y=25,label="This is Dougal.\n he actually weighs 23.814346... kg\nthe first time I weigh him I get 23.6\nthe second time I get 23.9",hjust=1,size=5)+
   labs(title=paste0("cor(measure1, measurement2) = ", round(cor(df[,2],df[,3]),3)))
@@ -129,7 +132,8 @@ df1 = tibble(
   measurement_2 = rnorm(30,true,2)
 )
 ggplot(df1,aes(x=measurement_1, y = measurement_2))+
-  geom_point(size=3,alpha=.4)+
+  geom_point(size=2,alpha=.4)+
+  geom_segment(aes(x=true,xend=measurement_1,y=true,yend=measurement_2),col="red")+
   annotate(geom="segment",x=18,y=27,xend=20.7,yend=25.9)+
   annotate(geom="text",x=18,y=28,label="This is Dougal.\nhe actually weighs 23.814346... kg\nthe first time I weigh him I get 20.6\nthe second time I get 25.9",hjust=1,size=5)+
   labs(title=paste0("cor(measure1, measurement2) = ",round(cor(df1[,2],df1[,3]),3)))
@@ -152,21 +156,19 @@ knitr::include_graphics("images/ctt/Slide1.PNG")
 ```
 
 One way to make the idea of "truth" here a little more concrete, let's suppose that I took my shoddy bathroom scales and weighed Dougal over and over and over and over again (ad infinitum). The numbers I get out will follow a normal distribution, the center of which we can think of as Dougal's "true" weight (assuming the scales aren't systematically biased). We often see weights a little higher, often a little lower, less often do we see things a lot higher or lower, etc. So "Truth" here refers to the idea of the 'long run' measurement.  
+
 ```{r}
 #| echo: false
 #| column: margin
 plot(density(rnorm(1e4,mean=23.814346,sd=2)),main="10,000 measurements of Dougal's weight",xlab="observed weight")
 ```
 
-Now let's expand from thinking about Dougal specifically to thinking about the measurement process of weighing dogs.  
+Now let's expand from thinking about Dougal specifically to thinking about our proposed measurement process for weighing dogs in general. 
 
-We have our "instrument" for measuring dog's weights (our bathroom scales). We can imagine all the measurements we might use this instrument for.  
+We have our "instrument" for measuring a dog's weights (our bathroom scales). We can imagine all the measurements we might use this instrument for. For any dog we might use these scales to weigh, the observed number we see on the scales is going to be driven by 1) that dog's *true* weight, and 2) a little bit of error.  
+Just like all the true weights of all our dogs have a variance (some are big dogs that weigh a lot, some a little dogs that weigh less etc.), the errors that are contributing to our measurements also have a variance (some readings are a bit higher than truth, some are a bit lower).   
 
-For any dog we might use these scales to weigh, the observed number we see on the scales is going to be driven by 1) that dog's *true* weight, and 2) a little bit of error.  
-
-Just like all the true weights of all our dogs have a variance (some weigh a lot, some weigh less etc.,), the errors that are contributing to our measurements also have a variance (some readings are a bit higher than truth, some are a bit lower).   
-
-If we add these to our diagram, we simply add curved lines to our "Truth" and "Error" variables: 
+If we add these variances to our diagram, we simply add curved lines to our "Truth" and "Error" variables: 
 ```{r}
 #| label: fig-ctt2
 #| echo: false
@@ -174,129 +176,118 @@ If we add these to our diagram, we simply add curved lines to our "Truth" and "E
 knitr::include_graphics("images/ctt/Slide2.PNG")
 ```
 
-These diagrams are theoretical models that can be used to *imply* what we would expect to see in our observed variables (we saw this idea in CFA). One crucial thing that this model implies that the variance we would see in our observed scores is going to be the variance in the true scores plus the variance in the errors.    
+The really useful thing about diagrams like these is that they represent theoretical models that can be used to *imply* what we would expect to see in our observed variables (we saw this idea in CFA). One crucial thing that this specific model of measurement implies is that the variance we would see in our observed scores is going to be the variance in the true scores plus the variance in the errors.    
 
+$$
+Var(\text{Observed Scores}) = Var(\text{True Scores}) + Var(\text{Errors})
+$$
 Let's take these to the extreme: 
 
-If my measurement instrument is incredibly good in weighing dogs, then the variance in the errors is much much smaller (i.e., all measurements are within 0.1kg of the true score). 
-If my measurement instrument is incredibly bad at weighing dogs, then the variance in errors is much bigger (sometimes when I weigh Dougal I get 15kg, sometimes I get 28kg etc).  
+If my measurement instrument is incredibly good in weighing dogs, then the variance in the errors is much much smaller (i.e., all measurements are within 0.1kg of the true score). If my measurement instrument is incredibly bad at weighing dogs, then the variance in errors is much bigger (sometimes when I weigh a dog that is 'in truth' 23.814346....kg, I will get a score of 15kg, sometimes I will get a score 28kg etc).  
 
-So reliability is about t
+So a really generalisable way of thinking about reliability of measurement is to view it as "how much of the variance in our observed scores is due to true variance?".  
+
+$$
+\begin{align}
+\text{reliability} &= \frac{Var(\text{true scores})}{Var(\text{observed scores})} \\
+& \quad \\
+&= \frac{Var(\text{true scores})}{Var(\text{true scores}) + Var(\text{errors})} 
+\end{align}
+$$
+
+::: {.callout-note collapse="true"}
+#### why not just "how much error variance is there?"  
+
+We can't simply use the variance of measurement error on its own to quantify 'reliability' here, because what counts as "small" or "large" amounts of error depends entirely on the quantity we are measuring.  
+
+For example, consider the following three scenarios: 
+
+A. I am measuring the weight of dogs, and my scales are a bit off each time - there is a little bit of error. The errors have a variance of 1kg
+B. I am measuring the weight of dogs, and my scales are *wayy* off each time - there is a massive amount of error. The errors have a variance of 100kg
+C. I am measuring the weight of elephants, and my scales are a little bit off each time - there is a little bit of error. The errors have a variance of 100kg
+
+The size of the error variance (1kg or 100kg) doesn't determine how much "off" (a little bit off vs waayy off) we consider the measurements to be. What is important is how big this error variance is **relative to** the true variance of the things being measured.  
+
+Elephants' weights vary between TODO and TODO, so mis-measuring by 100kg isn't really that bad in the grand scheme of things. But dogs' weights vary between c5kg and 50kg, so mis-measuring by 100kg is ridiculous. 
+
+:::
+
+::: {.callout-caution collapse="true"}
+#### Optional: other implied assumptions of this model of measurement
+
+These diagrams are a great way to also see the assumptions that are underpinning our theories.  
+
+There are two further implications by thinking of our measurements as it is drawn in @fig-ctta.  
+
+```{r}
+#| label: fig-ctta
+#| echo: false
+#| fig-width: 12
+knitr::include_graphics("images/ctt/Slide2.PNG")
+```
+
+1. Errors are not correlated with the truth.   
+In the diagram, this is represented by the fact that there is no arrow between the Truth and Error variables. 
+What this means in an applied setting is that we assume that the amount of measurement error isn't less/more for someone who has a low true value than it is for someone with a high one. Continuing with the act of weighing dogs, this is the assumption that if my scales are showing a value that is $\pm1kg$, then it is $\pm1kg$ for a dog that actually weighs 5kg and for one that actually weighs 50kg. You could imagine this not being the case if, e.g., the 50kg dog squashed the scales down so much that the scales always showed $50 \pm 0.1kg$, and the scales didn't work as well for the little 5kg dog where we see scores of $5 \pm 3kg$.  
+
+```{r}
+#| echo: false
+set.seed(86)
+df2 = tibble(
+  true = df$true,
+  e = 2-2*df$true/max(df$true),
+  measurement_1 = rnorm(30,true,e),
+  measurement_2 = rnorm(30,true,e)
+)
+ggplot(df2,aes(x=measurement_1, y = measurement_2))+
+  geom_point(size=3,alpha=.4)+
+  geom_segment(aes(x=true,xend=measurement_1,y=true,yend=measurement_2),col="red")
+```
+
+2. error has mean zero (no systematic bias)
+TODO
+```{r}
+#| echo: false
+set.seed(86)
+df2 = tibble(
+  true = df$true,
+  measurement_1 = rnorm(30,true,2),
+  measurement_2 = rnorm(30,true,2)
+)
+ggplot(df2,aes(x=measurement_1, y = measurement_2))+
+  geom_point(size=3,alpha=.4)+
+  geom_segment(aes(x=true,xend=measurement_1,y=true,yend=measurement_2),
+               col="red")
+```
 
 
-- consider two different tools
-  - measure weight dogs. var(error) = 1kg, var(error)=100kg
-  - measure weight elephants. var(error)=100kg not as unreliable. 
-  - what is importnat: the relative proportion of the variance that is due to true score variance
-  
-- reliability is var(truth)/var(total) = var(truth)/(var(truth) + var(error))
+:::
 
-measurement assumptions in diagrams
-- error not correlated with truth
-- error has mean zero (no systematic bias)
-- 
+This way of thinking about reliability might seem all fine, but if we think about having to actually _measure_ it, then we suddenly realise that we don't have enough information... We are essentially saying "observed score = unobserved truth + unobserved error". This is like being given a math problem of "23.5 = T + E, please solve" --- it's impossible!  
 
-
-
-
-
-- this is all fine, but all we're saying is observed = unobserved + unobserved.  
-e.g., "23.5 = X + Y, please solve". impossible
-
-things get better when we have multiple scores
+Things get a lot better when we have multiple scores.  
 - diagram two scores
 
-![](images/ctt/Slide3.png)
-
-- optional - hold on - how does it make sense with cor(m1,m2)?  
-
-
-
-
-where do the two scores come from? 
-- repeated assessments
-- alternate forms
-- inter rater
-- internal consistency (congeneric). link back to FA
-
-
-
-
-
-
-
-## old
-
-Now imagine that we have measured a whole load of people using th. In fact, let's take it further and think about all the possible measurements this 
-I observe some scores:  
-
-> love truth but pardon error (Voltaire)
-
-now imagine that i have measured a whole load of people. 
-I observe some scores:  
-
-and those scores have a variance: var(scores).  
-But why do people vary in these measurements? Why do some people have high scores and some have low scores?  
-Partly, this is because some people are 'in truth' lower or higher on the construct that we're measuring. So the true values have a variance too.  
-Partly though, scores might vary due to error. so someone might score higher not because they genuinely are higher "in truth", but just for some other reason (i.e., just randomness).  
-
-So the scores we observe vary, but that's just because True values vary (let's call this variance $\sigma^2_T$) and the errors vary (we'll call this $\sigma^2_E$).  
-
-So the variance in scores = variance in true values + variance in errors.  
-
-
-
-
-```{r}
-df2 = tibble(
-  truth = rnorm(5e1,20,6),
-  error = rnorm(5e1,0,1),
-  score = round(truth + error,1),
-) |> mutate(error = score - truth)
-
-SS = apply(df2,2,var)
-sum(SS[1:2])
-SS[3]
-
-```
-
-
-
-This is now where we can consider how different measurement tools have different reliabilities. Let's suppose that the amount of error doesn't vary that much. For instance, we might be weighing dogs in kilograms, and the scales are occasionally off by 10 grams, less often off by 20 grams, and very rarely off by 30 grams or more. So sometimes they show numbers +0.01kg from the dog's true weight, other times they show numbers -0.01kg. Occasionally they show numbers $\pm$0.02kg from the true weight, and very rarely they show numbers $\pm$0.03kg.  
-
-You could imagine the scenario as in the dataframe below. It's just that in reality we only ever observe the middle column:  
-
-```{r}
-tibble(
-  true = df$true,
-  score = round(rnorm(nrow(df), true, .01),3),
-  error = score - true
-) |> as.data.frame() |> print(digits=5)
-```
-
-In this situation, the variance in the errors (roughly $0.01^2 = 0.0001$) is _tiny_ _tiny_ _tiny_ compared to the how much true weights vary. 
-
-
-
-worse / better measure would be one where the error varies very little relative to the truth - i.e., it is more reliable
-
-so we can quantify reliability as the amount of true variance that contributes to score variance  
-T/(T+E)
-
-
-but somewhere along teh way we've lost the whole idea of "consistency across repeated assessment"? is that reliability? or is it about the ratio of true variance to score variance? 
-
-it's both! 
-let's draw a diagram where we measure twice. it looks something like this: 
-
-![](images/ctt/Slide3.png)
-
-there are a couple of assumptions in this diagram. 
+there are some implications of this diagram! : 
 Firstly - true values haven't changed between the assessments  
 secondly, the true value contributes the same to each assessment  
 thirdly, there is the same amount of error at each assessment. i.e,. it's not the case that the 2nd assessment involves much bigger or smaller errors than the first. i.e., $\sigma^2_{E1} = \sigma^2_{E2}$ 
 finally, the errors are uncorrelated - happening to have score 1 be a little bit above your true value tells us nothing about how off our score will be at time 2.  
 
+```{r}
+#| label: fig-ctt3
+#| echo: false
+#| fig-width: 12
+knitr::include_graphics("images/ctt/Slide3.PNG")
+```
+![](images/ctt/Slide3.png)
+
+::: {.callout-caution collapse="true"}
+#### optional - where did the correlation between repeated measurements go?  
+
+but somewhere along teh way we've lost the whole idea of "consistency across repeated assessment"? is that reliability? or is it about the ratio of true variance to score variance? 
+
+it's both! 
 
 now this diagram can be used to *imply* the covariance between the observed variables. according to this diagram, the only way that score 1 and score 2 covary is via the true values.  So cov(score_1, score_2) is just going to be $\sigma^2_T$.  
 
@@ -322,6 +313,7 @@ cor_{s1s2} &= \frac{cov_{s1s2}}{\sigma_{s1} \cdot \sigma_{s2}} \\
 \end{align}
 $$
 
+:::
 
 So where do these repeated assessments come from? There are lots of ways in which we can think of having "parallel tests" (i.e., having multiple instances of measurements of the same construct).  
 
@@ -332,8 +324,13 @@ we could:
 - get two (or more) people to measure the same units
 - administer a whole bunch of different measurement instruments 
 
+for each of these situations there are calculations people use to quantify the reliability. they differ because of how they are partitioning variance in to "true variance" and "error variance".  
 
 
+- repeated assessments
+- alternate forms
+- inter rater
+- internal consistency (congeneric). link back to FA
 
 
 
@@ -362,7 +359,12 @@ we could:
 :::
 ### coefficient alpha
 
+scale scores assume tau equivalent
+
+
 ### mcdonald's omega
+
+factor scores assume congeneric
 
 # the impact of reliability
 
