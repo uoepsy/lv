@@ -2,9 +2,6 @@
 title: "Latent Variable Modelling"
 ---
 
-These readings and walkthroughs show ....
+These readings and walkthroughs introduce the essential tools for analysing questionnaire and other psychological measurement data, focusing on the concept of "latent variables" --- constructs that cannot be directly observed (e.g., "anxiety", "intelligence" etc.). The topics covered introduce data reduction via Principal Component Analysis (PCA), before moving to look at Exploratory Factor Analysis (EFA), as a method to understand the underlying dimensionality that best explains a set of observed relationships. We then transition to Confirmatory Factor Analysis (CFA) for testing specific theoretical models of measurement, before extending the logic to the powerful framework of Structural Equation Modeling (SEM).   
 
-...
-
-Readings and walkthroughs are presented with accompanying R code.  
-
+Readings and walkthroughs are presented with accompanying R code.

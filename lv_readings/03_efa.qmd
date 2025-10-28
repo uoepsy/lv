@@ -608,7 +608,7 @@ Let's return to our tiredness example, where we had ten questions about tirednes
 Based on the factor loadings, which in principle can range from –1 to 1, how would we interpret the dimensions represented by the first factor (`ML1`) and the second factor (`ML2`)?
 
 ```{r}
-#todo read_csv()
+tiredq <- read_csv("https://uoepsy.github.io/data/tiredq.csv")
 tired_fa1 <- fa(tiredq, nfactors=2, rotate = "none", fm="ml")
 print(tired_fa1$loadings, cutoff = .3)
 ```
@@ -739,10 +739,145 @@ This idea is typically referred to as a **"simple structure"**, where each varia
 ::: {.callout-caution collapse="true"}
 #### Optional: Explanation with matrices
 
-TODO 
+Our starting point is, again "outcome = model + error", and here we remember that the outcome is the correlation matrix, the model is the factor loadings, and the error is the 'uniqueness' of each observed variable:  
 
-- 5x5 matrix, 2 factors, lambda phi lambda'
+\begin{align}
+\color{red} \text{Correlation Matrix} &= \color{blue} \text{Factor Loadings}^2 \,+\, \color{magenta} \text{Uniqueness} \\
+\end{align}
+
+It's going to be horrendous trying to see it with 10 items, so let's pretend we have observed five variables, meaning we have a 5x5 correlation matrix, and we're extracting two factors, so we have two columns of factor loadings. Our original, un-rotated solution is this:  
+
+
+\begin{align}
+\color{red} \text{Correlation Matrix} &= \color{blue} \mathbf{\Lambda}\mathbf{\Lambda'} \,+\, \color{magenta} \text{Uniqueness} \\
+&= \color{blue}
+\begin{bmatrix}
+0.64 & -0.29 \\
+0.70 & -0.25 \\
+0.73 & -0.14 \\
+0.33  & 0.49 \\
+0.42  & 0.73 \\
+\end{bmatrix}
+\begin{bmatrix}
+0.64 & 0.70 & 0.73 & 0.33 & 0.42 \\
+-0.29 & -0.25 & -0.14 & 0.49 & 0.73 \\
+\end{bmatrix} \,+\,
+ \color{magenta}
+ \text{Uniqueness} \\
+
+&= \color{blue}
+\begin{bmatrix}
+0.49 & 0.52 & 0.51 & 0.07 & 0.05 \\
+0.52 & 0.56 & 0.55 & 0.11 & 0.11 \\
+0.51 & 0.55 & 0.56 & 0.17 & 0.20 \\
+0.07 & 0.11 & 0.17 & 0.35 & 0.50 \\
+0.05 & 0.11 & 0.20 & 0.50 & 0.71 \\
+\end{bmatrix} \,+\,
+ \color{magenta}
+ \text{Uniqueness}
+\end{align}
+
+
+But as it happens, there are infinitely many sets of numbers that we could put in and get out the same values when we do $\mathbf{\Lambda}\mathbf{\Lambda'}$. Or, if we want to include an additional matrix in our model that specifies how the factors are correlated (we'll call it $\mathbf{\Phi}$), then we have infinitely (again) many more set of values that are numerically equivalent models:  
+  
+Original factor model:  
+$$
+\begin{align}
+\color{red} \text{Correlation Matrix} &= \color{blue} \mathbf{\Lambda}\mathbf{\Lambda'} \,+\, \color{magenta} \text{Uniqueness} \\
+\end{align}
+$$
+Orthogonally rotated:  
+$$
+\begin{align}
+\color{red} \text{Correlation Matrix} &= \color{blue} \mathbf{\Lambda_{orth}}\mathbf{\Lambda_{orth}'} \,+\, \color{magenta} \text{Uniqueness} \\
+\end{align}
+$$
+
+Obliquely rotated:
+$$
+\begin{align}
+\color{red} \text{Correlation Matrix} &= \color{blue} \mathbf{\Lambda_{obl}}\mathbf{\Phi}\mathbf{\Lambda_{obl}'} \,+\, \color{magenta} \text{Uniqueness} \\
+\end{align}
+$$
+
+As an example, we could use a different set of values $\mathbf{\Lambda_{orth}}$ instead of our original $\mathbf{\Lambda}$ and achieve the same model
+
+\begin{align}
+\color{red} \text{Correlation Matrix} &= \color{blue} \mathbf{\Lambda_{orth}}\mathbf{\Lambda_{orth}'} \,+\, \color{magenta} \text{Uniqueness} \\
+&= \color{blue}
+\begin{bmatrix}
+0.70 & 0.01 \\
+0.74 & 0.08 \\
+0.72 & 0.19 \\
+0.08 & 0.59 \\
+0.06 & 0.84 \\
+\end{bmatrix}
+\begin{bmatrix}
+0.70 & 0.74 & 0.72 & 0.08 & 0.06 \\
+0.01 & 0.08 & 0.19 & 0.59 & 0.84 \\
+\end{bmatrix} \,+\,
+ \color{magenta}
+ \text{Uniqueness} \\
+
+&= \color{blue}
+\begin{bmatrix}
+0.49 & 0.52 & 0.51 & 0.07 & 0.05 \\
+0.52 & 0.56 & 0.55 & 0.11 & 0.11 \\
+0.51 & 0.55 & 0.56 & 0.17 & 0.20 \\
+0.07 & 0.11 & 0.17 & 0.35 & 0.50 \\
+0.05 & 0.11 & 0.20 & 0.50 & 0.71 \\
+\end{bmatrix} \,+\,
+ \color{magenta}
+ \text{Uniqueness}
+\end{align}
+
+Or a set of numbers $\mathbf{\Lambda_{obl}}$ but also specifying the factor correlations $\mathbf{\Phi}$ we can get to the exact same model again:  
+
+\begin{align}
+\color{red} \text{Correlation Matrix} &= \color{blue} \mathbf{\Lambda_{obl}}\mathbf{\Phi}\mathbf{\Lambda_{obl}'} \,+\, \color{magenta} \text{Uniqueness} \\
+&= \color{blue}
+\begin{bmatrix}
+ 0.71 & -0.08 \\
+ 0.75 & -0.02 \\
+ 0.72 &  0.10 \\
+ 0.04 &  0.58 \\
+-0.01 &  0.85 \\
+\end{bmatrix}
+\begin{bmatrix}
+1.00 & 0.21 \\
+0.21 & 1.00 \\
+\end{bmatrix}
+\begin{bmatrix}
+0.71 & 0.75 & 0.72 & 0.04  & -0.01 \\
+ -0.08 & -0.02 & 0.10 & 0.58 &  0.85  \\
+\end{bmatrix} \,+\,
+ \color{magenta}
+ \text{Uniqueness} \\
+&= \color{blue}
+\begin{bmatrix}
+0.49 & 0.52 & 0.51 & 0.07 & 0.05 \\
+0.52 & 0.56 & 0.55 & 0.11 & 0.11 \\
+0.51 & 0.55 & 0.56 & 0.17 & 0.20 \\
+0.07 & 0.11 & 0.17 & 0.35 & 0.50 \\
+0.05 & 0.11 & 0.20 & 0.50 & 0.71 \\
+\end{bmatrix} \,+\,
+ \color{magenta}
+ \text{Uniqueness}
+\end{align}
+
+For each of these different possible sets of numbers that we could use to be numerically identical, we could write them in terms of our original numbers $\mathbf{\Lambda}$ and multiplying it by some matrix $\mathbf{T}$. So we could write:   
+
+$$
+\begin{align}
+\color{blue} \mathbf{\Lambda_{new}} &= \color{blue} \mathbf{\Lambda_{original}}\mathbf{T} 
+\end{align}
+$$
+
+So our "model" here could be written as $\mathbf{(\Lambda T)(\Lambda T)'}$. This simplifies to $\mathbf{\Lambda (T T') \Lambda'}$. The difference between orthogonal and oblique rotations comes in how this transformation matrix $\mathbf{T}$ works - if $\mathbf{TT'}$ results in the identity matrix $\begin{bmatrix} 1 & 0 \\ 0 & 1 \\ \end{bmatrix}$, then this doesn't change the perpendicularity of our factors. If it doesn't, then we need to also include the correlation of the factors ($\mathbf{\Phi}$) in our model. 
+
+
 ```{r}
+#| include: false
 set.seed(07)
 RR = matrix(c(1,.5,.5,.2,.2,
               .5,1,.5,.2,.2,
@@ -760,17 +895,16 @@ ll_orth = fa(tdf, nfactors=2,rotate="varimax")$loadings[,1:2]
 ll_obl = fa(tdf, nfactors=2,rotate="oblimin")$loadings[,1:2]
 phi_obl = fa(tdf, nfactors=2,rotate="oblimin")$Phi
 
+fa(tdf, nfactors=2,rotate="oblimin")$rot.mat
+
+
+round(ll_orth)
+
 cor(tdf) |> round(2)
 round( ll %*% t(ll), 2)
 round( ll_orth %*% t(ll_orth), 2)
 round( ll_obl %*% phi_obl %*% t(ll_obl), 2)
 ```
-
-
-
-
-
-Furthermore, we could relax the constraint that these sets of loadings are 'orthogonal', and add in another 
 
 
 :::

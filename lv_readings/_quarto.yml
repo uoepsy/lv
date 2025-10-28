@@ -6,7 +6,7 @@ project:
     - "!working/archive/*"    
     - "01*"
     - "02*"
-    - "!03*"
+    - "03*"
     - "!04*"
     - "!05*"
     - "!06*"
@@ -22,7 +22,7 @@ website:
     contents:
       - 01_datawrangle.qmd
       - 02_dimension_reduction.qmd
-      # - 03_efa.qmd
+      - 03_efa.qmd
       # - 04_cfa.qmd
       # - 06_reliability.qmd
       # - 06_sem.qmd

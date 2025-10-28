@@ -163,10 +163,8 @@ One way to make the idea of "truth" here a little more concrete, let's suppose t
 plot(density(rnorm(1e4,mean=23.814346,sd=2)),main="10,000 measurements of Dougal's weight",xlab="observed weight")
 ```
 
-Now let's expand from thinking about Dougal specifically to thinking about our proposed measurement process for weighing dogs in general. 
-
-We have our "instrument" for measuring a dog's weights (our bathroom scales). We can imagine all the measurements we might use this instrument for. For any dog we might use these scales to weigh, the observed number we see on the scales is going to be driven by 1) that dog's *true* weight, and 2) a little bit of error.  
-Just like all the true weights of all our dogs have a variance (some are big dogs that weigh a lot, some a little dogs that weigh less etc.), the errors that are contributing to our measurements also have a variance (some readings are a bit higher than truth, some are a bit lower).   
+Now let's expand from thinking about Dougal specifically to thinking about our proposed measurement process for weighing dogs in general. We have our "instrument" for measuring a dog's weights (our bathroom scales), and we can imagine all the measurements we might use this instrument for. For any dog we might use these scales to weigh, the observed number we see on the scales is going to be driven by 1) that dog's *true* weight, and 2) a little bit of error.  
+Just like all the true weights of all dogs have a variance (some are big dogs that weigh a lot, some a little dogs that weigh less etc.), the errors that contribute to our measurements also have a variance (some readings will be a bit higher than truth, some will be a bit lower).   
 
 If we add these variances to our diagram, we simply add curved lines to our "Truth" and "Error" variables: 
 ```{r}
@@ -181,9 +179,8 @@ The really useful thing about diagrams like these is that they represent theoret
 $$
 Var(\text{Observed Scores}) = Var(\text{True Scores}) + Var(\text{Errors})
 $$
-Let's take these to the extreme: 
 
-If my measurement instrument is incredibly good in weighing dogs, then the variance in the errors is much much smaller (i.e., all measurements are within 0.1kg of the true score). If my measurement instrument is incredibly bad at weighing dogs, then the variance in errors is much bigger (sometimes when I weigh a dog that is 'in truth' 23.814346....kg, I will get a score of 15kg, sometimes I will get a score 28kg etc).  
+As it turns out, we can actually find an intuitive way of thinking about this equation Let's take it to the extreme: If my measurement instrument is incredibly good in weighing dogs, then the variance in the errors is much much smaller (i.e., all measurements are within 0.1kg of the true score). If my measurement instrument is incredibly bad at weighing dogs, then the variance in errors is much bigger (sometimes when I weigh a dog that is 'in truth' 23.814346....kg, I will get a score of 15kg, sometimes I will get a score of 28kg etc).  
 
 So a really generalisable way of thinking about reliability of measurement is to view it as "how much of the variance in our observed scores is due to true variance?".  
 
@@ -202,11 +199,11 @@ We can't simply use the variance of measurement error on its own to quantify 're
 
 For example, consider the following three scenarios: 
 
-A. I am measuring the weight of dogs, and my scales are a bit off each time - there is a little bit of error. The errors have a variance of 1kg
-B. I am measuring the weight of dogs, and my scales are *wayy* off each time - there is a massive amount of error. The errors have a variance of 100kg
-C. I am measuring the weight of elephants, and my scales are a little bit off each time - there is a little bit of error. The errors have a variance of 100kg
+1. I am measuring the weight of dogs, and my scales are a bit off each time - there is a little bit of error. The errors have a variance of 1kg  
+2. I am measuring the weight of dogs, and my scales are *wayy* off each time - there is a massive amount of error. The errors have a variance of 100kg  
+3. I am measuring the weight of elephants, and my scales are a little bit off each time - there is a little bit of error. The errors have a variance of 100kg  
 
-The size of the error variance (1kg or 100kg) doesn't determine how much "off" (a little bit off vs waayy off) we consider the measurements to be. What is important is how big this error variance is **relative to** the true variance of the things being measured.  
+The size of the error variance (1kg or 100kg) by itself doesn't determine how much "off" (a little bit off vs waayy off) we consider the measurements to be. What is important is how big this error variance is **relative to** the true variance of the things being measured.  
 
 Elephants' weights vary between TODO and TODO, so mis-measuring by 100kg isn't really that bad in the grand scheme of things. But dogs' weights vary between c5kg and 50kg, so mis-measuring by 100kg is ridiculous. 
 
@@ -263,16 +260,10 @@ ggplot(df2,aes(x=measurement_1, y = measurement_2))+
 
 :::
 
-This way of thinking about reliability might seem all fine, but if we think about having to actually _measure_ it, then we suddenly realise that we don't have enough information... We are essentially saying "observed score = unobserved truth + unobserved error". This is like being given a math problem of "23.5 = T + E, please solve" --- it's impossible!  
+This way of thinking about reliability might seem nice and intuitive, but if we think about having to actually _quantify_ reliability this way, then we suddenly realise that we don't have enough information... We are essentially saying "observed score = unobserved truth + unobserved error". This is like being given a math problem of "23.5 = T + E, please solve" --- it's impossible!  
 
 Things get a lot better when we have multiple scores.  
 - diagram two scores
-
-there are some implications of this diagram! : 
-Firstly - true values haven't changed between the assessments  
-secondly, the true value contributes the same to each assessment  
-thirdly, there is the same amount of error at each assessment. i.e,. it's not the case that the 2nd assessment involves much bigger or smaller errors than the first. i.e., $\sigma^2_{E1} = \sigma^2_{E2}$ 
-finally, the errors are uncorrelated - happening to have score 1 be a little bit above your true value tells us nothing about how off our score will be at time 2.  
 
 ```{r}
 #| label: fig-ctt3
@@ -280,7 +271,13 @@ finally, the errors are uncorrelated - happening to have score 1 be a little bit
 #| fig-width: 12
 knitr::include_graphics("images/ctt/Slide3.PNG")
 ```
-![](images/ctt/Slide3.png)
+
+there are some implications of this diagram! : 
+Firstly - true values haven't changed between the assessments  
+secondly, the true value contributes the same to each assessment  
+thirdly, there is the same amount of error at each assessment. i.e,. it's not the case that the 2nd assessment involves much bigger or smaller errors than the first. i.e., $\sigma^2_{E1} = \sigma^2_{E2}$ 
+finally, the errors are uncorrelated - happening to have score 1 be a little bit above your true value tells us nothing about how off our score will be at time 2.  
+
 
 ::: {.callout-caution collapse="true"}
 #### optional - where did the correlation between repeated measurements go?  
