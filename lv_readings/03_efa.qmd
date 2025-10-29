@@ -1403,5 +1403,44 @@ tibble(
 Scale development is lot of back and forth, and at this point we might consider re-wording some of the items to make the two factors more clearly distinct, then giving the edited questionnaire to a whole load of new people, and going through the whole process again until we're happy with a coherent structure!
 
 
+# Hold on, I want some scores?  
+
+After all the focus on trying to better understand the underlying structure of factors that are resulting in our observed responses, we have somewhat lost sight of the fact that this might all be in aid of some other purpose - trying to create a score for each person in our dataset for each of the factors!  
+
+Much like PCA (see [Chapter 2 #the-key-methods](02_dimension_reduction.html#the-key-methods){target="_blank"}), the scores from factor models will be taking into account the extent to which each individual observed variable might differently reflect the underlying factor. So this will contrast with naive scale scores which assume each variable is equally reflective of the construct.  
+
+Unlike PCA, however, in factor analysis everything is **indeterminate**. Much like how we can have infinitely many sets of loadings (depend on how we rotate them) that are numerically indistinguishable in terms of the implied model, there are infinitely many sets of factor scores that we could create - we have "factor score indeterminacy".   
+
+There are many various methods to estimated factor scores, and they will all combine the observed responses, the factor loadings, and the factor correlations.  
+
+We can get them all using the `factor.scores()` function. We need to give this function our data, our factor model, and tell it which method to use.  
+
+So let's assume we want to use our 2 factor model of phone-addiction, and we are removing that problematic question 9.  
+
+```{r}
+ph_efa2a <- fa(phdat[,-9], nfactors = 2, 
+               rotate = "oblimin", fm = "ml")
+```
+
+For example, to extract factor scores using the Bartlett method:  
+
+```{r}
+#| eval: false
+factor.scores(phdat[,-9], ph_efa2a, method="Bartlett")$scores
+```
+```{r}
+#| echo: false
+factor.scores(phdat[,-9], ph_efa2a, method="Bartlett")$scores |> head()
+```
+
+A brilliant paper by Skrondal & Laake^[Skrondal, A., & Laake, P. (2001). Regression among factor scores. Psychometrika, 66, 563-575.] suggests the following methods to be used depending on your eventual purpose:  
+
+- If the construct is going to be used as a dependent variable, use Bartlett (`method = "Bartlett"`)  
+- If the construct is going to be used as a predictor, use Thurstone (`method = "Thurstone"`)  
+- If the construct is a covariate, less important
+
+
+
+
 <div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;"></div>
 
