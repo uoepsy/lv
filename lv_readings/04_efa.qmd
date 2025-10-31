@@ -37,7 +37,7 @@ library(lme4)
 
 # From pure dimension reduction to EFA  
 
-Most of our introduction to dimension reduction in [Chapter 2](02_dimension_reduction.html){target="_blank"} was conceptually similar to the process of **Principal Component Analysis (PCA)** - the simplest analogy here is to take a real three-dimensional object in your hands (like your phone, for instance), and measure it with two perpendicular dimensions (like its width and height). 
+Most of our introduction to dimension reduction in [Chapter 2](02_dimension_reduction.html){target="_blank"} was conceptually similar to the process of **Principal Component Analysis (PCA)** [(Chapter 3)](03_pca.html) - the simplest analogy here is to take a real three-dimensional object in your hands (like your phone, for instance), and measure it with two perpendicular dimensions (like its width and height). 
 
 This is going to be our starting point for the more commonly used method in psychology - **Factor Analysis (FA)**. These two methods are very similar to one another, so much so that distinction between the two can get a little blurred (a lot of it just depends on our goals - see [Chapter 2 #the-key-methods](02_dimension_reduction.html#the-key-methods){target="_blank"}). Ultimately they are both methods aimed to get at the dimensions that capture "variability" in the data.  
 
@@ -1234,7 +1234,7 @@ As all of the correlations between individual items are low to medium (0.2 - 0.4
 
 ## 3 & 4. How many factors?
 
-The question of how many factors to extract is very similar to the methods discussed in the PCA demonstration in [Chapter 2#the-key-methods](02_dimension_reduction.html#the-key-methods){target="_blank"}. 
+The question of how many factors to extract is very similar to the methods discussed in the PCA demonstration in [Chapter 3](03_pca.html). 
 
 
 ::: {.callout-note collapse="true"}
@@ -1407,7 +1407,7 @@ Scale development is lot of back and forth, and at this point we might consider 
 
 After all the focus on trying to better understand the underlying structure of factors that are resulting in our observed responses, we have somewhat lost sight of the fact that this might all be in aid of some other purpose - trying to create a score for each person in our dataset for each of the factors!  
 
-Much like PCA (see [Chapter 2 #the-key-methods](02_dimension_reduction.html#the-key-methods){target="_blank"}), the scores from factor models will be taking into account the extent to which each individual observed variable might differently reflect the underlying factor. So this will contrast with naive scale scores which assume each variable is equally reflective of the construct.  
+Much like PCA (see [Chapter 3](03_pca.html)), the scores from factor models will be taking into account the extent to which each individual observed variable might differently reflect the underlying factor. So this will contrast with naive scale scores which assume each variable is equally reflective of the construct.  
 
 Unlike PCA, however, in factor analysis everything is **indeterminate**. Much like how we can have infinitely many sets of loadings (depend on how we rotate them) that are numerically indistinguishable in terms of the implied model, there are infinitely many sets of factor scores that we could create - we have "factor score indeterminacy".   
 

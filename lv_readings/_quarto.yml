@@ -7,10 +7,11 @@ project:
     - "01*"
     - "02*"
     - "03*"
-    - "!04*"
     - "!05*"
     - "!06*"
     - "!07*"
+    - "!08*"
+    - "!09*"
   output-dir: ./wipdocs/
 
 website:  
@@ -22,10 +23,10 @@ website:
     contents:
       - 01_datawrangle.qmd
       - 02_dimension_reduction.qmd
-      - 03_efa.qmd
-      # - 04_cfa.qmd
+      - 03_pca.qmd
+      - 04_efa.qmd
+      # - 05_cfa.qmd
       # - 06_reliability.qmd
-      # - 06_sem.qmd
       - section: "Additional Docs"
         contents:
           - z_eigen.qmd
