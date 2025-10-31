@@ -1,5 +1,5 @@
 ---
-title: "3: Exploratory Factor Analysis"
+title: "4: Exploratory Factor Analysis"
 params: 
     SHOW_SOLS: FALSE
     TOGGLE: TRUE
