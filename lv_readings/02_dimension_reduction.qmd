@@ -43,11 +43,17 @@ How we measure such constructs is a very important consideration for research. T
 
 Consider how we might assess levels of anxiety or depression. Can we ever directly measure anxiety?^[Even if we cut open someone's brain, it's unclear what we would be looking for in order to 'measure' it. It is unclear whether anxiety even exists as a physical thing, or rather if it is simply the overarching concept we apply to a set of behaviours and feelings.] More often than not, we measure these things using a _set_ of different measures which 'look at' the underlying construct from a different angle. In psychology, this is often questionnaire based methods, with a set of questions each of which might ask about "anxiety" from a slightly different angle. Twenty questions all measuring different aspects of anxiety are (we hope) going to correlate with one another if they are capturing some commonality (the construct of "anxiety").  
 
-But this introduces a problem for us, which is how to deal with 20 variables that represent (in broad terms) the same single thing. How can we talk about "changes in anxiety", and not just "changes on anxiety Q1" and "changes on anxiety Q2" and so on? In addition, not all of these constructs might have just one single dimension - we often talk about "narcissm", but this could arguably be comprised of 3 slightly distinct constructs of "grandiosity", "vulnerability" and "antagonism".  
+But this introduces a problem for us, which is how to deal with 20 variables that represent (in broad terms) the same single thing. How can we talk about "changes in anxiety", and not just "changes on anxiety Q1" and "changes on anxiety Q2" and so on? In addition, not all of these constructs will necessarily exist as one distinct thing - we often talk about "narcissm", but this could arguably be comprised of 3 slightly distinct constructs of "grandiosity", "vulnerability" and "antagonism".  
 
-What we are touching upon here gets referred to as *dimensionality* of a measurement tool, and the questions we are going to look at are all about how we can go from the big set of observed variables to the key *dimensions* that are the things we are actually interested in.  
+What we are touching upon here gets referred to as *dimensionality* of a measurement tool, and the questions we are going to look at are all about how we can go from the big set of observed variables to the key things that are the things we are actually interested in.  
 
 :::sticky
+__What is a "dimension"?__  
+
+Broadly speaking, when we use the term "dimension" here, we are more or less referring to something like the number of rows and columns in a dataset. If I measure $n$ people on 10 questions about anxiety, then my resulting dataset will have $n \times$10 dimensions.  
+
+But in many cases this contrasts with our research questions, which are concerned with a _construct_ (e.g., the idea of "anxiety") that we consider to be a single dimension (e.g., people are high on anxiety or low on anxiety) rather than 10.  
+
 __When might we want to reduce dimensionality?__
 
 There are many reasons we might want to "reduce the dimensionality" of data:  
@@ -88,9 +94,9 @@ Let's suppose we are interested in capturing how tired people are, and we had da
 - Subjective Physical Fatigue
 - Subjective Sleepiness
 
-We might visualise these in a 3-dimensional space in @fig-scat.   
+We might visualise these in the 3-dimensional space of the measured variables in @fig-scat.   
 
-Although we have measured 3 variables, when faced with trying to characterise the shape of the 3-dimensional cloud of datapoints, we're more inclined to think about its length, width and depth. You can imagine trying to characterise this shape as the ellipse in @fig-ellip. It looks a little like a bar of soap or something! It's longer in one direction (green line), wide in another direction (red line), and not very deep (blue line). We can think of these as the **dimensions** that characterise the data.  
+Although we have measured 3 variables, when faced with trying to characterise the shape of the 3-dimensional cloud of datapoints, we're more inclined to think about its length, width and depth. You can imagine trying to characterise this shape as the ellipse in @fig-ellip. It looks a little like a bar of soap or something! It's longer in one direction (green line), wide in another direction (red line), and not very deep (blue line). We can think of these as some new "dimensions" that we could also use to characterise the shape of data.  
 
 ::::{.columns}
 :::{.column width="50%"}
@@ -154,7 +160,7 @@ pairs(mydata)
 
 :::
 
-Think a little about what these dimensions (the axes in @fig-ellip) *represent* - they capture "the ways in which observations vary" across a set of observed variables. 
+Think a little about what these new dimensions (the coloured axes in @fig-ellip) *represent* - they capture "the ways in which observations vary" across the set of observed variables. 
 
 The long dimension captures that all three variables tend to co-vary (there are lots of people who are high on all of them, and lots who are low on all of them - there aren't many who might rate one question an 8 and the other two questions a 2). 
 
@@ -164,7 +170,9 @@ The next longest dimension of the ellipse (the red line) shows another form of v
 
 Finally the blue dimension of the ellipse is the shortest, capturing the least variability. This dimension seems to differentiate between people who are more sleepy but less fatigued, and those who are less sleepy but more fatigued. It makes sense that there isn't much variability here - we would expect people who are sleepy to be fatigued and vice versa!  
 
-Often it helps to take this to the extremes, so think about what these would look like if we *no correlations* or *perfect correlations* between the three variables. If the variables are uncorrelated, then we have a sort of spherical cloud of data, and no one dimension is longer than the other (@fig-pcano). By contrast, if we have perfect correlations between the variables, then we only really have *one* dimension - we just have a line upon which all observations fall (@fig-pcaff).  
+Often it helps to take this to the extremes, so think about what these would look like if we *no correlations* or *perfect correlations* between the three variables. If the variables are uncorrelated, then we have a sort of spherical cloud of data, and for any set of three dimensions we try to use to express this shape there is not going to be any one dimension that is longer than the other (@fig-pcano). By contrast, if we have perfect correlations between the variables, then we actually don't even need 3 dimensions to express it - we only really need *one* dimension - we just have a line upon which all observations fall (@fig-pcaff).  
+
+The core idea of dimension reduction is that we can re-express our dataset in a new set of dimensions, where we can decide to keep fewer of them and still capture a lot of the shape of the data.  
 
 ::::{.columns}
 :::{.column width="50%"}
@@ -214,7 +222,7 @@ rglwidget()
 :::
 ::::
 
-Now imagine being given a ruler and being asked to give two numbers to provide a measurement of your smartphone. What do you pick? Chances are, you will measure its length and then its width. You're likely to ignore the depth because it is much smaller than the other two dimensions. This is pretty much the concept of dimension reduction. 
+For an analogy, imagine being given a ruler and being asked to give two numbers to provide a measurement of your smartphone. What do you pick? I would take a bet that you will measure its length and then its width. You're likely to ignore the depth because it is much smaller than the other two dimensions. This is pretty much the concept of dimension reduction. 
 
 The idea here is that we can --- without losing *too* much --- preserve the general shape of our data using _fewer_ dimensions. Ignoring the depth of our cloud of datapoints, we could reduce from 3 variables down to 2 dimensions by considering where our data falls when projected onto the 2-dimensional surface shown in @fig-ellipreduc. Or we could reduce down to 1 dimension and consider where the data falls on the single axis shown in @fig-ellipreduc2.  
 
@@ -287,13 +295,12 @@ rglwidget()
 ::::
 
 
-The conceptual idea of these 'dimensions' that we're working with here is pretty abstract, and it only gets weirder to think about when we have more than 3 variables and we can no longer easily visualise it. 
+The conceptual idea of these new 'dimensions' that we're working with here is pretty abstract, and it only gets weirder to think about when we have more than 3 variables and we can no longer easily visualise it. 
 
 The key thing we are doing here is:
 
 1. Identify the dimensions that capture (co)variability across a set of measured variables
 2. Retain a subset of those dimensions
-
 
 Depending upon what the goal of our research is, the key questions are going to be:
 

@@ -136,7 +136,7 @@ There are lots of methods to help us decide how many components we should keep.
 ::: {.callout-tip collapse="false"}
 ### Scree plot 
 
-Scree plots show the eigenvalues for each dimension. A typical scree plot features higher variances for the initial components and quickly drops to small variances where the curve is almost flat. The flat part of the curve represents the noise components, which are not able to capture the main sources of variability in the system. 
+Scree plots show the eigenvalues for each component (each new dimension). A typical scree plot features higher variances for the initial components and quickly drops to small variances where the curve is almost flat. The flat part of the curve represents the noise components, which are not able to capture the main sources of variability in the system. 
 
 According to the scree plot criterion, we should **keep as many principal components up to where the "kink" (or "elbow") in the plot occurs.** So in the above plot, the kink occurs at 3 by my reckoning (yours might be different!), so I would keep 2.  
 
