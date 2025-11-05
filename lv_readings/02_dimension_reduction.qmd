@@ -61,7 +61,7 @@ There are many reasons we might want to "reduce the dimensionality" of data:
 - Pragmatic
   - I have multicollinearity issues/too many variables, how can I defensibly combine my variables? 
 - Test construction
-  - How should I group my questionnaire items into sub-scales?
+  - How should I group my questionnaire items into subsets?
   - Which items are the best measures of my construct(s)?
 - Theory testing
   - What are the number and nature of dimensions that best describe a theoretical construct?
@@ -351,7 +351,7 @@ physfunc <- bind_cols(physfunc,physfunc2) |>
 ```
 
 
-## Naive scale scores
+## Naive 'Scale Scores'
 
 Goal: Pragmatic. I want 1 thing to use in some other setting (e.g., in a further analysis, or in a clinical setting)
 
@@ -400,7 +400,7 @@ Goal: Pragmatic. I want fewer things for use in a subsequent analysis but don't 
 
 ## Exploratory Factor Analysis (EFA)
 
-Goal: Exploratory/Discovery/Scale development. I don't have a strong theoretical model yet, but I suspect there are underlying constructs that explain why these variables correlate with each other. I want to discover what those constructs might be and how the variables relate to them.
+Goal: Exploratory/Discovery/Measure development. I don't have a strong theoretical model yet, but I suspect there are underlying constructs that explain why these variables correlate with each other. I want to discover what those constructs might be and how the variables relate to them.
 
 1. How do we find the dimensions?
     - Estimation

@@ -530,11 +530,11 @@ __Confirmatory? Exploratory? "Explirmatory"? "Confloratory"?__
 
 :::
 
-TODO
+When a factor structure does not fit well, we can either start over and go back to doing EFA, deciding on an appropriate factor structure, on whether we should drop certain items, etc. The downside of this is that we essentially result in _another_ version of the measurement tool, or another theory about what the tool is measuring, and before we know it, we have 10 versions of the same thing floating around, in a perpetual state of development. The advantage of this is that we don't just blindly persist with a bad theory of what our measurement tool is capturing.  
 
+However, we are not restricted to choosing between "carry on with a crappy measure" and "shove it in the bin and start over". Somewhere between these two is the option of making small adjustments to our theory about how the measurement tool works. In essence, this is seeing if it possible to minimally adjust our model based on areas of local misfit in order to see if our global fit improves. 
 
-When a factor structure does not fit well, we can either start over and go back to doing EFA, deciding on an appropriate factor structure, on whether we should drop certain items, etc. The downside of this is that we essentially result in _another_ version of the scale, and before we know it, we have 10 versions of the same measure floating around, in a perpetual state of scale-development. 
-Alternatively, we can see if it is possible to minimally adjust our model based on areas of local misfit in order to see if our global fit improves. Note that this would still be in a sense _exploratory,_ and we should be very clear when writing up about the process that we undertook. We should also avoid just shoving any parameter in that might make it fit better - we should let common sense and theoretical knowledge support any adjustments we make.  
+**VERY IMPORTANT:** this approach is very much _exploratory,_ and we should be very clear when writing up about the process that we undertook. We should also avoid just shoving any parameter in that might make it fit better - we should let common sense and theoretical knowledge support any adjustments we make.  
 
 The `modindices()` function takes a fitted model object from __lavaan__ and provides a table of all the possible additional parameters we _could_ estimate.  
 
