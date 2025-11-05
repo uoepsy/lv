@@ -177,7 +177,22 @@ For methods like CFA, we are working with models that are fitted to the *covaria
 
 After so much time working in a regression world, where we can think of each value on the outcome variable being predicted by some combination of the predictor variables, it can be a bit odd to think about how models like CFA and SEM predict the values in a covariance matrix. The missing link is probably easiest described by showing what different theoretical models *imply* for a covariance matrix.  
 
-For instance, in @fig-pt1, we can see a (rather odd) theoretical model of four variables. Each variable has some variance (the looped arrows back on themselves), but the lack of arrows between them indicates that we would *expect* to see covariances of 0 between them all. If we then collect data on those four variables, and fit the model to that data, it will estimate the parameters in the model ($u_{y1}$ to $u_{y4}$) based on an optimisation method such as maximum likelihood estimation. These parameters therefore imply a covariance matrix, and we can compare this to the actual covariance matrix we observe between the variables.  
+In the styles of diagram we're looking at, a double-headed arrow between two things represents that those two things co-vary.
+A double-headed arrow where both heads point at the same variable just represents that there's some variance within that variable (as we'd expect).
+
+So, in @fig-pt1, we can see a (rather odd) theoretical model of four variables.
+We see from the arrows looped back on themselves that each variable has some variance, labelled as $u_{yj}$ for variable $j$.
+But there are no arrows between variables, which means that we're essentially declaring that we expect all the covariances between these variables to be 0.
+
+If we collect data on those four variables and fit this model to that data, it'll use some optimisation method like maximum likelihood estimation to estimate the model parameters $u_{y1}$ to $u_{y4}$, and it will not estimate any covariances between the variables because we told it that the covariances are 0.
+
+The result will be a covariance matrix like the one shown below.
+The diagonal (from top left to bottom right) shows each variable's own variance.
+The top right triangle of cells, above the diagonals, is empty because it's redundant information.
+The covariance of Y1 with Y2 is the same as the covariance with Y2 with Y1, so we only need to see that number once.
+And the convention is to show it in the bottom left triangle of cells and leave the upper right triangle blank.
+(To tell if this model is a good fit to the data, we would compare the covariance matrix implied by the model to the actual covariance matrix we observed.)
+
 ```{r}
 #| echo: false
 #| label: fig-pt1
@@ -185,10 +200,17 @@ For instance, in @fig-pt1, we can see a (rather odd) theoretical model of four v
 knitr::include_graphics("images/intropathtrace/Slide1.PNG")
 ```
 
-We could have another theoretical model of how the four variables are related. For instance, we could just say "they're all related to each other for whatever reason!". This would be essentially like connecting each pair of variables by a double-headed arrow (indicating covariance), as in @fig-pt2.  
+Here's the opposite extreme.
+In this other (not very good) theoretical model of how the four variables are related, we might say "they're all related to each other for whatever reason!".
+In diagram form, this would be essentially like connecting each pair of variables by a double-headed arrow, as in @fig-pt2.  
 
-This model means we estimate all those covariances between each pair of variables, and so we can *perfectly* reproduce any observed covariance matrix, but we're not gaining anything. 
-We started with 10 things in the covariance matrix, and the model has to estimate 10 things (letters $a$ to $f$ and $u_{y1}$ to $u_{y4}$ in @fig-pt2). 
+This model means we estimate all those covariances between each pair of variables, and so we can *perfectly* reproduce any observed covariance matrix.
+We started with 10 things in the covariance matrix (four variances and six covariances), and the model has to estimate those same 10 things (letters $a$ to $f$ and $u_{y1}$ to $u_{y4}$ in @fig-pt2). 
+
+This model is great for reproducing exactly what's there, but we already had what's there—we don't need this complex machinery to reproduce what we already have.
+In other words, this model hasn't given us anything theoretically interesting.
+
+(And we can't actually compute whether this model is a good fit to the data, because we're estimating the exact same number of parameters as there are data points in the covariance matrix—more on this in the degrees of freedom section below!)
 
 ```{r}
 #| echo: false
@@ -197,8 +219,13 @@ We started with 10 things in the covariance matrix, and the model has to estimat
 knitr::include_graphics("images/intropathtrace/Slide2.PNG")
 ```
 
-Another way in which we could theorise about relations between the four variables is to posit that they are only related **because** they are each representing (to different degrees) the same underlying "latent factor" (i.e., the same construct). This is shown in @fig-pt3, and only requires us to estimate 8 things, rather than 10. In doing so it also assumes the existence of some latent factor $F$.  
 
+Neither of those theoretical models is really what CFA does.
+Rather, what CFA does is to posit that these variables are related **because** they are each representing (albeit to different degrees) the same underlying "latent factor" (i.e., the same construct). This is shown in @fig-pt3, and only requires us to estimate 8 things, rather than 10. In doing so it also assumes the existence of some latent factor $F$.^[You may wonder why *a*, *b*, *c*, and *d* are multiplied with one another in the covariance matrix.
+We won't go into much detail about that now, but the keywords to that particular rabbit hole are "covariance algebra"/"path tracing".
+Essentially, if you trace the paths (ignoring the direction of the arrows) between related variables and multiply of all of the values you encounter along the way, and take the sum of all of those products from each different path, you can find the model-implied covariances. 
+<!-- future update: see the path tracing chapter for msmr for more detail -->
+]
 
 ```{r}
 #| echo: false
@@ -207,9 +234,12 @@ Another way in which we could theorise about relations between the four variable
 knitr::include_graphics("images/intropathtrace/Slide3.PNG")
 ```
 
-The core idea here is that from the diagram on the left there is an algorithmic way to calculate an implied value for the entries in the covariance matrix on the right. So from a given diagram, we can work out what values we would expect to see in a covariance matrix, in terms of combinations of estimated paths in the diagram.  
+A key take-away from this little section: From any given path diagram, we can work out what implied values we'd expect to see in the corresponding covariance matrix.
 
-Once the model gets fitted to some data and the paths are estimated, these paths give us an implied covariance matrix that we can evaluate against our observed one, therefore allowing us to talk about "model fit"  
+So, once we fit a model to some data, the model will estimate some paths.
+Once we've got those paths, we can translate them into the implied covariance matrix, and then compare that matrix to our observed covariance matrix.
+That comparison is what allows us to talk about "model fit".
+
 
 ```{r}
 #| include: false
