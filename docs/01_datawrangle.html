@@ -228,6 +228,12 @@ window.Quarto = {
  <span class="menu-text">4: Exploratory Factor Analysis</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_cfa.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">5: Confirmatory Factor Analysis</span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
@@ -425,23 +431,23 @@ By default, <code>paste()</code> will separate these with a space:</p>
 <p>The data has come out of whatever questionnaire software we used and it’s showing the chosen response for each question in words, e.g.&nbsp;“Moderately Accurate”. But we are going to turn them into numbers so that they are easier to work with.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="jcbvpjpsrf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#jcbvpjpsrf table {
+<div id="jjkquxodqs" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#jjkquxodqs table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#jcbvpjpsrf thead, #jcbvpjpsrf tbody, #jcbvpjpsrf tfoot, #jcbvpjpsrf tr, #jcbvpjpsrf td, #jcbvpjpsrf th {
+#jjkquxodqs thead, #jjkquxodqs tbody, #jjkquxodqs tfoot, #jjkquxodqs tr, #jjkquxodqs td, #jjkquxodqs th {
   border-style: none;
 }
 
-#jcbvpjpsrf p {
+#jjkquxodqs p {
   margin: 0;
   padding: 0;
 }
 
-#jcbvpjpsrf .gt_table {
+#jjkquxodqs .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -467,12 +473,12 @@ By default, <code>paste()</code> will separate these with a space:</p>
   border-left-color: #D3D3D3;
 }
 
-#jcbvpjpsrf .gt_caption {
+#jjkquxodqs .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#jcbvpjpsrf .gt_title {
+#jjkquxodqs .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -484,7 +490,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   border-bottom-width: 0;
 }
 
-#jcbvpjpsrf .gt_subtitle {
+#jjkquxodqs .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -496,7 +502,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   border-top-width: 0;
 }
 
-#jcbvpjpsrf .gt_heading {
+#jjkquxodqs .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -508,13 +514,13 @@ By default, <code>paste()</code> will separate these with a space:</p>
   border-right-color: #D3D3D3;
 }
 
-#jcbvpjpsrf .gt_bottom_border {
+#jjkquxodqs .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#jcbvpjpsrf .gt_col_headings {
+#jjkquxodqs .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -529,7 +535,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   border-right-color: #D3D3D3;
 }
 
-#jcbvpjpsrf .gt_col_heading {
+#jjkquxodqs .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -549,7 +555,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   overflow-x: hidden;
 }
 
-#jcbvpjpsrf .gt_column_spanner_outer {
+#jjkquxodqs .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -561,15 +567,15 @@ By default, <code>paste()</code> will separate these with a space:</p>
   padding-right: 4px;
 }
 
-#jcbvpjpsrf .gt_column_spanner_outer:first-child {
+#jjkquxodqs .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#jcbvpjpsrf .gt_column_spanner_outer:last-child {
+#jjkquxodqs .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#jcbvpjpsrf .gt_column_spanner {
+#jjkquxodqs .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -581,11 +587,11 @@ By default, <code>paste()</code> will separate these with a space:</p>
   width: 100%;
 }
 
-#jcbvpjpsrf .gt_spanner_row {
+#jjkquxodqs .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#jcbvpjpsrf .gt_group_heading {
+#jjkquxodqs .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -611,7 +617,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   text-align: left;
 }
 
-#jcbvpjpsrf .gt_empty_group_heading {
+#jjkquxodqs .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -626,15 +632,15 @@ By default, <code>paste()</code> will separate these with a space:</p>
   vertical-align: middle;
 }
 
-#jcbvpjpsrf .gt_from_md > :first-child {
+#jjkquxodqs .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#jcbvpjpsrf .gt_from_md > :last-child {
+#jjkquxodqs .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#jcbvpjpsrf .gt_row {
+#jjkquxodqs .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -653,7 +659,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   overflow-x: hidden;
 }
 
-#jcbvpjpsrf .gt_stub {
+#jjkquxodqs .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -666,7 +672,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   padding-right: 5px;
 }
 
-#jcbvpjpsrf .gt_stub_row_group {
+#jjkquxodqs .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -680,15 +686,15 @@ By default, <code>paste()</code> will separate these with a space:</p>
   vertical-align: top;
 }
 
-#jcbvpjpsrf .gt_row_group_first td {
+#jjkquxodqs .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#jcbvpjpsrf .gt_row_group_first th {
+#jjkquxodqs .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#jcbvpjpsrf .gt_summary_row {
+#jjkquxodqs .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -698,16 +704,16 @@ By default, <code>paste()</code> will separate these with a space:</p>
   padding-right: 5px;
 }
 
-#jcbvpjpsrf .gt_first_summary_row {
+#jjkquxodqs .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#jcbvpjpsrf .gt_first_summary_row.thick {
+#jjkquxodqs .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#jcbvpjpsrf .gt_last_summary_row {
+#jjkquxodqs .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -717,7 +723,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#jcbvpjpsrf .gt_grand_summary_row {
+#jjkquxodqs .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -727,7 +733,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   padding-right: 5px;
 }
 
-#jcbvpjpsrf .gt_first_grand_summary_row {
+#jjkquxodqs .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -737,7 +743,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   border-top-color: #D3D3D3;
 }
 
-#jcbvpjpsrf .gt_last_grand_summary_row_top {
+#jjkquxodqs .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -747,11 +753,11 @@ By default, <code>paste()</code> will separate these with a space:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#jcbvpjpsrf .gt_striped {
+#jjkquxodqs .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#jcbvpjpsrf .gt_table_body {
+#jjkquxodqs .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -760,7 +766,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#jcbvpjpsrf .gt_footnotes {
+#jjkquxodqs .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -774,7 +780,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   border-right-color: #D3D3D3;
 }
 
-#jcbvpjpsrf .gt_footnote {
+#jjkquxodqs .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -783,7 +789,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   padding-right: 5px;
 }
 
-#jcbvpjpsrf .gt_sourcenotes {
+#jjkquxodqs .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -797,7 +803,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   border-right-color: #D3D3D3;
 }
 
-#jcbvpjpsrf .gt_sourcenote {
+#jjkquxodqs .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -805,72 +811,72 @@ By default, <code>paste()</code> will separate these with a space:</p>
   padding-right: 5px;
 }
 
-#jcbvpjpsrf .gt_left {
+#jjkquxodqs .gt_left {
   text-align: left;
 }
 
-#jcbvpjpsrf .gt_center {
+#jjkquxodqs .gt_center {
   text-align: center;
 }
 
-#jcbvpjpsrf .gt_right {
+#jjkquxodqs .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#jcbvpjpsrf .gt_font_normal {
+#jjkquxodqs .gt_font_normal {
   font-weight: normal;
 }
 
-#jcbvpjpsrf .gt_font_bold {
+#jjkquxodqs .gt_font_bold {
   font-weight: bold;
 }
 
-#jcbvpjpsrf .gt_font_italic {
+#jjkquxodqs .gt_font_italic {
   font-style: italic;
 }
 
-#jcbvpjpsrf .gt_super {
+#jjkquxodqs .gt_super {
   font-size: 65%;
 }
 
-#jcbvpjpsrf .gt_footnote_marks {
+#jjkquxodqs .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#jcbvpjpsrf .gt_asterisk {
+#jjkquxodqs .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#jcbvpjpsrf .gt_indent_1 {
+#jjkquxodqs .gt_indent_1 {
   text-indent: 5px;
 }
 
-#jcbvpjpsrf .gt_indent_2 {
+#jjkquxodqs .gt_indent_2 {
   text-indent: 10px;
 }
 
-#jcbvpjpsrf .gt_indent_3 {
+#jjkquxodqs .gt_indent_3 {
   text-indent: 15px;
 }
 
-#jcbvpjpsrf .gt_indent_4 {
+#jjkquxodqs .gt_indent_4 {
   text-indent: 20px;
 }
 
-#jcbvpjpsrf .gt_indent_5 {
+#jjkquxodqs .gt_indent_5 {
   text-indent: 25px;
 }
 
-#jcbvpjpsrf .katex-display {
+#jjkquxodqs .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#jcbvpjpsrf div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#jjkquxodqs div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>

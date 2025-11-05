@@ -160,7 +160,7 @@ This technique will help us better understand a) what exactly it **is** that we'
 3. examine plausible number of factors
 4. based on the plausible number of factors from (3), choose the range to examine from $n_{min}$ factors to $n_{max}$ factors
 5. do EFA, extracting from $n_{min}$ to $n_{max}$ factors. Compare each of these 'solutions' in terms of structure, variance explained, and --- by examining how the factors from each solution relate to the observed items --- assess how much theoretical sense they make.  
-6. _if the aim is to develop a scale for future use_ - consider removing "problematic" items and start over again.
+6. _if the aim is to develop a measurement tool for future use_ - consider removing "problematic" items and start over again.
 
 :::
 
@@ -619,11 +619,11 @@ We defined our near-zero cutoff at 0.3.
 So only loadings more negative than –0.3 or more positive than 0.3 are shown.)
 
 The first factor is associated fairly highly with all 10 variables.
-So maybe it represents a scale of "general fatigue"?
+So maybe it represents a the construct of "general fatigue"?
 
 The second factor is even less clear.
 It only has loadings above 0.3 for three items: it's negatively associated with mental fatigue, and positively associated with physical fatigue.
-The resulting scale is kind of awkward to describe: at one end of this scale, you're physically fatigued but not mentally, and at the other end of this scale, you're mentally fatigued but not physically.
+The resulting concept is kind of awkward to describe: at one end of this factor, you're physically fatigued but not mentally, and at the other end you are mentally fatigued but not physically.
 It's not the clearest idea, especially as when we introduced these questions we actually had a clearer notion (i.e., some questions about mental fatigue, some questions about physical fatigue, and a couple of others)
 
 And this is where **rotation** comes in. We can transform those sets of loadings in such a way that aims to make each variable load high on to one factor and low on to other factors, without changing the amount of variability we're explaining.  
@@ -1039,7 +1039,7 @@ Recall again the rough steps of EFA we introduced earlier. Note that this explor
 3. examine plausible number of factors
 4. based on 3, choose the range to examine from $n_{min}$ factors to $n_{max}$ factors
 5. do EFA, extracting from $n_{min}$ to $n_{max}$ factors. Compare each of these 'solutions' in terms of structure, variance explained, and --- by examining how the factors from each solution relate to the observed items --- assess how much theoretical sense they make.  
-6. _if the aim is to develop a scale for future use_ - consider removing "problematic" items and start over again.
+6. _if the aim is to develop a measurement tool for future use_ - consider removing "problematic" items and start over again.
 
 :::
 
@@ -1055,8 +1055,8 @@ Ultimately, a big part of it is subjective, and based on what we know about the 
     - "salient" here is somewhat arbitrary, but convention uses loadings that are $>0.3$ or $<-0.3$
     - we want our factors to be meaningful things that don't simply represent the same thing as a single variable. If a factor has only 1 item that loads very highly on to it, and all other item loadings are small, then that factor is really just capturing a very similar thing to the observed item.  
 - do all items have at least one loading at a salient level?  
-    - we want our solution to capture the full breadth of our scale - i.e. all aspects of our construct. So we ideally want each item to be related to at least one factor.
-    - depending on our purpose here, an item that doesn't have a high loading could point us to look at the item in more detail, and think about _why_ it is doing something different. If we are developing a scale then we may even decide that the item was badly worded, and we could drop it from the analysis and start over with the process on the subset of items.  
+    - we want our solution to capture the full breadth of our measurement tool - i.e. all aspects of our construct. So we ideally want each item to be related to at least one factor.
+    - depending on our purpose here, an item that doesn't have a high loading could point us to look at the item in more detail, and think about _why_ it is doing something different. If we are developing a measurement tool then we may even decide that the item was badly worded, and we could drop it from the analysis and start over with the process on the subset of items.  
 - are there any highly complex items?  
     - we ideally want items to be linked mainly to one factor and not to others.
     If an item loads across multiple factors, then we say that item is "complex".
@@ -1073,7 +1073,7 @@ Ultimately, a big part of it is subjective, and based on what we know about the 
 :::frame
 __Dataset: phoneaddiction.csv__  
 
-The dataset at [https://uoepsy.github.io/data/phoneaddiction.csv](https://uoepsy.github.io/data/phoneaddiction.csv){target="_blank"} comes from a (fake) study that is interested in developing a scale of "phone-attachment/addiction" - i.e., the idea of being overly attached to a phone.  
+The dataset at [https://uoepsy.github.io/data/phoneaddiction.csv](https://uoepsy.github.io/data/phoneaddiction.csv){target="_blank"} comes from a (fake) study that is interested in developing a measure of "phone-attachment/addiction" - i.e., the idea of being overly attached to a phone.  
 
 We have a set of 10 statements (@tbl-phdict) that get at different aspects of this idea, and we asked 240 people to rate how much they agreed with each of the 10 statements on a 1-5 scale (1 = strongly disagree, 5 = strongly agree).
 
@@ -1227,7 +1227,7 @@ pairs.panels(phdat)
 ## 2. Rotations and Factor Extraction
 
 **Rotations:**
-If we are thinking that there might be two or more factors that underly our scale of 'phone-addiction', then we would probably expect those two factors to be correlated (all the questions are about phone usage, after all). For that reason, we are going to use an **oblique rotation**.^[Even if these two factors are not correlated, then an oblique rotation could estimate that too. The point of an oblique rotation is that we're not _forcing_ the factors to be uncorrelated.]  
+If we are thinking that there might be two or more factors that underly our measure of 'phone-addiction', then we would probably expect those two factors to be correlated (all the questions are about phone usage, after all). For that reason, we are going to use an **oblique rotation**.^[Even if these two factors are not correlated, then an oblique rotation could estimate that too. The point of an oblique rotation is that we're not _forcing_ the factors to be uncorrelated.]  
 
 **Factor extraction:**
 As all of the correlations between individual items are low to medium (0.2 - 0.4), and the item distributions look fairly normal, we're going to opt to use maximum likelihood here.  
@@ -1315,11 +1315,11 @@ ph_efa2$Phi
 Looking at item9, the wording is "`r itemqs[9]`" This maybe represents something slightly different from just "being addicted to your phone" - it also contains a self-consciousness / feeling judged by others etc, which is something completely different.  
 
 So where have we got to? We started with loads of responses to a set of 10 questions, and we wanted to understand the underlying structure of the thing they were intended to measure ("phone addiction").  
-We've ended by identifying one question that didn't really fit with the rest (item9), and with a question mark between whether the scale captures 2 underlying factors or just 1.
+We've ended by identifying one question that didn't really fit with the rest (item9), and with a question mark between whether the measures capture 2 underlying factors or just 1.
 
 A lot of where we go next depends on what our overarching research aims are. If we want to **use** the construct "phone-addiction" in a subsequent analysis, then we'll need to extract scores, and we have a decision of what structure (1 factor or 2 factors) we want to use - and so how many scores each person will have.  
 
-## 6 - are we doing scale development?  
+## 6 - are we developing a measurement tool?  
 
 If our goal here is to design a nice questionnaire for future research that captures stuff about people's addiction to their phones, then item 9 isn't proving very useful here. At this point we may also want to consider if there are any other items that are maybe redundant (it's always good to try and keep a questionnaire short to reduce participant burden!).
 
@@ -1400,14 +1400,14 @@ tibble(
 :::
 ::::
 
-Scale development is lot of back and forth, and at this point we might consider re-wording some of the items to make the two factors more clearly distinct, then giving the edited questionnaire to a whole load of new people, and going through the whole process again until we're happy with a coherent structure!
+Developing measurement instruments (often called "scale development") is lot of back and forth, and at this point we might consider re-wording some of the items to make the two factors more clearly distinct, then giving the edited questionnaire to a whole load of new people, and going through the whole process again until we're happy with a coherent structure!
 
 
 # Hold on, I want some scores?  
 
 After all the focus on trying to better understand the underlying structure of factors that are resulting in our observed responses, we have somewhat lost sight of the fact that this might all be in aid of some other purpose - trying to create a score for each person in our dataset for each of the factors!  
 
-Much like PCA (see [Chapter 3](03_pca.html)), the scores from factor models will be taking into account the extent to which each individual observed variable might differently reflect the underlying factor. So this will contrast with naive scale scores which assume each variable is equally reflective of the construct.  
+Much like PCA (see [Chapter 3](03_pca.html)), the scores from factor models will be taking into account the extent to which each individual observed variable might differently reflect the underlying factor. So this will contrast with naive mean/sum scores which assume each variable is equally reflective of the construct.  
 
 Unlike PCA, however, in factor analysis everything is **indeterminate**. Much like how we can have infinitely many sets of loadings (depend on how we rotate them) that are numerically indistinguishable in terms of the implied model, there are infinitely many sets of factor scores that we could create - we have "factor score indeterminacy".   
 
