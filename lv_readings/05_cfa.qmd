@@ -204,13 +204,14 @@ Here's the opposite extreme.
 In this other (not very good) theoretical model of how the four variables are related, we might say "they're all related to each other for whatever reason!".
 In diagram form, this would be essentially like connecting each pair of variables by a double-headed arrow, as in @fig-pt2.  
 
-This model means we estimate all those covariances between each pair of variables, and so we can *perfectly* reproduce any observed covariance matrix.
+This model will estimate the covariances between each pair of variables, and so we can *perfectly* reproduce any observed covariance matrix.
 We started with 10 things in the covariance matrix (four variances and six covariances), and the model has to estimate those same 10 things (letters $a$ to $f$ and $u_{y1}$ to $u_{y4}$ in @fig-pt2). 
+(There's no point to talking about "model fit" for this model, because its fit to the data is already perfect!
+There's no variability, no extra data points, that it hasn't accounted for.
+We'll talk about this in more detail in the degrees of freedom section below!)
 
 This model is great for reproducing exactly what's there, but we already had what's there—we don't need this complex machinery to reproduce what we already have.
 In other words, this model hasn't given us anything theoretically interesting.
-
-(And we can't actually compute whether this model is a good fit to the data, because we're estimating the exact same number of parameters as there are data points in the covariance matrix—more on this in the degrees of freedom section below!)
 
 ```{r}
 #| echo: false
@@ -295,7 +296,7 @@ In regression, we could only talk about model fit if we had more than 2 datapoin
 The logic is the same for model fit in terms of CFA and SEM - we need more observed things than we have parameters that our model is estimating. The difference is that "observed things" are the values in our covariance matrix, rather than individual observations. The idea is that we need to be estimating fewer parameters (fewer "paths" or lines in the diagram) than there are unique values (variances and covariances) in our covariance matrix. This is because if we just fit paths between all our variables, then our model would be able to reproduce the data perfectly (just like a regression with 2 datapoints has an $R^2$ of 1).  
 
 
-The degrees of freedom for methods like CFA, Path Analysis and SEM, that are fitted to the covariance matrix of our data, correspond to the number of *knowns* (observed covariances/variances from our sample) minus the number of *unknowns* (parameters to be estimated by the model). 
+The degrees of freedom for methods like CFA, Path Analysis and SEM (methods that are fitted to the covariance matrix of our data) correspond to the number of *knowns* (observed covariances/variances from our sample) minus the number of *unknowns* (parameters to be estimated by the model). 
 
 
 :::sticky
@@ -323,9 +324,24 @@ A model is only able to be estimated if it has at least 0 degrees of freedom (if
 
 There are _loads_ of different metrics that people use to examine model fit for CFA and SEM, and there's lots of debate over the various merits and disadvantages as well as the proposed cut-offs to be used with each method.  
 
-The most fundamental test of model fit is a $\chi^2$ test, which reflects the discrepancy between our observed covariance matrix and the *model-implied* covariance matrix. If we denote the population covariance matrix as $\Sigma$ and the model-implied covariance matrix as $\Sigma(\Theta)$, then we can think of the null hypothesis here as $H_0: \Sigma - \Sigma(\Theta) = 0$. In this way our null hypothesis is that our theoretical model is correct (and can therefore perfectly reproduce the covariance matrix). This means that a significant result indicates _poor_ fit. It is very sensitive to departures from normality, as well as sample size (for models with $n>400$, the $\chi^2$ is almost always significant), and can often lead to rejecting otherwise adequate models.  
+The most fundamental test of model fit is a $\chi^2$ (chi-squared) test, which reflects the discrepancy between our observed covariance matrix and the *model-implied* covariance matrix. If we denote the population covariance matrix as $\Sigma$ (capital sigma) and the model-implied covariance matrix as $\Sigma(\Theta)$ (capital sigma of capital theta), then we can think of the null hypothesis here as $H_0: \Sigma - \Sigma(\Theta) = 0$.
+The null hypothesis is that there is no difference between the observed covariance matrix and the model-implied covariance matrix.
 
-Alongside this, the main four fit indices that are commonly used are known as RMSEA, SRMR, CFI and TLI. Smaller values of RMSEA and SRMR mean better fit while larger values of CFI and TLI mean better fit.  
+In this way, our null hypothesis is that our theoretical model is correct (and can therefore perfectly reproduce the covariance matrix).
+So, if we reject the null hypothesis because of a significant result on a model fit test, then it means that our model is a _poor_ fit to the data.
+
+Beware that sometimes the $\chi^2$ test will give "false alarms".
+It's very sensitive to departures from normality, as well as sample size (for models with $n>400$, the $\chi^2$ is almost always significant), and can often lead to rejecting otherwise adequate models.  
+
+Alongside this, the main four fit indices that are commonly used are known as RMSEA, SRMR, CFI and TLI.
+In case you're curious, here's what those acronyms stand for (it's basically statistical jargon salad, so the acronyms may be easier to remember):
+
+- RMSEA: Root mean square error of approximation
+- SRMR: Standardised root mean square residual
+- CFI: Comparative fit index
+- TLI: Tucker Lewis index
+
+Smaller values of RMSEA and SRMR mean better fit, while larger values of CFI and TLI mean better fit.  
 
 **Convention:** if $\textrm{RMSEA} < .05$, $\textrm{SRMR} < .05$, $\textrm{TLI} > .95$ and $\textrm{CFI} > .95$ then the model fits well.  
 
@@ -365,14 +381,22 @@ fitmeasures(myfittedmodel)[c("srmr","rmsea","cfi","tli")]
 
 One initially slightly bizarre aspect of latent variable models is that they involve estimating parameters between variables **some of which we never observe**. This seems almost like magic - we ask people questions about how well they sleep, if they fidget or worry etc., and somehow we are able to then estimate parameters concerning some underlying latent variable that represents 'anxiety' (but that we could never even hope to measure). The existence of any such latent variable is extremely theory driven - we are making a strong claim that there **is** some underlying thing that is causing our observed variables to covary. In diagrams like @fig-cfa, we never observe the latent variables `F1` or `F2`, we simply theorise them into existence^[I think therefore I am?] as an explanation for what we _do_ observe.  
 
-One important point is that models with latent variables that exhibit "good fit" do not prove the existence of any latent variable (such a task is impossible). In fact, it's entirely possible that there are other theoretical models that fit equally well but without positing the existence of latent variables. Conceptually, we should always be scrutinising the meaning of our latent variables in the context of what we know (or think) about the field in which we are working. 
+One important point is that **models with latent variables that exhibit "good fit" do not prove the existence of any latent variable (such a task is impossible).** In fact, it's entirely possible that there are other theoretical models that fit equally well but without positing the existence of latent variables. Conceptually, we should always be scrutinising the meaning of our latent variables in the context of what we know (or think) about the field in which we are working. 
 
 
 # Latent Variable Scaling
 
 If we are happy to commit to the latent variables in our model being _conceptually meaningful_, we still need to define these variables _numerically_.  
 
-Think of a factor model as containing sets of regressions of $item1 = \lambda_1\cdot Factor + u_1$, but where we never observe the "Factor" variable. So how can we ever estimate this model? In order to estimate parameters of these models (parameters like $\lambda_1$ - the factor loadings), we must commit to fixing some numeric feature of our latent variable - we must somehow fix its scale.  
+Think of a factor model as containing sets of regressions of $item1 = \lambda_1\cdot Factor + u_1$.
+Here, $\lambda_1$ (lambda) is the slope, while $u_1$ is the intercept.
+However, we never observe the "Factor" variable.
+So how can we ever estimate this model?
+
+<!-- EP RESUME -->
+
+In order to estimate parameters of these models (parameters like $\lambda_1$ - the factor loadings), we must commit to fixing some numeric feature of our latent variable ("fixing" in the sense of "choosing/setting a value", not in the sense of "repairing something").
+We must somehow fix our unobserved variable's scale.
 
 In @fig-df1, we can see a model of a latent factor loading on to 4 items. The number of paths in the model (all the arrows) is greater than the number of known values in our covariance matrix. However, we get around this by *fixing certain parameters to be specific values*. For instance, we fix the paths from the residuals to the items to be 1 residual factor loadings to be 1 (this is almost always done, and means that often the diagrams are drawn more simply with the residuals presented as curved arrows from the items instead, but it's the same model). While this makes our model over-identified (10 observed things, 9 things to estimate), there are infinitely many sets of numbers that would fit here because the latent factor has no numeric scale. We need to provide the number line on which we are going to score it.  
 
