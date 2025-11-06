@@ -15,6 +15,7 @@ library(xaringanExtra)
 library(tidyverse)
 library(patchwork)
 library(ggdist)
+library(semPlot)
 xaringanExtra::use_panelset()
 qcounter <- function(){
   if(!exists("qcounter_i")){
@@ -295,7 +296,6 @@ In regression, we could only talk about model fit if we had more than 2 datapoin
 
 The logic is the same for model fit in terms of CFA and SEM - we need more observed things than we have parameters that our model is estimating. The difference is that "observed things" are the values in our covariance matrix, rather than individual observations. The idea is that we need to be estimating fewer parameters (fewer "paths" or lines in the diagram) than there are unique values (variances and covariances) in our covariance matrix. This is because if we just fit paths between all our variables, then our model would be able to reproduce the data perfectly (just like a regression with 2 datapoints has an $R^2$ of 1).  
 
-
 The degrees of freedom for methods like CFA, Path Analysis and SEM (methods that are fitted to the covariance matrix of our data) correspond to the number of *knowns* (observed covariances/variances from our sample) minus the number of *unknowns* (parameters to be estimated by the model). 
 
 
@@ -316,15 +316,55 @@ A model is only able to be estimated if it has at least 0 degrees of freedom (if
  | 0 degrees of freedom |**just-identified** | can estimate parameters and their standard errors, but not model fit |
 | $<0$ degrees of freedom |**under-identified** | can estimate parameters but not their standard errors (so basically useless), and cannot estimate model fit   |
 
-
 :::
+
+
+## Making a model overidentified by defining residual factor loadings
+
+@fig-model-underidentified shows the basic structure of a theoretical model with one latent factor $F$ that loads onto four observed items $Y1$ through $Y4$.
+Each of those observed items is associated with some unobserved measurement error, represented as $u_j$ for item $j$.
+In CFA terms, we think of these measurement errors as unobserved factors (similar to the latent factor $F$), but we call these factors "residual factors".
+Each residual factor has its own loading onto one of the observed variables as well as its own variance.
+
+```{r}
+#| echo: false
+#| label: fig-model-underidentified
+#| fig-cap: "A four item factor structure. The model is underidentified because there are more parameters to estimate (thirteen) than there are values that we know (ten)."
+knitr::include_graphics("images/lv_scaling/Slide4.PNG")
+```
+
+This model is underidentified because we only have ten knowns (four variances and six covariances) but thirteen parameters to estimate:
+
+- Four residual factor variances
+- Four residual factor loadings
+- Four factor loadings
+- One latent factor variance^[and a partridge in a pear tree!]
+
+We don't like underidentified models, because as mentioned above, we can't estimate any variability in the parameters and we also can't estimate model fit.
+But there is a common way to make this kind of model overidentified.
+Specifically, CFA models will nearly always specify that the residual factor loadings are equal to 1.
+This decision removes four of the unknown parameters, bringing the model down to only nine unknowns.
+Because there are nine unknowns and ten knowns, the model is now overidentified—hurray!
+
+@fig-model-overidentified shows two ways of representing this overidentified model.
+One way is to explicitly show the residual factor loadings set to 1 (Panel A at left).
+Another way is to imply that the factor loadings have been set to 1 by leaving out the residual factors entirely and just showing their variance as a double-headed arrow looping back to each observed variable (Panel B at right).
+So if you see diagrams like the ones in Panel B, you know that those are models in which the residual factor loadings have been set to 1.
+
+```{r}
+#| echo: false
+#| label: fig-model-overidentified
+#| fig-cap: "A four item factor structure, shown two ways: one explicitly showing the residual factor loadings set to 1, one simpler version in which this has been assumed. The model is now overspecified because there are more known values (ten) than unknown values (nine)."
+knitr::include_graphics("images/lv_scaling/Slide5.PNG")
+```
+
 
 
 ## Model Fit Measures
 
 There are _loads_ of different metrics that people use to examine model fit for CFA and SEM, and there's lots of debate over the various merits and disadvantages as well as the proposed cut-offs to be used with each method.  
 
-The most fundamental test of model fit is a $\chi^2$ (chi-squared) test, which reflects the discrepancy between our observed covariance matrix and the *model-implied* covariance matrix. If we denote the population covariance matrix as $\Sigma$ (capital sigma) and the model-implied covariance matrix as $\Sigma(\Theta)$ (capital sigma of capital theta), then we can think of the null hypothesis here as $H_0: \Sigma - \Sigma(\Theta) = 0$.
+The most fundamental test of model fit is a $\chi^2$ (chi-squared) test, which reflects the discrepancy between our observed covariance matrix and the *model-implied* covariance matrix. If we denote the observed covariance matrix as $\Sigma$ (capital sigma) and the model-implied covariance matrix as $\Sigma(\Theta)$ (capital sigma of capital theta), then we can think of the null hypothesis here as $H_0: \Sigma - \Sigma(\Theta) = 0$.
 The null hypothesis is that there is no difference between the observed covariance matrix and the model-implied covariance matrix.
 
 In this way, our null hypothesis is that our theoretical model is correct (and can therefore perfectly reproduce the covariance matrix).
@@ -389,18 +429,26 @@ One important point is that **models with latent variables that exhibit "good fi
 If we are happy to commit to the latent variables in our model being _conceptually meaningful_, we still need to define these variables _numerically_.  
 
 Think of a factor model as containing sets of regressions of $item1 = \lambda_1\cdot Factor + u_1$.
-Here, $\lambda_1$ (lambda) is the slope, while $u_1$ is the intercept.
-However, we never observe the "Factor" variable.
-So how can we ever estimate this model?
+Here, the observations for $item1$ are the outcome, while $\lambda_1$ (lambda, the factor loadings) is the slope and $u_1$ (the error/residual) is the intercept.
+However, we never observe the $Factor$ variable, because it doesn't really exist.
+So how is it possible to estimate this model?
 
-<!-- EP RESUME -->
+In order to make it possible to estimate the the model parameters (parameters like $\lambda_1$, the factor loadings), we'll need to declare what some of the unknown values in our model will be.
+In more technical terms, we must commit to fixing some numeric feature of our latent variable ("fixing" in the sense of "choosing/setting a value").
+Specifically, we'll fix our unobserved variable's _scale_.
 
-In order to estimate parameters of these models (parameters like $\lambda_1$ - the factor loadings), we must commit to fixing some numeric feature of our latent variable ("fixing" in the sense of "choosing/setting a value", not in the sense of "repairing something").
-We must somehow fix our unobserved variable's scale.
+You can kind of think of "scale" as the units in which you measure things.
+You can measure the same thing—for example, your height—on a bunch of different scales—for example, millimetres, inches, yards, kilometres, parsecs, lightyears...^[Fun fact: if you're 150cm tall, then that makes you about $1.6 \times 10^{-16}$ lightyears tall.]
+So if you imagine a simple regression model `lm(shoe_size ~ height)`, your height might be measured in mm, or cm, or km, or lightyears, etc.
+The model would identify the same relationship between height and shoe size each time, but using a different set of numbers.
 
-In @fig-df1, we can see a model of a latent factor loading on to 4 items. The number of paths in the model (all the arrows) is greater than the number of known values in our covariance matrix. However, we get around this by *fixing certain parameters to be specific values*. For instance, we fix the paths from the residuals to the items to be 1 residual factor loadings to be 1 (this is almost always done, and means that often the diagrams are drawn more simply with the residuals presented as curved arrows from the items instead, but it's the same model). While this makes our model over-identified (10 observed things, 9 things to estimate), there are infinitely many sets of numbers that would fit here because the latent factor has no numeric scale. We need to provide the number line on which we are going to score it.  
+On each scale, there's some range between 0 and 1, whatever the units of that particular scale are.
+When we fix our unobserved variable's scale, we essentially need to define the what 0 and 1 map to for our latent variable.
 
-To get our heads around this, imagine a simple regression model `lm(shoe_size ~ height)`. The variable `height` could be measured in mm, cm, m, km, inches, feet, etc., and all would be exactly the same model, but each using a different set of numbers. The idea here is (conceptually) the same - we need to numerically define what 0-1 maps to for our latent variable.  
+Remember the happily overidentified model from @fig-model-overidentified above?
+For convenience, it's shown again in @fig-df1 alongside the observed covariance matrix.
+Because the latent variable in this model has no numeric scale, infinitely many sets of numbers would result in a perfectly reasonable model (think of it like this: is the model in cm or in lightyears? both will give a valid model, but the numbers will be *very* different).
+So what we need to do is provide the scale, the number line, that the latent variable will use.
 
 ```{r}
 #| echo: false
@@ -417,10 +465,11 @@ There are two ways to typically provide a latent variable with a scale. The firs
 #| fig-cap: "A four item factor structure, fitted with the 'marker method'"
 knitr::include_graphics("images/lv_scaling/Slide2.PNG")
 ```
+
 ```{r}
 #| echo: false
 #| label: fig-df3
-#| fig-cap: "A four item factor structure. With the latent variable variance fixed to 1 (i.e., standardised)"
+#| fig-cap: "A four item factor structure, with the latent variable variance fixed to 1 (i.e., standardised)"
 knitr::include_graphics("images/lv_scaling/Slide3.PNG")
 ```
 
@@ -428,7 +477,7 @@ knitr::include_graphics("images/lv_scaling/Slide3.PNG")
 __Scaling a latent variable__  
 
 - "marker method": fix the first factor loading to 1. Useful if you have one specific item that is conceptually stronger than others and measured on a meaningful scale
-- "unit variance": fix the variance of the latent variable to 1. Useful to evaluate factor loadings as these will represent standardised contribution of factor on each item.  
+- "unit variance": fix the variance of the latent variable to 1. Useful to evaluate factor loadings as these will represent standardised contributions of the factor on each item.  
 
 :::
 
@@ -437,7 +486,9 @@ __Latent Variable Scaling in R__
 
 In __lavaan__, using `cfa()` will default to using the "marker method" and fixing the first loading of each factor to equal 1.   
 
-While the two models below are essentially the same, we can switch up _which_ specific item we want to have the loading fixed for, and just put that one first when defining the factor (e.g., note below that the order of items differs when defining the `sleep` factor).  
+While the two models below are essentially the same, we can switch up _which_ specific item we want to have the loading fixed for, and just put that one first when defining the factor.
+Below, in the `sleep` factor, `q_1` comes first on the left, but `q_3` comes first on the right.
+For the model on the left, it's the loading of `q_1` onto the latent variable that'll be set to 1, while for the model on the right, it's the loading of `q_3` that'll be set to 1.
 
 ::::{.columns}
 :::{.column width="48%"}
@@ -467,7 +518,7 @@ cfa(mymodel, data = mydata)
 :::
 ::::
 
-If instead we want to scale the latent variables by fixing their variances to be equal to 1, then we can use `std.lv = TRUE` when fitting the model:  
+If instead we want to use the "unit variance" method and fix the latent variable(s)' variance(s) to 1, then when fitting the model, we can use `std.lv = TRUE`  ("std.lv" = "standardised latent variables"):
 
 ```{r}
 myfittedmodel <- cfa(mymodel, data = mydata)
@@ -476,13 +527,22 @@ myfittedmodel_std <- cfa(mymodel, data = mydata, std.lv = TRUE)
 
 There's a lot of parameter estimates in these sorts of models, so it looks like a lot differs between these models. But remember the models themselves are the same, we're just re-scaling the latent variable, and so re-scaling the estimates.  
 
-In the two sets of loadings below, there is a link --- the ratios are the same! If we take the set on the right hand side, but re-express them relative to the first one (the loading of 0.741), then we get back those loadings on the left hand side! $\frac{0.621}{0.741} = $`r round(0.621/0.741, 3)` and $\frac{-0.627}{0.741} = $`r round(-0.627/0.741, 3)`.  
+So it looks like a lot might differ between the two sets of loadings below, but there is a link---within each model, the ratios between the loadings is the same.
 
-There is one key difference here - the hypothesis testing stuff (the `Std.Err`, `z-value` and `P(>|z|)` columns) will be different because they are taking each estimate and testing against the null hypothesis that the estimate is zero.  
+- For the marker method model on the left:
+  - the `q_2` loading is 83.8% of the `q_1` loading:  $\frac{0.838}{1}$
+  - the `q_3` loading is –84.6% of the `q_1` loading: $\frac{-0.846}{1}$
+- And for the unit variance model on the right: 
+  - the `q_2` loading is still 83.8% of the `q_1` loading: $\frac{0.621}{0.741}$ = 0.838 
+  - the `q_3` loading is still –84.6% of the `q_1` loading: $\frac{-0.627}{0.741}$ = –0.846
+  
+But there's also a crucial difference between the two models.
+Because the built-in hypothesis tests are always testing against the null hypothesis that the estimate is zero, the hypothesis testing stuff (the `Std.Err`, `z-value` and `P(>|z|)` columns) will be different.
+
 
 ::::{.columns}
 :::{.column width="48%"}
-__first loading = 1__  
+__marker method: first loading = 1__  
 
 ```
 Latent Variables:
@@ -496,7 +556,7 @@ Latent Variables:
 :::{.column width="4%"}
 :::
 :::{.column width="48%"}
-__latent variable variance = 1__  
+__unit variance: latent variable variance = 1__  
 
 ```
 Latent Variables:
@@ -511,7 +571,7 @@ Latent Variables:
 
 __Post-hoc standardisation__  
 
-We can also quickly get out standardised estimates (or 'standardized' if you're a north american speaker!) by simply asking for them in the `summary()`. This will output extra columns next to the parameter estimates.  
+We can also quickly get out estimates that are standardised (or 'standardized' if you're North American!) by simply asking for them in the `summary()`, writing `standardized = TRUE`. The result will output extra columns next to the parameter estimates.  
 
 - The `std.lv` column shows the estimates if the latent variables have a variance equal to 1 ("std.lv" = "standardised latent variables").  
 - The `std.all` column shows us the estimates if the latent variables a variance equal to 1 **and** the observed variables have variances equal to 1 ("std.all" = "all things standardised").   
@@ -528,8 +588,6 @@ Latent Variables:
     q_2     0.838     0.145    5.777    0.000    0.621    0.519
     q_3    -0.846     0.146   -5.780    0.000   -0.627   -0.511
 ```
-
-
 
 :::
 
@@ -549,16 +607,33 @@ The `semPaths()` function from __semPlot__ package can take a fitted lavaan mode
 ```{r}
 #| eval: false
 library(semPlot)
-semPaths(myfittedmodel, 
-        what = ?, # line thickness & color by... 
-        whatLabels = ?, # label lines as... 
-        rotation = ? # rotations, +1 = 90degrees
-        )
+semPaths(
+  myfittedmodel, 
+  what = ?,        # line thickness & color by... 
+  whatLabels = ?,  # label lines as... 
+  rotation = ?,    # rotations, +1 = 90degrees
+  ...
+)
 ```
 
 
+For example:
+
+```{r}
+semPaths(
+  myfittedmodel,
+  what = 'est',         # arrows green/red for pos/neg estimates, and
+                        # darker for more extreme estimates.
+  whatLabels = 'est',   # label arrows with estimates
+  rotation = 3,         # rotated to put latent variables at the bottom
+  edge.label.cex = 1.5  # change font size of edge labels
+  )
+```
+
+
+
 ::: {.callout-tip collapse="true"}
-#### optional: handy functionality! 
+#### optional: handy `semPath()` functionality! 
 
 Occasionally we might want to draw models before we even get the data. __lavaan__ has some useful functionality where you can give it a model formula and ask it to "lavaanify" it into a model object that just hasn't yet been fitted to anything. 
 
@@ -584,6 +659,8 @@ __Confirmatory? Exploratory? "Explirmatory"? "Confloratory"?__
 
 :::
 
+What if a factor structure _doesn't_ fit well?
+
 When a factor structure does not fit well, we can either start over and go back to doing EFA, deciding on an appropriate factor structure, on whether we should drop certain items, etc. The downside of this is that we essentially result in _another_ version of the measurement tool, or another theory about what the tool is measuring, and before we know it, we have 10 versions of the same thing floating around, in a perpetual state of development. The advantage of this is that we don't just blindly persist with a bad theory of what our measurement tool is capturing.  
 
 However, we are not restricted to choosing between "carry on with a crappy measure" and "shove it in the bin and start over". Somewhere between these two is the option of making small adjustments to our theory about how the measurement tool works. In essence, this is seeing if it possible to minimally adjust our model based on areas of local misfit in order to see if our global fit improves. 
@@ -592,7 +669,7 @@ However, we are not restricted to choosing between "carry on with a crappy measu
 
 The `modindices()` function takes a fitted model object from __lavaan__ and provides a table of all the possible additional parameters we _could_ estimate.  
 
-The output is a table, which we can ask to be sorted according to the `mi` column using `sort = TRUE`.  
+The output is a table, which we can ask to be sorted according to the `mi` ("modification index") column using `sort = TRUE`.  
 
 ```{r}
 #| eval: false
@@ -601,7 +678,7 @@ modindices(myfittedmodel, sort = TRUE)
 ```
       lhs op    rhs     mi    epc sepc.lv sepc.all sepc.nox
 72  item6 ~~ item10 10.747  0.082   0.082    0.144    0.144
-25 fact1  =~  item7  8.106  0.119   0.080    0.080    0.080
+25  fact1 =~  item7  8.106  0.119   0.080    0.080    0.080
 65  item5 ~~  item7  6.720  0.039   0.039    0.160    0.160
 71  item6 ~~  item9  6.675 -0.065  -0.065   -0.115   -0.115
 .   ...   .   ...    ...    ...     ...      ...      ...
@@ -609,24 +686,27 @@ modindices(myfittedmodel, sort = TRUE)
 
 The columns show:  
 
-- `lhs`,`op`,`rhs` : these three columns show the specific parameter, in lavaan syntax. So `fact1 =~ item7` is for the possible inclusion of `item7` being loaded on to the latent variable `fact1`. `item6 ~~ item10` is for the inclusion of a covariance between `item6` and `item10`, and so on.  
-- `mi` : "modification index" = the change in the model $\chi^2$ value _were we to include this parameter in the model_  
-- `epc` : "expected parameter change" = the estimated value that the parameter _would take were it included in the model_  
+- `lhs`,`op`,`rhs` : the specific parameter we might include, in lavaan syntax. So `item6 ~~ item10` is for the inclusion of a covariance between `item6` and `item10`, and  `fact1 =~ item7` is for the possible inclusion of `item7` being loaded on to the latent variable `fact1`, and so on.
+- `mi` : "modification index" = the change in the model $\chi^2$ value _if we were to include this parameter in the model_  
+- `epc` : "expected parameter change" = the estimated value that the parameter _would take if it were to be included in the model_  
 - `sepc.lv`, `sepc.all`, `sepc.nox` : these provide the `epc` values but scaled to when a) the latent variables are standardised, b) all variables are standardised, and c) all except exogenous observed variables are standardised (not relevant for CFA)  
 
 
-Often, the `sepc.all`is a useful column to look at, because it shows the proposed parameter estimate in a standardised metric. i.e. if the `op` is `~~`, then the `sepc.all` value is a correlation, and so we can consider anything <.2/.3ish to be quite small. If `op` is `=~`, then the `sepc.all` value is a standardised factor loading, so values >.3 or >.4 are worth thinking about, and so on. 
+Often, the `sepc.all`is a useful column to look at, because it shows the proposed parameter estimate in a standardised metric.
+For example, if the `op`erator is `~~`, then the `sepc.all` value is a correlation, and so we can consider anything <.2/.3ish to be quite small.
+If `op` is `=~`, then the `sepc.all` value is a standardised factor loading, so values >.3 or >.4 are worth thinking about, and so on. 
 
 
 ::: {.callout-warning collapse="false"}
 #### model modifications are exploratory!!
 
-We could simply keep adding suggested parameters to our model and we will eventually end up with a perfectly fitting model.  
+We could simply keep adding the suggested parameters to our model and we will eventually end up with a perfectly fitting model.  
+But the goal isn't a perfectly fitting model—it's a theoretically reasonable one.
 
 It's very important to think critically here about _why_ such modifications may be necessary. 
 
-- The initial model may have failed to capture the complexity of the underlying relationships among variables. For instance, suggested residual covariances, representing unexplained covariation among observed variables, may indicate misspecification in the initial model. 
-- The structure of the construct is genuinely different in your population from the initial one in which the scale is developed (this could be a research question in and of itself - i.e. does the structure of "anxiety" differ as people age, or differ between cultures?)
+- The initial model may have failed to capture the complexity of the underlying relationships among variables. For instance, suggested residual covariances, which represent unexplained covariation among observed variables, may indicate  that the original model was misspecified.
+- The structure of the construct is genuinely different in your population from the initial population with which the scale was developed (this could be a research question in and of itself - i.e. does the structure of "anxiety" differ as people age, or differ between cultures?)
 
 Modifications to a CFA model should be made judiciously, with careful consideration of theory as well as quantitative metrics. The goal is to develop a model that accurately represents the underlying structure of the data while maintaining theoretical coherence and generalizability.  
 
