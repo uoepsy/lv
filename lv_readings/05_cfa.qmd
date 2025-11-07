@@ -383,7 +383,7 @@ In case you're curious, here's what those acronyms stand for (it's basically sta
 
 Smaller values of RMSEA and SRMR mean better fit, while larger values of CFI and TLI mean better fit.  
 
-**Convention:** if $\textrm{RMSEA} < .05$, $\textrm{SRMR} < .05$, $\textrm{TLI} > .95$ and $\textrm{CFI} > .95$ then the model fits well.  
+**Convention:** if $\textrm{RMSEA} < .05$, $\textrm{SRMR} < .08$, $\textrm{TLI} > .95$ and $\textrm{CFI} > .95$ then the model fits well.  
 
 ::: {.callout-caution collapse="true"}
 #### optional: absolute fit indices
