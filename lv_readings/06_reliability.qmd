@@ -64,18 +64,36 @@ The second measurement related threat is the idea of the "consistency" or "relia
 
 Within each of the threats of "validity" and "reliability", there are various of different forms. We will go through a selection of these and how we might try and assess them. It is worth keeping in mind these two broad definitions above, which will underpin everything we discuss here.  
 
-# construct validity
+One initial, and **incredibly important thing to remember** is that these concepts of "reliability" and "validity" are ultimately a property of our _sample_, and not of a measure. Just because a measurement tool appears to be valid and reliable in one instance, it does not mean that it will continue to be valid or reliable for any other persons, or in any other place, or at any other time.  
 
-Validity is types
-how to assess
+What this means is that we _can't_ just say "I used [insert measure here] that has been shown to be valid and reliable", and just assume that these properties hold for our usage.  
 
-## face validity
+# Construct Validity
+
+There are various different forms of validity, but broadly speaking they all come down to the idea of "if it walks like a duck and quacks like a duck..."^[Amusingly, the word "duck" is apparently not a meaningful part of ornithological taxonomy. There are some things that we call "geese" that are more closely related to some things that we call "ducks" than other things that we call "ducks". And don't get started on "goosanders"!]  
+
+## Face Validity
+
+Face validity is essentially asking whether, "on the face of it", the measure appears to be measuring the construct. For instance, if we are measuring the construct "anxiety", then do we have questions that refer to things that are about "anxiety"? These might be questions referring to "anxious"/"worried" feelings, or behaviours that we believe to be indicative of anxiety (fidgetting, trouble sleeping) etc. For a more objective example: a maths test that contains only arithmetic problems has good face validity of measuring math ability.  
 
 :::sticky
-Face validity: The extent to which a test appears, on the surface, to measure what it claims to measure. For example, a maths test that contains only arithmetic problems has good face validity.
+**Face validity:** The extent to which a test appears, on the surface, to measure what it claims to measure. 
 :::
 
-## convergent & discriminant validity
+Face validity is not sufficient for claiming construct validity. For instance, back in the not so distant past, there were many prominent psychologists for whom [measuring peoples' skulls](TODO){target="_blank"} or [looking at people's handwriting](){target="_blank"} were face-valid approaches of assessing personality.  
+
+Similarly, face validity is not necessary for construct validity. We could have TODO
+
+## Content Validity
+
+The term c
+
+
+
+## Convergent & Discriminant Validity
+
+Another way in which we 
+
 
 :::sticky
 Convergent validity - The degree to which scores on a test are related to scores on other measures of the same construct. For instance, a new depression inventory correlating strongly with the Beck Depression Inventory.
@@ -91,11 +109,9 @@ Criterion validity - The extent to which test scores are related to an external 
 
 # reliability
 
-> love truth but pardon error (Voltaire)
-
 The very high level idea of reliability can be captured by the various words we could use instead of 'reliability'. We are talking about how reliable/consistent/repeatable/precise/stable/dependable/\<insert-synonym-here\> a measurement is. However, we need a more specific, mathematical definition of "reliability" in order to be able to try and quantify it for a given measurement instrument.  
 
-The easiest way to get into thinking about reliability is probably to think about *repeated assessment*, as we have already hinted at earlier. If we measure person $i$ using instrument $X$ and then we measure person $i$ using instrument $X$ a second time (and we assume they haven't changed on the underlying construct), then a perfectly reliable measure would give us the exact same scores.  
+The easiest way to get into thinking about reliability is probably to think about *repeated assessment*, as we have already hinted at earlier. If we measure person $i$ using instrument $x$ and then we measure person $i$ using instrument $x$ a second time (and we assume they haven't changed on the underlying construct), then a perfectly reliable measure would give us the exact same scores.  
 
 For example, a reliable method of weighing a dog is to use the big specialised scales for pets that they have at the vets. A less reliable way is to awkwardly carry your dog onto your cheap bathroom scales and subtract your weight. Even less reliable would be to go and do this outside on a bumpy surface like gravel, where the scales don't work well, and deciding to do it standing on one leg...  
 
@@ -143,6 +159,10 @@ ggplot(df1,aes(x=measurement_1, y = measurement_2))+
 
 This is great as a way to start thinking about reliability, but it is hard to think about in situations where we *haven't* measured the same units twice. A more generalisable way to conceive of reliability can be got at by thinking about measurement in a diagrammatic way. Which is great, because I love diagrams!
 
+## truth and error 
+
+> love truth but pardon error (Voltaire)
+
 So let's go back to basics. Whenever we measure something, we get a number^[(hooray, I love numbers almost as much as I love diagrams!]. But there are almost always two things that make that number what it is: there is the "true" value of the construct that we're measuring, and then there is error. This error might come from different things - it could be rounding error (our scales only display to the 10th of a kg), it could be random error due to a poor instrument (e.g., using our bathroom scales on some bumpy cobbles that happen to make it weigh higher/lower depending on where we position the scales), or it could be other stray causes that are unrelated to the construct we're trying to measure (e.g., measurements of anxiety often include a question about sleep habits, but there are lots of other things that influence sleep!).  
 
 Drawing our diagram then, when we measure something, we observe one thing (the score), but this is caused by two unobserved things (the truth and some error). Following the conventions for drawing these sorts of diagram, things we observe are in squares, and unobservables are in circles.  
@@ -163,8 +183,7 @@ One way to make the idea of "truth" here a little more concrete, let's suppose t
 plot(density(rnorm(1e4,mean=23.814346,sd=2)),main="10,000 measurements of Dougal's weight",xlab="observed weight")
 ```
 
-Now let's expand from thinking about Dougal specifically to thinking about our proposed measurement process for weighing dogs in general. We have our "instrument" for measuring a dog's weights (our bathroom scales), and we can imagine all the measurements we might use this instrument for. For any dog we might use these scales to weigh, the observed number we see on the scales is going to be driven by 1) that dog's *true* weight, and 2) a little bit of error.  
-Just like all the true weights of all dogs have a variance (some are big dogs that weigh a lot, some a little dogs that weigh less etc.), the errors that contribute to our measurements also have a variance (some readings will be a bit higher than truth, some will be a bit lower).   
+Now let's expand from thinking about Dougal specifically to thinking about our proposed measurement process for weighing dogs in general. We have our "instrument" for measuring a dog's weights (our bathroom scales), and we can imagine all the measurements we might use this instrument for. For any dog we might use these scales to weigh, the observed number we see on the scales is going to be driven by 1) that dog's *true* weight, and 2) a little bit of error. Just like all the true weights of all dogs have a variance (some are big dogs that weigh a lot, some a little dogs that weigh less etc.), the errors that contribute to our measurements also have a variance (some readings will be a bit higher than truth, some will be a bit lower).   
 
 If we add these variances to our diagram, we simply add curved lines to our "Truth" and "Error" variables: 
 ```{r}
@@ -205,7 +224,7 @@ For example, consider the following three scenarios:
 
 The size of the error variance (1kg or 100kg) by itself doesn't determine how much "off" (a little bit off vs waayy off) we consider the measurements to be. What is important is how big this error variance is **relative to** the true variance of the things being measured.  
 
-Elephants' weights vary between TODO and TODO, so mis-measuring by 100kg isn't really that bad in the grand scheme of things. But dogs' weights vary between c5kg and 50kg, so mis-measuring by 100kg is ridiculous. 
+Elephants' weights vary between 1800 and 4500kg, so mis-measuring by 100kg isn't really that bad in the grand scheme of things. But dogs' weights vary between c5kg and 50kg, so mis-measuring by 100kg is ridiculous. 
 
 :::
 
@@ -227,6 +246,13 @@ knitr::include_graphics("images/ctt/Slide2.PNG")
 In the diagram, this is represented by the fact that there is no arrow between the Truth and Error variables. 
 What this means in an applied setting is that we assume that the amount of measurement error isn't less/more for someone who has a low true value than it is for someone with a high one. Continuing with the act of weighing dogs, this is the assumption that if my scales are showing a value that is $\pm1kg$, then it is $\pm1kg$ for a dog that actually weighs 5kg and for one that actually weighs 50kg. You could imagine this not being the case if, e.g., the 50kg dog squashed the scales down so much that the scales always showed $50 \pm 0.1kg$, and the scales didn't work as well for the little 5kg dog where we see scores of $5 \pm 3kg$.  
 
+2. Error has mean zero. 
+When it gets to diagrams and covariance-based models (like CFA etc), we don't really talk much about the means anymore. In these diagrams we introduce means as a constant fixed number, in **triangles** (if squares are for observed variables, circles are unobserved/latent variables, then we need a new shape).  
+So more explicitly our diagram would look like:  
+
+todo
+
+
 ```{r}
 #| echo: false
 set.seed(86)
@@ -236,25 +262,25 @@ df2 = tibble(
   measurement_1 = rnorm(30,true,e),
   measurement_2 = rnorm(30,true,e)
 )
-ggplot(df2,aes(x=measurement_1, y = measurement_2))+
+p1 <- ggplot(df2,aes(x=measurement_1, y = measurement_2))+
   geom_point(size=3,alpha=.4)+
-  geom_segment(aes(x=true,xend=measurement_1,y=true,yend=measurement_2),col="red")
-```
+  geom_segment(aes(x=true,xend=measurement_1,y=true,yend=measurement_2),col="red")+
+  labs(title="error is correlated with truth")
 
-2. error has mean zero (no systematic bias)
-TODO
-```{r}
-#| echo: false
 set.seed(86)
 df2 = tibble(
   true = df$true,
-  measurement_1 = rnorm(30,true,2),
-  measurement_2 = rnorm(30,true,2)
+  measurement_1 = rnorm(30,true+5,2),
+  measurement_2 = rnorm(30,true+5,2)
 )
-ggplot(df2,aes(x=measurement_1, y = measurement_2))+
+p2 <- ggplot(df2,aes(x=measurement_1, y = measurement_2))+
   geom_point(size=3,alpha=.4)+
   geom_segment(aes(x=true,xend=measurement_1,y=true,yend=measurement_2),
-               col="red")
+               col="red")+
+  labs(title="error has non-zero mean")
+
+library(patchwork)
+p1 + p2
 ```
 
 
@@ -262,9 +288,14 @@ ggplot(df2,aes(x=measurement_1, y = measurement_2))+
 
 This way of thinking about reliability might seem nice and intuitive, but if we think about having to actually _quantify_ reliability this way, then we suddenly realise that we don't have enough information... We are essentially saying "observed score = unobserved truth + unobserved error". This is like being given a math problem of "23.5 = T + E, please solve" --- it's impossible!  
 
-Things get a lot better when we have multiple scores.  
-- diagram two scores
+Things get a lot better when we have multiple scores. This is because we have two scores, and two errors, but only one truth. Just as before, we can sort of see some implications of this diagram: 
 
+- the true value hasn't changed between assessments
+- the true value contributes the same to each assessment  
+- there is the same amount of error at each assessment. i.e,. it's not the case that the 2nd assessment involves much bigger or smaller errors than the first (this is $\sigma^2_{E1} = \sigma^2_{E2}$
+- the errors are uncorrelated - happening to have score 1 be a little bit above your true value tells us nothing about how off our score will be at time 2.  
+
+TODO fix this image to fix sigmas the same
 ```{r}
 #| label: fig-ctt3
 #| echo: false
@@ -272,47 +303,55 @@ Things get a lot better when we have multiple scores.
 knitr::include_graphics("images/ctt/Slide3.PNG")
 ```
 
-there are some implications of this diagram! : 
-Firstly - true values haven't changed between the assessments  
-secondly, the true value contributes the same to each assessment  
-thirdly, there is the same amount of error at each assessment. i.e,. it's not the case that the 2nd assessment involves much bigger or smaller errors than the first. i.e., $\sigma^2_{E1} = \sigma^2_{E2}$ 
-finally, the errors are uncorrelated - happening to have score 1 be a little bit above your true value tells us nothing about how off our score will be at time 2.  
+TODO
+so we are now saying something like
+23.5 = T + E
+23.6 = T + E
 
 
 ::: {.callout-caution collapse="true"}
 #### optional - where did the correlation between repeated measurements go?  
 
-but somewhere along teh way we've lost the whole idea of "consistency across repeated assessment"? is that reliability? or is it about the ratio of true variance to score variance? 
+Somewhere along the way we've lost the whole idea of "consistency across repeated assessment"? Is that reliability? or is reliability about the ratio of true variance to observed score variance?  
 
-it's both! 
+It's both!   
 
-now this diagram can be used to *imply* the covariance between the observed variables. according to this diagram, the only way that score 1 and score 2 covary is via the true values.  So cov(score_1, score_2) is just going to be $\sigma^2_T$.  
+To turn covariance into a correlation, we must divide it by the standard deviations of the two variables - $cor_{xy} = \frac{cov_{xy}}{sd_x \cdot sd_y}$.  
 
-to turn a covariance into a correlation, we must divide it by the standard deviations of the two variables: i.e., $cor_{xy} = \frac{cov_{xy}}{sd_x \cdot sd_y}$. 
-and we have talked about how the variance in scores = variance in true values plus variance in errors: $\sigma^2_T + \sigma^2_E$, so the standard deviation of a score 1 is $\sqrt{(\sigma^2_T + \sigma^2_{E1})}$. 
-
-As it happens, when we do this, the equation simplifies to show that $cor_{s1s2} = \frac{\sigma^2_T}{\sigma^2_T + \sigma^2_E}$. i.e., the correlation between scores from repeated assessments is equal to that same concept of "proportion of true variance out of total variance (true variance + error variance)". so it's the same old reliability idea!  
-
-
-optional:  
-
-remember that $\sigma$ represents a standard deviation, and $\sigma^2$ a variance:  
+So let's take the correlation between scores and express it as the covariance divided by the standard deviations. Remember that standard deviation is the square root of variance, so let's write them as $\sqrt{\sigma^2}$ instead (the reason will become clear in a second).  
 
 $$
 \begin{align}
-cor_{s1s2} &= \frac{cov_{s1s2}}{\sigma_{s1} \cdot \sigma_{s2}} \\
+cor_{score_1,score_2} &= \frac{cov_{score1,score2}}{\sigma_{score1} \cdot \sigma_{score2}} \\
 \, \qquad \\
-&= \frac{cov_{s1s2}}{\sqrt{\sigma^2_{s1}} \cdot \sqrt{\sigma^2_{s2}}} \\
-\, \qquad \\
+&= \frac{cov_{score1,score2}}{\sqrt{\sigma^2_{score1}} \cdot \sqrt{\sigma^2_{score2}}} \\
+\end{align}
+$$
+
+As we know, these diagrams like in TODO *imply* covariances between observed variables. In this case, the observed variables are the two scores, and cccording to this diagram, the only way that Score 1 and Score 2 co-vary is via the true values. So $cov_{score_1, score_2}$ is going to be $\sigma^2_T$.  
+
+And we have just talked about how the variance in observed scores is equal to the variance in the true values plus the variance in the errors, and so the variance of Score 1 is going to be $\sigma^2_T + \sigma^2_{E1}$.  
+
+We can substitute all these in to the above, and we would get:  
+
+$$
+\begin{align}
 &= \frac{\sigma^2_T}{\sqrt{(\sigma^2_T + \sigma^2_E)} \cdot \sqrt{(\sigma_T^2 + \sigma^2_E)}}  \\
-\, \qquad \\
+\end{align}
+$$
+The bottom part then simplifies to:  
+
+$$
+\begin{align}
 & = \frac{\sigma^2_T}{\sigma^2_T + \sigma^2_E}
 \end{align}
 $$
 
+And we're right back at the "proportion of true variance out of total variance (true variance + error variance)".  
+
 :::
 
-So where do these repeated assessments come from? There are lots of ways in which we can think of having "parallel tests" (i.e., having multiple instances of measurements of the same construct).  
+So where do these repeated assessments come from? There are lots of ways in which we can think of having these sort of "parallel tests" (having multiple instances of measurements of the same construct).  
 
 we could: 
 
@@ -321,14 +360,7 @@ we could:
 - get two (or more) people to measure the same units
 - administer a whole bunch of different measurement instruments 
 
-for each of these situations there are calculations people use to quantify the reliability. they differ because of how they are partitioning variance in to "true variance" and "error variance".  
-
-
-- repeated assessments
-- alternate forms
-- inter rater
-- internal consistency (congeneric). link back to FA
-
+For each of these situations there are specific calculations that tend to get used to quantify the reliability. They tend to differ because of how they are partitioning variance in to "true variance" and "error variance".  
 
 
 ## test-retest reliability
