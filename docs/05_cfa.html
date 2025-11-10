@@ -613,7 +613,9 @@ Figure&nbsp;6: A four item factor structure. The model is underidentified becaus
 <li>Four factor loadings</li>
 <li>One latent factor variance<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></li>
 </ul>
-<p>We don’t like underidentified models, because as mentioned above, we can’t estimate any variability in the parameters and we also can’t estimate model fit. But there is a common way to make this kind of model overidentified. Specifically, CFA models will nearly always specify that the residual factor loadings are equal to 1. This decision removes four of the unknown parameters, bringing the model down to only nine unknowns. Because there are nine unknowns and ten knowns, the model is now overidentified—hurray!</p>
+<p>We don’t like underidentified models, because as mentioned above, we can’t estimate any variability in the parameters and we also can’t estimate model fit.</p>
+<p>We are going to have to somehow give our latent factor a numeric scale, and one way to do this is to fix its variance to be 1 (we’ll see more about this in a little bit). This helps somewhat, but not enough, we still have twelve things to be estimated.</p>
+<p>There is another easy way to make this kind of model overidentified. Specifically, CFA models will nearly always specify that the residual factor loadings are equal to 1. This decision removes four of the unknown parameters, bringing the model down to only eight unknowns. Because there are eight unknowns and ten knowns, the model is now overidentified—hurray!</p>
 <p><a href="#fig-model-overidentified" class="quarto-xref">Figure&nbsp;7</a> shows two ways of representing this overidentified model. One way is to explicitly show the residual factor loadings set to 1 (Panel A at left). Another way is to imply that the factor loadings have been set to 1 by leaving out the residual factors entirely and just showing their variance as a double-headed arrow looping back to each observed variable (Panel B at right). So if you see diagrams like the ones in Panel B, you know that those are models in which the residual factor loadings have been set to 1.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -623,7 +625,7 @@ Figure&nbsp;6: A four item factor structure. The model is underidentified becaus
 <img src="images/lv_scaling/Slide5.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-model-overidentified-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7: A four item factor structure, shown two ways: one explicitly showing the residual factor loadings set to 1, one simpler version in which this has been assumed. The model is now overspecified because there are more known values (ten) than unknown values (nine).
+Figure&nbsp;7: A four item factor structure, shown two ways: one explicitly showing the residual factor loadings set to 1, one simpler version in which this has been assumed. The model is now overspecified because there are more known values (ten) than unknown values (eight). For now, we fix the factor variance to be 1
 </figcaption>
 </figure>
 </div>

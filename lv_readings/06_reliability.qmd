@@ -64,15 +64,25 @@ The second measurement related threat is the idea of the "consistency" or "relia
 
 Within each of the threats of "validity" and "reliability", there are various of different forms. We will go through a selection of these and how we might try and assess them. It is worth keeping in mind these two broad definitions above, which will underpin everything we discuss here.  
 
-One initial, and **incredibly important thing to remember** is that these concepts of "reliability" and "validity" are ultimately a property of our _sample_, and not of a measure. Just because a measurement tool appears to be valid and reliable in one instance, it does not mean that it will continue to be valid or reliable for any other persons, or in any other place, or at any other time.  
+:::sticky
+__Often forgotten__
 
-What this means is that we _can't_ just say "I used [insert measure here] that has been shown to be valid and reliable", and just assume that these properties hold for our usage.  
+One initial, and incredibly important thing to remember is that these concepts of "reliability" and "validity" can only ever be evaluated in a specific context.  
+
+Just because a measurement tool appears to be valid and reliable in one instance, it does not mean that it will continue to be valid or reliable when used for any other persons, or in any other place, or at any other time.  
+
+What this means is that when doing research we _can't_ just say "I used [insert measure here] that has been shown to be valid and reliable", and simply assume that these properties also hold in our current study.  
+
+:::
+
 
 # Construct Validity
 
 There are various different forms of validity, but broadly speaking they all come down to the idea of "if it walks like a duck and quacks like a duck..."^[Amusingly, the word "duck" is apparently not a meaningful part of ornithological taxonomy. There are some things that we call "geese" that are more closely related to some things that we call "ducks" than other things that we call "ducks". And don't get started on "goosanders"!]  
 
 ## Face Validity
+_does it look like a duck?_  
+
 
 Face validity is essentially asking whether, "on the face of it", the measure appears to be measuring the construct. For instance, if we are measuring the construct "anxiety", then do we have questions that refer to things that are about "anxiety"? These might be questions referring to "anxious"/"worried" feelings, or behaviours that we believe to be indicative of anxiety (fidgetting, trouble sleeping) etc. For a more objective example: a maths test that contains only arithmetic problems has good face validity of measuring math ability.  
 
@@ -80,17 +90,25 @@ Face validity is essentially asking whether, "on the face of it", the measure ap
 **Face validity:** The extent to which a test appears, on the surface, to measure what it claims to measure. 
 :::
 
-Face validity is not sufficient for claiming construct validity. For instance, back in the not so distant past, there were many prominent psychologists for whom [measuring peoples' skulls](TODO){target="_blank"} or [looking at people's handwriting](){target="_blank"} were face-valid approaches of assessing personality.  
+Face validity is **not sufficient** for claiming construct validity. For instance, back in the not so distant past, there were many prominent psychologists for whom [measuring peoples' skulls](TODO){target="_blank"} or [looking at people's handwriting](){target="_blank"} were face-valid approaches of assessing personality.  
 
-Similarly, face validity is not necessary for construct validity. We could have TODO
+Similarly, face validity is **not necessary** for construct validity. In fact, a lot of questions are designed to deliberately prevent respondents from figuring out the intended construct and so manipulating their answers. For instance, a question in the Minnesota Multiphasic Personality Inventory (MMPI) asks things like "I think I would like the work of a librarian" as an indicator of paranoia, because a preference for isolated work might indicated a withdrawing from social situations that is associated with paranoia.  
 
 ## Content Validity
+_does it have all the key parts of a duck?_  
 
-The term c
+Content validity is 
+
+
+:::sticky
+**Content validity:** The extent to which we have a representative sample of items to cover the content domains that our theory dictates exist.  
+:::
+
 
 
 
 ## Convergent & Discriminant Validity
+_is the duck found with other water birds?_  
 
 Another way in which we 
 
@@ -101,6 +119,7 @@ Discriminant validity - The extent to which a test does not correlate strongly w
 :::
 
 ## predictive/criterion validity
+_does the 
 
 :::sticky
 Criterion validity - The extent to which test scores are related to an external criterion. For example, aptitude test scores predicting job performance.

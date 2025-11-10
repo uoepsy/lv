@@ -344,10 +344,12 @@ This model is underidentified because we only have ten knowns (four variances an
 - One latent factor variance^[and a partridge in a pear tree!]
 
 We don't like underidentified models, because as mentioned above, we can't estimate any variability in the parameters and we also can't estimate model fit.
-But there is a common way to make this kind of model overidentified.
-Specifically, CFA models will nearly always specify that the residual factor loadings are equal to 1.
-This decision removes four of the unknown parameters, bringing the model down to only nine unknowns.
-Because there are nine unknowns and ten knowns, the model is now overidentified—hurray!
+
+We are going to have to somehow give our latent factor a numeric scale, and one way to do this is to fix its variance to be 1 (we'll see more about this in a little bit). This helps somewhat, but not enough, we still have twelve things to be estimated. 
+
+There is another easy way to make this kind of model overidentified. Specifically, CFA models will nearly always specify that the residual factor loadings are equal to 1.
+This decision removes four of the unknown parameters, bringing the model down to only eight unknowns.
+Because there are eight unknowns and ten knowns, the model is now overidentified—hurray!  
 
 @fig-model-overidentified shows two ways of representing this overidentified model.
 One way is to explicitly show the residual factor loadings set to 1 (Panel A at left).
@@ -357,10 +359,9 @@ So if you see diagrams like the ones in Panel B, you know that those are models 
 ```{r}
 #| echo: false
 #| label: fig-model-overidentified
-#| fig-cap: "A four item factor structure, shown two ways: one explicitly showing the residual factor loadings set to 1, one simpler version in which this has been assumed. The model is now overspecified because there are more known values (ten) than unknown values (nine)."
+#| fig-cap: "A four item factor structure, shown two ways: one explicitly showing the residual factor loadings set to 1, one simpler version in which this has been assumed. The model is now overspecified because there are more known values (ten) than unknown values (eight). For now, we fix the factor variance to be 1"
 knitr::include_graphics("images/lv_scaling/Slide5.PNG")
 ```
-
 
 
 ## Model Fit Measures
