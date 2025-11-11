@@ -914,11 +914,11 @@ round( ll_obl %*% phi_obl %*% t(ll_obl), 2)
 
 Now that we've got a rough sense of the idea of factor analysis and rotations, we can take a closer look at the output that we get in R.  
 
-we can simply print the name of our model in order to see **a lot** of information. Below are a series of slides (the full deck as a .pdf is [here if you want it](https://uoepsy.github.io/lv/misc/efa_output.pdf){target="_blank"}) that step-by-step talk through each part of the output of an EFA.  
+we can simply print the name of our model in order to see **a lot** of information. Below are a series of slides (the full deck as a .pdf is [here if you want it](https://uoepsy.github.io/lv/efa_output.pdf){target="_blank"}) that step-by-step talk through each part of the output of an EFA.  
 
 ```{r}
 #| include: false
-file.copy("images/efa_output.pdf","../docs/misc/")
+file.copy("images/efa_output.pdf","../docs/")
 ```
 
 
