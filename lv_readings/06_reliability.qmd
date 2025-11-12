@@ -835,6 +835,14 @@ $$\text{SE}_m = s_x \sqrt{1 - r_{xx}}$$
 
 :::
 
+For example, if we had measured the internal consistency of our dog-weighing tool using coefficient alpha, and if we had the standard deviation of dog weights, then we could use the formula above to estimate the precision of our dog-weighing tool.
+
+Why is this useful?
+Well, sometimes we'd like to know how precise a measurement tool is likely to be.
+Think of those "at home saliva tests for hormones".
+Different brands vary wildly in their reliability, and generally the tests are not all that reliable.
+But rather than couching their results in this kind of uncertainty, the tests just give you a single point value, with no indication of how precise that estimate may be.
+
 
 # Attenuation Due to Unreliability
 
@@ -917,11 +925,16 @@ p4 <- ggplot(df1, aes(x=X_0.3,y=Y_0.3))+
 
 ```
 
-# Closing remarks.. 
+# Summary graphic and closing remarks.. 
 
 For those of you who are less interested in measurement itself and are more focused on it as a means to an end --- i.e., to allow you to study things you're actually interested in --- then all of this can feel like a bit of a quagmire to muddle through before you actually get to the stuff that is relevant to your research question. That doesn't mean that it is not important. It is incredibly important, and too often overlooked. 
 
-If nothing else, take away just these points:  
+Here's a graphical representation of the key ideas covered in this chapter:
+
+![](images/valid-reliab.png){width="800" fig-align="center"}
+
+
+If nothing else, you should take away just these points:  
 
 1. Measurement is *never* perfect
 2. "Reliability" and "Validity" are properties of a sample, not of a measure - everything we do is specific to persons, place and time. 
