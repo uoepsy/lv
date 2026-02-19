@@ -179,7 +179,9 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./00_datawrangle.html">Extra: Data Wrangling for Questionnaires</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
+      Latent Variable Modelling
+      </li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -220,42 +222,6 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="./03_efa.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">3: Exploratory Factor Analysis</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./04_cfa.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">4: Confirmatory Factor Analysis</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./05_reliability.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">5: Validity &amp; Reliability</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./06_intropath.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">6: Path Analysis</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./07_mediation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">7: Mediation</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./08_sem.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">8: Structural Equation Modelling</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./00_datawrangle.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Extra: Data Wrangling for Questionnaires</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -455,23 +421,23 @@ By default, <code>paste()</code> will separate these with a space:</p>
 <p>The data has come out of whatever questionnaire software we used and it’s showing the chosen response for each question in words, e.g.&nbsp;“Moderately Accurate”. But we are going to turn them into numbers so that they are easier to work with.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="rtfmqqpvxz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#rtfmqqpvxz table {
+<div id="oyeupjnxmm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#oyeupjnxmm table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#rtfmqqpvxz thead, #rtfmqqpvxz tbody, #rtfmqqpvxz tfoot, #rtfmqqpvxz tr, #rtfmqqpvxz td, #rtfmqqpvxz th {
+#oyeupjnxmm thead, #oyeupjnxmm tbody, #oyeupjnxmm tfoot, #oyeupjnxmm tr, #oyeupjnxmm td, #oyeupjnxmm th {
   border-style: none;
 }
 
-#rtfmqqpvxz p {
+#oyeupjnxmm p {
   margin: 0;
   padding: 0;
 }
 
-#rtfmqqpvxz .gt_table {
+#oyeupjnxmm .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -497,12 +463,12 @@ By default, <code>paste()</code> will separate these with a space:</p>
   border-left-color: #D3D3D3;
 }
 
-#rtfmqqpvxz .gt_caption {
+#oyeupjnxmm .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#rtfmqqpvxz .gt_title {
+#oyeupjnxmm .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -514,7 +480,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   border-bottom-width: 0;
 }
 
-#rtfmqqpvxz .gt_subtitle {
+#oyeupjnxmm .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -526,7 +492,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   border-top-width: 0;
 }
 
-#rtfmqqpvxz .gt_heading {
+#oyeupjnxmm .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -538,13 +504,13 @@ By default, <code>paste()</code> will separate these with a space:</p>
   border-right-color: #D3D3D3;
 }
 
-#rtfmqqpvxz .gt_bottom_border {
+#oyeupjnxmm .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#rtfmqqpvxz .gt_col_headings {
+#oyeupjnxmm .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -559,7 +525,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   border-right-color: #D3D3D3;
 }
 
-#rtfmqqpvxz .gt_col_heading {
+#oyeupjnxmm .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -579,7 +545,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   overflow-x: hidden;
 }
 
-#rtfmqqpvxz .gt_column_spanner_outer {
+#oyeupjnxmm .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -591,15 +557,15 @@ By default, <code>paste()</code> will separate these with a space:</p>
   padding-right: 4px;
 }
 
-#rtfmqqpvxz .gt_column_spanner_outer:first-child {
+#oyeupjnxmm .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#rtfmqqpvxz .gt_column_spanner_outer:last-child {
+#oyeupjnxmm .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#rtfmqqpvxz .gt_column_spanner {
+#oyeupjnxmm .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -611,11 +577,11 @@ By default, <code>paste()</code> will separate these with a space:</p>
   width: 100%;
 }
 
-#rtfmqqpvxz .gt_spanner_row {
+#oyeupjnxmm .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#rtfmqqpvxz .gt_group_heading {
+#oyeupjnxmm .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -641,7 +607,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   text-align: left;
 }
 
-#rtfmqqpvxz .gt_empty_group_heading {
+#oyeupjnxmm .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -656,15 +622,15 @@ By default, <code>paste()</code> will separate these with a space:</p>
   vertical-align: middle;
 }
 
-#rtfmqqpvxz .gt_from_md > :first-child {
+#oyeupjnxmm .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#rtfmqqpvxz .gt_from_md > :last-child {
+#oyeupjnxmm .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#rtfmqqpvxz .gt_row {
+#oyeupjnxmm .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -683,7 +649,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   overflow-x: hidden;
 }
 
-#rtfmqqpvxz .gt_stub {
+#oyeupjnxmm .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -696,7 +662,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   padding-right: 5px;
 }
 
-#rtfmqqpvxz .gt_stub_row_group {
+#oyeupjnxmm .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -710,15 +676,15 @@ By default, <code>paste()</code> will separate these with a space:</p>
   vertical-align: top;
 }
 
-#rtfmqqpvxz .gt_row_group_first td {
+#oyeupjnxmm .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#rtfmqqpvxz .gt_row_group_first th {
+#oyeupjnxmm .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#rtfmqqpvxz .gt_summary_row {
+#oyeupjnxmm .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -728,16 +694,16 @@ By default, <code>paste()</code> will separate these with a space:</p>
   padding-right: 5px;
 }
 
-#rtfmqqpvxz .gt_first_summary_row {
+#oyeupjnxmm .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#rtfmqqpvxz .gt_first_summary_row.thick {
+#oyeupjnxmm .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#rtfmqqpvxz .gt_last_summary_row {
+#oyeupjnxmm .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -747,7 +713,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#rtfmqqpvxz .gt_grand_summary_row {
+#oyeupjnxmm .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -757,7 +723,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   padding-right: 5px;
 }
 
-#rtfmqqpvxz .gt_first_grand_summary_row {
+#oyeupjnxmm .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -767,7 +733,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   border-top-color: #D3D3D3;
 }
 
-#rtfmqqpvxz .gt_last_grand_summary_row_top {
+#oyeupjnxmm .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -777,11 +743,11 @@ By default, <code>paste()</code> will separate these with a space:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#rtfmqqpvxz .gt_striped {
+#oyeupjnxmm .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#rtfmqqpvxz .gt_table_body {
+#oyeupjnxmm .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -790,7 +756,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#rtfmqqpvxz .gt_footnotes {
+#oyeupjnxmm .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -804,7 +770,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   border-right-color: #D3D3D3;
 }
 
-#rtfmqqpvxz .gt_footnote {
+#oyeupjnxmm .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -813,7 +779,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   padding-right: 5px;
 }
 
-#rtfmqqpvxz .gt_sourcenotes {
+#oyeupjnxmm .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -827,7 +793,7 @@ By default, <code>paste()</code> will separate these with a space:</p>
   border-right-color: #D3D3D3;
 }
 
-#rtfmqqpvxz .gt_sourcenote {
+#oyeupjnxmm .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -835,72 +801,72 @@ By default, <code>paste()</code> will separate these with a space:</p>
   padding-right: 5px;
 }
 
-#rtfmqqpvxz .gt_left {
+#oyeupjnxmm .gt_left {
   text-align: left;
 }
 
-#rtfmqqpvxz .gt_center {
+#oyeupjnxmm .gt_center {
   text-align: center;
 }
 
-#rtfmqqpvxz .gt_right {
+#oyeupjnxmm .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#rtfmqqpvxz .gt_font_normal {
+#oyeupjnxmm .gt_font_normal {
   font-weight: normal;
 }
 
-#rtfmqqpvxz .gt_font_bold {
+#oyeupjnxmm .gt_font_bold {
   font-weight: bold;
 }
 
-#rtfmqqpvxz .gt_font_italic {
+#oyeupjnxmm .gt_font_italic {
   font-style: italic;
 }
 
-#rtfmqqpvxz .gt_super {
+#oyeupjnxmm .gt_super {
   font-size: 65%;
 }
 
-#rtfmqqpvxz .gt_footnote_marks {
+#oyeupjnxmm .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#rtfmqqpvxz .gt_asterisk {
+#oyeupjnxmm .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#rtfmqqpvxz .gt_indent_1 {
+#oyeupjnxmm .gt_indent_1 {
   text-indent: 5px;
 }
 
-#rtfmqqpvxz .gt_indent_2 {
+#oyeupjnxmm .gt_indent_2 {
   text-indent: 10px;
 }
 
-#rtfmqqpvxz .gt_indent_3 {
+#oyeupjnxmm .gt_indent_3 {
   text-indent: 15px;
 }
 
-#rtfmqqpvxz .gt_indent_4 {
+#oyeupjnxmm .gt_indent_4 {
   text-indent: 20px;
 }
 
-#rtfmqqpvxz .gt_indent_5 {
+#oyeupjnxmm .gt_indent_5 {
   text-indent: 25px;
 }
 
-#rtfmqqpvxz .katex-display {
+#oyeupjnxmm .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#rtfmqqpvxz div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#oyeupjnxmm div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
