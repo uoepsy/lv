@@ -4,9 +4,6 @@ project:
     - "*.qmd"
     - "!working/*"
     - "!working/archive/*"    
-    - "!07*"
-    - "!08*"
-    - "!09*"
   output-dir: ./wipdocs/
 
 website:  
@@ -16,16 +13,18 @@ website:
     search: true
     collapse-level: 1
     contents:
-      - 01_datawrangle.qmd
-      - 02_dimension_reduction.qmd
-      - 03_pca.qmd
-      - 04_efa.qmd
-      - 05_cfa.qmd
-      - 06_reliability.qmd
+      - 01_dimension_reduction.qmd
+      - 02_pca.qmd
+      - 03_efa.qmd
+      # - 04_cfa.qmd
+      # - 05_reliability.qmd
+      # - 06_intropath.qmd
+      # - 07_mediation.qmd
+      # - 08_sem.qmd
+      # - 00_datawrangle.qmd
       - section: "Additional Docs"
         contents:
           - z_eigen.qmd
-          # - z_lgc_lmm.qmd
 
 format:
   html:

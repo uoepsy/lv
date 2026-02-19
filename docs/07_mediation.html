@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>7: Mediation – Latent Variable Modelling</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-af8acd9e0062ec246c222f4d4317722b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script>
+
+function toggle_visibility(id1, id2) {
+
+var e = document.getElementById(id1);
+
+var f = document.getElementById(id2);
+
+e.style.display = ((e.style.display!='none') ? 'none' : 'block');
+
+if(f.classList.contains('jk-circle-right')) {
+
+    f.classList.add('jk-circle-down')
+
+    f.classList.remove('jk-circle-right')
+
+} else {
+
+    f.classList.add('jk-circle-right')
+
+    f.classList.remove('jk-circle-down')
+
+}
+
+}
+
+</script>
+
+
+
+<!---<script src="https://kit.fontawesome.com/120b08a6f5.js" crossorigin="anonymous"></script>-->
+
+<link href="site_libs/panelset-0.3.0/panelset.css" rel="stylesheet">
+
+<script src="site_libs/panelset-0.3.0/panelset.js"></script>
+
+<link rel="stylesheet" href="https://uoepsy.github.io/assets/css/ccfooter.css">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
+      Latent Variable Modelling
+      </li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Latent Variable Modelling</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_dimension_reduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1: Dimension Reduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_pca.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2: PCA Walkthrough</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_efa.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3: Exploratory Factor Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">Additional Docs</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./z_eigen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Optional: Eigen Decomposition</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#what-and-how" id="toc-what-and-how" class="nav-link active" data-scroll-target="#what-and-how">What and How?</a></li>
+  <li><a href="#mediation-in-lavaan" id="toc-mediation-in-lavaan" class="nav-link" data-scroll-target="#mediation-in-lavaan">Mediation in lavaan</a></li>
+  <li><a href="#cautions" id="toc-cautions" class="nav-link" data-scroll-target="#cautions">CAUTIONS</a>
+  <ul class="collapse">
+  <li><a href="#three-correlations-in-a-trenchcoat" id="toc-three-correlations-in-a-trenchcoat" class="nav-link" data-scroll-target="#three-correlations-in-a-trenchcoat">1. “three correlations in a trenchcoat”</a></li>
+  <li><a href="#confounding-of-m-y" id="toc-confounding-of-m-y" class="nav-link" data-scroll-target="#confounding-of-m-y">2. Confounding of M-&gt;Y</a></li>
+  </ul></li>
+  <li><a href="#extra-mediation-with-separate-models" id="toc-extra-mediation-with-separate-models" class="nav-link" data-scroll-target="#extra-mediation-with-separate-models">EXTRA: mediation with separate models</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">7: Mediation</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="lo">
+<p>This reading:</p>
+<ul>
+<li>A very brief overview of the key idea of “mediation”</li>
+<li>How to do path mediation in R using <strong>lavaan</strong></li>
+<li>Some strong cautions about mediation analyses</li>
+</ul>
+</div>
+<section id="what-and-how" class="level1">
+<h1>What and How?</h1>
+<p>In most of our learning of statistics so far, we have been focusing on research questions that require us to estimating associations between two variables (the basic things like t-tests, cor.tests etc), sometimes controlling for other variables (regression models!), or depending on other variables (interactions!) and sometimes trying to also explicitly model the hierarchical structure in the data (mixed effects models!).</p>
+<p>Sometimes, the end goal is just to get out something descriptive or associational (“X tends to co-occur with Y”), and sometimes our aim is to try and estimate an <em>‘effect’</em> (“if we change X, this is what happens to Y”<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>). When we can justify using words like “effect” and other language that implies a certain degree of causality<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, we are working with theoretical models that would look something similar to <a href="#fig-whatq" class="quarto-xref">Figure&nbsp;1</a>. The path from X to Y (the thing we’re interested in, labelled with a <strong>?</strong>) as “the <em>effect</em> of X on Y”, and we might use something like <code>lm(Y ~ C1 + C2 + X)</code> to get our estimated effect. We control for C1 and C2 because our understanding (i.e., <a href="#fig-whatq" class="quarto-xref">Figure&nbsp;1</a>) indicates that not doing so could bias our estimate of the effect of X on Y.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-whatq" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-whatq-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/mediation_lemons/Slide1.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-whatq-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Identifying the effect of X on Y
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>As a silly example, suppose we are back in the days of pirates (but somehow still had access to R!<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>), and we wanted to know what the effect of eating lemons is on the severity of scurvy<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. We collect data from ships coming back into port, and record 4 variables: length of time at sea; the sailors rank, the number of lemons they ate, and then we assess the severity of their scurvy symptoms.</p>
+<p>A diagram such as <a href="#fig-scurvyate" class="quarto-xref">Figure&nbsp;2</a> displays what we believe about the relationships between these variables. Sailors who spend more time at sea will probably eat more lemons (path <strong>a</strong>), and they will also have more time at sea to develop scurvy (path <strong>b</strong>). Higher ranking sailors will probably have more access to lemons (path <strong>c</strong>), and will potentially have more hygeinic conditions meaning fewer scurvy symptoms (path <strong>d</strong>). Finally, the bit we want to actually estimate is the change in scurvy symptoms when eating more lemons (path <strong>?</strong>).</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-scurvyate" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-scurvyate-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/mediation_lemons/Slide2.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scurvyate-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Identifying the effect of eating lemons on scurvy
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>If this picture is a good representation of reality, then fitting a model <code>lm(Scurvy ~ nLemons)</code> wouldn’t accurately estimate our path of interest (the one labelled <strong>?</strong>). The people we see who have had more Lemons would be those who have been at sea longer, and so would also have more scurvy symptoms. But our model doesn’t know that, so it might even end up estimating that eating lemons gives you more scurvy!<br>
+We would want our model to adjust for time-spent-at-sea and rank of sailor, so that it estimates the effect of eating more lemons, while holding constant those two variables (i.e., what differences in scurvy symptoms would we see between two sailors of the same rank and who have been at sea for the same length of time, but where one has eaten an extra lemon?)</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>scurvy1 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://uoepsy.github.io/data/lv_scurvy1.csv"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="fu">lm</span>(ScurvySymptoms <span class="sc">~</span> nLemons, <span class="at">data =</span> scurvy1)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>ma <span class="ot">&lt;-</span> <span class="fu">lm</span>(ScurvySymptoms <span class="sc">~</span> rank <span class="sc">+</span> at_sea <span class="sc">+</span> nLemons, <span class="at">data =</span> scurvy1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ol type="1">
+<li><strong><code>lm(ScurvySymptoms ~ nLemons)</code></strong>
+<ul>
+<li>coefficient for nLemons: <span class="math inline">\(b = 0.04, t(198) = 0.58, p = 0.56\)</span><br>
+</li>
+<li>conclusion: no evidence that lemons do anything for scurvy…</li>
+</ul></li>
+<li><strong><code>lm(ScurvySymptoms ~ rank + at_sea + nLemons)</code></strong>
+<ul>
+<li>coefficient for nLemons: <span class="math inline">\(b = -0.28, t(192) = -4.6, p &lt; .001\)</span><br>
+</li>
+<li>conclusion: eating more lemons reduces scurvy symptoms!</li>
+</ul></li>
+</ol>
+<p>Questions about a path like this are essentially asking “what” questions — we are ultimately asking “<strong>what</strong> is the effect of X on Y?”. But there are other questions we might ask, such as “<strong>How</strong> does X affect Y?”. This is a very open question, but we could make it more specific by asking something such as “Does X affect Y via M?”.</p>
+<p>Continuing our example, we might ask “does eating lemons reduce scurvy <em>because of</em> Vitamin C?”. Suppose that we do a randomised trial, where we send 100 sailors off with a diet of 1 lemon per week, and another 100 sailors off with no lemons whatsoever. This is a great approach, because it avoids the problems of <a href="#fig-scurvyate" class="quarto-xref">Figure&nbsp;2</a> where we had confounding variables). When the sailors all come back, we measure their levels of vitamin C, and assess them for scurvy.</p>
+<p>Our diagram is now something like this:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-medlem" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-medlem-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/mediation_lemons/Slide3.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-medlem-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Do lemons help scurvy because of their vitamin C?
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Note that there could still be an arrow directly from Lemons to Scurvy, because there might be something else about eating lemons that leads to changes in scurvy.</p>
+<p>This idea is referred to as “mediation”. In the pattern above, the vitamin C levels “mediate” the effect of lemons on scurvy. If “what” questions are concerned with estimating the path from predictor X to outcome Y, then with mediation, we are concerned with decomposing this path and asking how much (if any) of it goes via some mediator M.</p>
+<p>This means there actually three different “effects” we are looking at here. A total effect, a direct effect, and an indirect effect.</p>
+<div class="sticky">
+<p><strong>Direct, Indirect and Total effects</strong></p>
+<p>If we have a variable <span class="math inline">\(X\)</span> that we take to ‘cause’ variable <span class="math inline">\(Y\)</span>, then our path diagram will look like <a href="#fig-total" class="quarto-xref">Figure&nbsp;4</a>, in which path <span class="math inline">\(c\)</span> is the <strong>total effect</strong>. This is the <em>unmediated</em> effect of <span class="math inline">\(X\)</span> on <span class="math inline">\(Y\)</span>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-total" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-total-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/MED1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-total-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: The total effect of X on Y
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>However, the effect of <span class="math inline">\(X\)</span> on <span class="math inline">\(Y\)</span> could in part be explained by the process of being mediated by some variable <span class="math inline">\(M\)</span> as well as affecting <span class="math inline">\(Y\)</span> directly. A path diagram representing this theoretical idea of ‘mediation’ is shown in <a href="#fig-indirect" class="quarto-xref">Figure&nbsp;5</a>. In this case, path <span class="math inline">\(c'\)</span> is the <strong>direct effect</strong>, and <span class="math inline">\(a \times b\)</span> makes up the <strong>indirect effect</strong>. The <strong>total effect</strong> can be retrieved by taking the sum of direct and indirect: `<span class="math inline">\((a \times b) + c'\)</span>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-indirect" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-indirect-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/MED2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-indirect-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: The effect of X on Y is partly mediated by M
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+optional: why a x b?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Our two formulas here for the two endogenous variables (the outcome Y and the mediator M) are:</p>
+<ol type="1">
+<li><span class="math inline">\(Y_i = b\times M_i + c' \times X_i\)</span><br>
+</li>
+<li><span class="math inline">\(M_i = a\times X_i\)</span></li>
+</ol>
+<p>We can substitute 2 into 1</p>
+<ol type="1">
+<li><span class="math inline">\(Y_i = b\times(a\times X_i) + c' \times X_i\)</span></li>
+</ol>
+<p>From which we can see that the effect of X on Y is in two parts: <span class="math inline">\(b \times a\)</span>, and <span class="math inline">\(c'\)</span>, and the total effect is <span class="math inline">\(Y_i = ((a \times b) + c') \times X_i\)</span>.</p>
+</div>
+</div>
+</div>
+<p>You will find in some areas people talk about the ideas of <strong>“complete”</strong> vs <strong>“partial”</strong> mediation.</p>
+<ul>
+<li><strong>Complete mediation</strong> is when <span class="math inline">\(X\)</span> does not influence <span class="math inline">\(Y\)</span> other than its influence through <span class="math inline">\(M\)</span> (therefore path <span class="math inline">\(c'\)</span> would not be significantly different from zero).</li>
+<li><strong>Partial mediation</strong> is when the path from <span class="math inline">\(X\)</span> to <span class="math inline">\(Y\)</span> is <em>reduced in magnitude</em> when the mediator <span class="math inline">\(M\)</span> is introduced, <em>but still different from zero.</em><br>
+</li>
+<li>The <strong>Proportion Mediated</strong> is the amount of the total effect of <span class="math inline">\(X\)</span> to <span class="math inline">\(Y\)</span> that goes via <span class="math inline">\(M\)</span>. i.e.&nbsp;<span class="math inline">\(\frac{a \times b}{c}\)</span> in the images above.</li>
+</ul>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+What is the effect of the lemon diet
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Note that if our question is a “what” question, such as trying to estimate what the effect of being on a Lemon diet is on sailors’ scurvy symptoms, then we do <strong>not</strong> want to adjust for variables that are mediators.</p>
+<p>So just because you have data on three variables: <code>LemonDiet</code>,<code>VitC</code>, and <code>ScurvySymptoms</code>, if you want to know what the diet does for scurvy, we <em>shouldn’t</em> include <code>VitC</code> in the model. If we do, then we essentially remove all of the effect we are looking for:</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>scurvy2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://uoepsy.github.io/data/lv_scurvy2.csv"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(ScurvySymptoms <span class="sc">~</span> vitC <span class="sc">+</span> LemonDiet, <span class="at">data =</span> scurvy2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong><code>lm(ScurvySymptoms ~ vitC + LemonDiet)</code></strong><br>
+- coefficient for LemonDiet: <span class="math inline">\(b = 1.92, t(198) = 4.31, p = 0\)</span><br>
+- conclusion: no evidence that the Lemon Diet does anything for scurvy…</p>
+<p>An intuition for this is to think of what the coefficient means. It is the change in Scurvy symptoms from being on the Lemon Diet (compared to not being on the diet), <em>for people who have the same levels of Vitamin C</em>. But we are theorising here that the Lemon Diet is the thing that changes people’s vitamin C levels, so why would we want to hold vitamin C constant in order to estimate the efficacy of the diet?</p>
+</div>
+</div>
+</div>
+</section>
+<section id="mediation-in-lavaan" class="level1">
+<h1>Mediation in lavaan</h1>
+<p>You may notice that the diagram representing mediation (e.g., <a href="#fig-medlem" class="quarto-xref">Figure&nbsp;3</a>) looks just like another path diagram. In fact, we’ve actually already seen “mediation” in the Chapter introducing path analysis, where <a href="06_intropath.html#example-3">Example 3</a> had variable “M” as a mediator of the effect of “X” on “Y”.</p>
+<p>So it is hopefully no surprise that one way to estimate mediation is to use path analysis.</p>
+<p>Our Lemon Diet -&gt; Vitamin C -&gt; Scurvy example can be fitted as so:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaan)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>scurvy2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://uoepsy.github.io/data/lv_scurvy2.csv"</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="st">"</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="st">ScurvySymptoms ~ vitC + LemonDiet</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="st">vitC ~ LemonDiet</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>mod.est <span class="ot">&lt;-</span> <span class="fu">sem</span>(mod, <span class="at">data =</span> scurvy2)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod.est)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>...
+...
+
+Regressions:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)
+  ScurvySymptoms ~                                    
+    vitC             -2.734    0.140  -19.494    0.000
+    LemonDiet         1.918    0.442    4.345    0.000
+  vitC ~                                              
+    LemonDiet         1.880    0.179   10.524    0.000
+
+...
+...</code></pre>
+<p>Note that in the section of the summary titled “Regressions:”, we can see the various paths - we get the direct effect (<code>ScurvySymptoms ~ LemonDiet</code>), and we can see the constituent parts of the indirect effect (<code>ScurvySymptoms ~ VitC</code> and <code>VitC ~ LemonDiet</code>).</p>
+<p>What we might want to know, however, is if the whole “indirect effect” is significant. The indirect effect, remember, is the product of paths X-&gt;M and M-&gt;Y. We can’t say there is evidence of mediation just because one of the constituent parts is significant.</p>
+<p>In lavaan, we can create “defined parameters”, which are essentially calculations that are derived from various other estimates. When we then fit the model, we will get the calculated indirect effect as well as a standard error for it! And while we are at it, we can estimate the total effect X-&gt;Y.</p>
+<p>To do this, we use a new operator, <code>:=</code>.</p>
+<p><em>“This operator ‘defines’ new parameters which take on values that are an arbitrary function of the original model parameters. The function, however, must be specified in terms of the parameter labels that are explicitly mentioned in the model syntax.”</em> <a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p>
+<p>The labels are entirely up to us, we can use “a”, “b” and “c”, or “dougal”, “dylan” and “ermintrude”, they’re just labels!</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="st">"</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="st">ScurvySymptoms ~ b*vitC + c*LemonDiet</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="st">vitC ~ a*LemonDiet</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="st">indirect := a*b</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="st">total := (a*b)+c</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>There is one final thing to consider, and that is how we estimate the standard error for the indirect effect.</p>
+<p>Because we are computing our indirect effect as the <em>product</em> of the sub-component paths, this result in the estimated indirect effect rarely following a normal distribution, and makes our usual analytically derived standard errors &amp; p-values inappropriate.</p>
+<!-- ::: {.callout-caution collapse="true"} -->
+<!-- #### very optional: demo of why it's not normal! -->
+<!-- Here is a little function that simulates some data for 100 observations, from the models `m = a*x` and `y~ b*m`, where $a$ and $b$ are 2 and 5 respectively. It then returns the estimates for $a$, $b$, and $a \times b$.   -->
+<!-- ```{r} -->
+<!-- simdata <- function(){ -->
+<!--   a = 5 -->
+<!--   b = 5 -->
+<!--   # here is some sample data, of size n=100 -->
+<!--   x = rnorm(100) -->
+<!--   m = a*x + rnorm(100) -->
+<!--   y = b*m + rnorm(100) -->
+<!--   # here are the estimates of the paths a and b, based on the sample -->
+<!--   est_a = coef(lm(m~x))[2] -->
+<!--   est_b = coef(lm(y~x+m))[3] -->
+<!--   # and we return the product -->
+<!--   return(c(est_a, est_b, est_a*est_b)) -->
+<!-- } -->
+<!-- ``` -->
+<!-- If we run this function many many times over, then we get a sampling distribution for these estimates $a$, $b$, and $a \times b$. But note that the distribution for $a \times b$ is not normal, even though those for $a$ and $b$ are!   -->
+<!-- This is because the product will pull out the extremes -->
+<!-- ```{r} -->
+<!-- ests <- replicate(1000, simdata()) -->
+<!-- par(mfrow=c(3,2)) -->
+<!-- hist(ests[1, ], main = "estimates of a", breaks=20) -->
+<!-- curve(dnorm(x,mean(ests[1,]),sd(ests[1,]))*50,add=T) -->
+<!-- qqnorm(ests[1, ], main = "estimates of a");qqline(ests[1,]) -->
+<!-- hist(ests[2, ], main = "estimates of b", breaks=20) -->
+<!-- curve(dnorm(x,mean(ests[2,]),sd(ests[2,]))*50,add=T) -->
+<!-- qqnorm(ests[2, ], main = "estimates of b");qqline(ests[2,]) -->
+<!-- hist(ests[3, ], main = "estimates of a*b", breaks=20) -->
+<!-- curve(dnorm(x,mean(ests[3,]),sd(ests[3,]))*200,add=T) -->
+<!-- qqnorm(ests[3, ], main = "estimates of a*b");qqline(ests[3,]) -->
+<!-- ``` -->
+<!-- ::: -->
+<p>Instead, bootstrapping has become the norm for assessing sampling distributions of indirect effects in mediation models (remember, bootstrapping involves resampling the data with replacement, thousands of times, in order to empirically generate a sampling distribution).</p>
+<div class="rtip">
+<p><strong>Easy bootstrapping in lavaan</strong></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># specify se = "bootstrap"</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>mod.est <span class="ot">&lt;-</span> <span class="fu">sem</span>(model_formula, <span class="at">data=</span>my_data, <span class="at">se =</span> <span class="st">"bootstrap"</span>) </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># to print out the confidence intervals:</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod.est, <span class="at">ci =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>Continuing with our Lemons -&gt; VitC -&gt; Scurvy idea, we would adjust our model to also estimate the indirect and total effects, and then estimate the whole thing by bootstrapping.</p>
+<p>Remember, bootstrapping is a fundamentally random process (it involves re-sampling with replacement from our sample, multiple times). This means the standard errors and confidence intervals will change slightly each time we run it!</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="st">"</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="st">ScurvySymptoms ~ b*vitC + c*LemonDiet</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="st">vitC ~ a*LemonDiet</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="st">indirect := a*b</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="st">total := (a*b)+c</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>mod.est <span class="ot">&lt;-</span> <span class="fu">sem</span>(mod, <span class="at">data =</span> scurvy2, <span class="at">se =</span> <span class="st">"bootstrap"</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod.est, <span class="at">ci =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>...
+
+Regressions:
+                   Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
+  ScurvySymptoms ~                                                      
+    vitC       (b)   -2.734    0.134  -20.327    0.000   -2.997   -2.468
+    LemonDiet  (c)    1.918    0.452    4.241    0.000    1.051    2.851
+  vitC ~                                                                
+    LemonDiet  (a)    1.880    0.180   10.420    0.000    1.504    2.216
+
+...
+...
+
+Defined Parameters:
+                   Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
+    indirect         -5.138    0.583   -8.821    0.000   -6.301   -3.976
+    total            -3.220    0.611   -5.268    0.000   -4.395   -2.012</code></pre>
+<p>We can add these estimates to our diagram to present the model, as in the image below. Note that we do have a significant direct effect of the Lemon Diet on Scurvy — i.e., it <em>looks</em> like something about lemons <em>other than their vitamin C</em> seems to influence Scurvy (and it’s positive, so although the Lemon Diet has a total negative effect on Scurvy because of the effects of vitamin C, something else about lemons actually increases Scurvy?<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>).</p>
+<p><img src="images/mediation_lemons/Slide6.png" class="img-fluid"></p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+optional: what exactly does the indirect effect represent?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The indirect effect that we have estimated here has a value of -5.14, but what exactly does that represent? Typically people go no further in their interpretation of the indirect effect than “The effect of X on Y through M”.</p>
+<p>If you want to make this more explicit, the indirect effect estimate is the amount by which the outcome Y changes when the predictor X is held constant, and the mediator M changes by however much it <em>would have changed</em> had the predictor increased by one.</p>
+<p>We can see this a bit clearer if we write down the prediction equations for VitC and ScurvySymptoms, and then see how it changes when we move from LemonDiet = 0 to LemonDiet = 1. We’re going to ignore intercepts for now because it makes it harder to see how this works (we <em>can</em> get them out of the model if we really want them).</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 37%">
+<col style="width: 37%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>LemonDiet</th>
+<th>vitC</th>
+<th>ScurvySymptoms</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td><span class="math inline">\(= (a \times LemonDiet)\)</span></td>
+<td><span class="math inline">\(= (c' \times LemonDiet) + (b \times vitC)\)</span></td>
+</tr>
+<tr class="even">
+<td>0</td>
+<td><span class="math inline">\(= (1.880 \times LemonDiet)\)</span><br><span class="math inline">\(= (1.880 \times 0)\)</span><br><span class="math inline">\(= 0\)</span></td>
+<td><span class="math inline">\(= (1.918 \times LemonDiet) + (-2.734 \times vitC)\)</span><br><span class="math inline">\(= (1.918 \times 0) + (-2.734 \times 0)\)</span><br><span class="math inline">\(= 0\)</span></td>
+</tr>
+<tr class="odd">
+<td>1</td>
+<td><span class="math inline">\(= (1.880 \times LemonDiet)\)</span><br><span class="math inline">\(= (1.880 \times 1)\)</span><br><span class="math inline">\(= 1.880\)</span></td>
+<td><span class="math inline">\(= (1.918 \times LemonDiet) + (-2.734 \times vitC)\)</span><br><span class="math inline">\(= (1.918 \times 1) + (-2.734 \times 1.880)\)</span><br><span class="math inline">\(= (1.918) + (-5.14)\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>We can see the -5.14 at the bottom here. It’s the amount that <code>ScurvySymptoms</code> changes if <code>vitC</code> increases by the amount it would increase when moving from <code>LemonDiet</code> 0 to <code>LemonDiet</code> 1. But it’s separate from the amount that <code>ScurvySymptoms</code> increases directly because <code>LemonDiet</code> moves from 0 to 1 (this would be the 1.988 bit).</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+what about “model fit”?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>One thing we haven’t touched upon here is that in our continuing example, the model had zero degrees of freedom! Uh-oh! Did we not want to have some degrees of freedom in order to estimate various metrics of model fit?</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod.est)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>...
+
+Model Test User Model:
+                                                      
+  Test statistic                                 0.000
+  Degrees of freedom                                 0
+  
+...</code></pre>
+<p>In this case, we’re okay. Our aim in mediation is not so much to evaluate model fit, but rather we are wanting <strong>parameter estimation</strong>: we want to estimate the magnitude, direction, and significance of a specific path (the indirect effect).</p>
+<p>That said, this lack of model fit raises an interesting point about mediation, which is that all of the models in displayed in <a href="#fig-equiv" class="quarto-xref">Figure&nbsp;6</a> will fit equally well (i.e., perfectly!)</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-equiv" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-equiv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/mediation_lemons/Slide4.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-equiv-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: each model has zero degrees of freedom. each model can perfectly reproduce the observed covariance matrix, and ‘fits perfectly’
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+What if I want standardised estimates?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The lavaan package will easily give us standardised estimates if we just ask for them in the summary, using something like <code>summary(mod.est, standardized = TRUE, ci = TRUE)</code>.<br>
+This will adds some extra columns to our output: <code>Std.lv</code> (latent variables are standardised) and <code>Std.all</code> (everything is standardised). In models without any latent variables, the <code>Std.lv</code> column won’t be any different from your original estimates. However, the confidence intervals would all be based on our original estimates in the raw units.</p>
+<p>What we can do instead is just ask for the <code>standardizedSolution()</code> of the model:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">standardizedSolution</span>(mod.est)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             lhs op            rhs    label est.std    se      z pvalue
+1 ScurvySymptoms  ~           vitC        b  -0.944 0.033 -28.93      0
+2 ScurvySymptoms  ~      LemonDiet        c   0.210 0.050   4.24      0
+3           vitC  ~      LemonDiet        a   0.597 0.045  13.39      0
+4 ScurvySymptoms ~~ ScurvySymptoms            0.302 0.035   8.57      0
+5           vitC ~~           vitC            0.644 0.053  12.09      0
+6      LemonDiet ~~      LemonDiet            1.000 0.000     NA     NA
+7       indirect :=            a*b indirect  -0.564 0.054 -10.46      0
+8          total :=        (a*b)+c    total  -0.353 0.061  -5.76      0
+  ci.lower ci.upper
+1   -1.008   -0.880
+2    0.113    0.308
+3    0.510    0.684
+4    0.233    0.371
+5    0.539    0.748
+6    1.000    1.000
+7   -0.669   -0.458
+8   -0.473   -0.233</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="divider div-transparent div-dot">
+
+</div>
+</section>
+<section id="cautions" class="level1">
+<h1>CAUTIONS</h1>
+<p>There are many many problems with mediation analyses. We’ll introduce just a couple of them here.</p>
+<p>The take-home message here is not necessarily “never do mediation analyses”, but more a note to “proceed with the utmost caution”, and to always engage actively and transparently with these limitations (rather than pretending that they do not exist!)</p>
+<section id="three-correlations-in-a-trenchcoat" class="level2">
+<h2 class="anchored" data-anchor-id="three-correlations-in-a-trenchcoat">1. “three correlations in a trenchcoat”</h2>
+<p>One common problem comes with doing “cross-sectional” mediation - i.e., you measure everything — X, M and Y — all at once, and then assess how much m mediates X-&gt;Y. The problem here is that we’re making very strong directional assumptions that X causes M (and not vice versa) and M causes Y (and not vice versa). This is especially common in psychology, where the things we are measuring a pretty difficult to measure! For example, lets suppose we do a survey and everybody gets scored on three variables: <code>hours_worked</code>, <code>stress</code> and <code>burnout</code>. We’re making a strong assumption by fitting model A, when model B or C could be just as valid, and will fit the data equally well (remember all these models have zero degrees of freedom - they all ‘fit’ perfectly!). One can make reasonable arguments for all of these — i.e., is it that if people work more hours then they feel more stressed? or could it be that if people stress about work, perhaps they tend to work more hours to try to alleviate the stress?</p>
+<p><img src="images/mediation_lemons/Slide5.png" class="img-fluid"></p>
+<p>I am borrowing the phrase “three correlations in a trenchcoat” here from a <a href="https://www.the100.ci/2025/03/20/reviewer-notes-thats-a-very-nice-mediation-analysis-you-have-there-it-would-be-a-shame-if-something-happened-to-it/" target="_blank">really great blog</a> by Julia Rohrer<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>. The idea here is that really all we have when we do a cross-sectional mediation is a set of correlations, and we are dressing them up to tell make some very strong causal claims that are likely not warranted.</p>
+</section>
+<section id="confounding-of-m-y" class="level2">
+<h2 class="anchored" data-anchor-id="confounding-of-m-y">2. Confounding of M-&gt;Y</h2>
+<p>A potentially bigger problem with mediation is that confounding variables are still a problem, even when doing randomised experiments! Although it is possible to randomly allocate people to the predictor X (thus avoiding any confounding between X and Y), we can’t <em>also</em> randomly allocate people to M. This means that the M-&gt;Y path is open to being biased by unmeasured confounders.</p>
+<p>Take for example our Lemon Diet study. A confound of the relationship between Vitamin C and Scurvy is the amount that people smoke — smoking depletes vitamin C levels in the body, and also weakens the immune system, increasing susceptibility to Scurvy. So really, our model is missing an important part that will affect our resulting estimates:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-confmed" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-confmed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/mediation_lemons/Slide7.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-confmed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: A possible confounder of the mediator-outcome path
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>If we happened to think ahead and we planned for such a problem, we might have measured the amount that the sailors smoked, and we could include it in the model like so:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="st">"</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="st">ScurvySymptoms ~ smokes + b*vitC + c*LemonDiet</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="st">vitC ~ smokes + a*LemonDiet</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="st">indirect := a*b</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="st">total := (a*b)+c</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>mod.est <span class="ot">&lt;-</span> <span class="fu">sem</span>(mod, <span class="at">data =</span> scurvy2, <span class="at">se =</span> <span class="st">"bootstrap"</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod.est, <span class="at">ci =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>...
+...
+
+Regressions:
+                   Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
+  ScurvySymptoms ~                                                      
+    smokes            1.005    0.079   12.752    0.000    0.841    1.153
+    vitC       (b)   -1.630    0.133  -12.238    0.000   -1.915   -1.383
+    LemonDiet  (c)   -0.055    0.386   -0.143    0.886   -0.782    0.727
+  vitC ~                                                                
+    smokes           -0.364    0.032  -11.209    0.000   -0.429   -0.304
+    LemonDiet  (a)    1.843    0.141   13.102    0.000    1.559    2.108
+
+...
+...
+
+Defined Parameters:
+                   Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
+    indirect         -3.005    0.339   -8.870    0.000   -3.706   -2.357
+    total            -3.060    0.350   -8.734    0.000   -3.720   -2.343
+</code></pre>
+<p>And look! Our indirect effect is much smaller, and the direct path from LemonDiet to ScurvySymptoms is no longer significant<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. The problem that this opens up is that smoking is probably not the only confounder. There are probably loads and loads of things that we might not have thought of (e.g., <a href="#fig-confmed2" class="quarto-xref">Figure&nbsp;8</a>), and might not be able to measure very well. Which makes it very difficult to draw robust conclusions from mediation analyses.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-confmed2" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-confmed2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/mediation_lemons/Slide8.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-confmed2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: A small set of the potential confounds of the mediator-outcome path
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="divider div-transparent div-dot">
+
+</div>
+</section>
+</section>
+<section id="extra-mediation-with-separate-models" class="level1">
+<h1>EXTRA: mediation with separate models</h1>
+<p>The ‘old school’ way of doing mediation was to follow <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.917.2326&amp;rep=rep1&amp;type=pdf">Baron &amp; Kenny 1986</a>, and to conduct mediation analysis in a simpler way by using three separate regression models.</p>
+<ol type="1">
+<li><span class="math inline">\(y \sim x\)</span></li>
+<li><span class="math inline">\(m \sim x\)</span></li>
+<li><span class="math inline">\(y \sim x + m\)</span></li>
+</ol>
+<p>Step 1. Assess the total effect of the predictor on the outcome <code>y ~ x</code>. This step establishes that there <em>is</em> an effect that may be mediated.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(ScurvySymptoms <span class="sc">~</span> LemonDiet, <span class="at">data =</span> scurvy2)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod1)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)    16.32      0.429   38.07 4.90e-93
+LemonDiet      -3.22      0.606   -5.31 2.91e-07</code></pre>
+</div>
+</div>
+<p>Step 2. Estimate the effect of the predictor on the mediator <code>m ~ x</code>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>mod2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(vitC <span class="sc">~</span> LemonDiet, <span class="at">data =</span> scurvy2)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod2)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)     2.94      0.127    23.2 2.35e-58
+LemonDiet       1.88      0.180    10.5 1.06e-20</code></pre>
+</div>
+</div>
+<p>Step 3. Estimate the effects of the predictor and mediator on the outcome <code>y ~ x + m</code>. We need to show that the mediator affects the outcome variable.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>mod3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(ScurvySymptoms <span class="sc">~</span> LemonDiet <span class="sc">+</span> vitC, <span class="at">data =</span> scurvy2)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod3)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error t value  Pr(&gt;|t|)
+(Intercept)    24.37      0.487   50.08 5.05e-114
+LemonDiet       1.92      0.445    4.31  2.55e-05
+vitC           -2.73      0.141  -19.35  1.99e-47</code></pre>
+</div>
+</div>
+<p>Step 4. If Steps 1-3 all show effects of <code>y~x</code>, <code>m~x</code> and <code>y~m|x</code><a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> respectively, then we can assess mediation. We need to look at the how effect of the predictor on the outcome changes when we control for the mediator. This is from the same third model above. If the effect of the predictor is reduced, then we have mediation. If it is now zero, then we have complete mediation.</p>
+<p>This method is generally less optimal than using path models. Following the “separate models” approach<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> and requiring certain effects to be significant can sometimes lead to erroneous conclusions. For example, if <code>Y ~ 2*M + -2*X</code> and <code>M ~ 1*X</code>, then the total effect of <code>Y~X</code> would be <span class="math inline">\((2 \times 1) + -2 = 0\)</span>, leading us to say that there is no effect that could be mediated! In part the problems with this approach are because it doesn’t actually <em>estimate</em> the indirect effects, and attempts to determine “is there mediation [Yes]/[No]?” based on the significance of the individual paths. Even if the total effect <span class="math inline">\(c\)</span> is significantly different from zero and the direct effect <span class="math inline">\(c'\)</span> is not, this does not imply that the coefficients <span class="math inline">\(c\)</span> and <span class="math inline">\(c'\)</span> are different from one another! We therefore need to conduct an extra step (a popular approach is the “Sobel’s test”) in order to asses whether <span class="math inline">\(c-c'=0\)</span>, or to estimate the <span class="math inline">\(ab\)</span> path via bootstrapping like we do in <strong>lavaan</strong>.</p>
+<p>Perhaps a more relevant issue is that the separate models approach cannot so easily be generalised to situations with multiple mediators, multiple outcomes, or multiple predictors, whereas a path analytic approach can. In addition, both are susceptible to the same concerns of measurement reliability, confounding, predictor-mediator interactions, and the causal directions between variables.</p>
+<!-- ::: {.callout-caution collapse="true"} -->
+<!-- #### Optional - packages for estimating mediation effects -->
+<!-- The __mediation__ package is a very nice approach that allows us to conduct mediation this way, and it also extends to allow us to have categorical variables (we can use a logistic regression as one of our models), or to have multilevel data (our models can be fitted using __lme4__).   -->
+<!-- ```{r} -->
+<!-- library(mediation) -->
+<!-- mymediation <- mediate(model.m = mod2,  -->
+<!--                        model.y = mod3,  -->
+<!--                        treat='religiosity',  -->
+<!--                        mediator='hlc', -->
+<!--                        boot=TRUE, sims=500) -->
+<!-- summary(mymediation) -->
+<!-- ``` -->
+<!-- - ACME: Average Causal Mediation Effects (the indirect path $\mathbf{a \times b}$ in @fig-medpaths).   -->
+<!-- - ADE: Average Direct Effects (the direct path $\mathbf{c'}$ in @fig-medpaths).   -->
+<!-- - Total Effect: sum of the mediation (indirect) effect and the direct effect (this is $\mathbf{(a \times b) + c)}$ in @fig-medpaths).   -->
+<!-- ```{r} -->
+<!-- #| echo: false -->
+<!-- #| label: fig-medpaths -->
+<!-- #| fig-cap: "Mediation Model. The indirect effect is the product of paths a and b. c' is the direct effect of x on y." -->
+<!-- knitr::include_graphics("images/MED2.png") -->
+<!-- ``` -->
+<!-- ::: -->
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>or “if i had done/were to do X=B instead of X=A..”<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>estimating an ‘effect’ is difficult in observational research because its hard to figure out what the appropriate set of confounding variables are (let alone make sure you measure them all!).<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>no jokes here?<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>a disease common on ships between 16th-19th centuries<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p><a href="https://lavaan.ugent.be/" target="_blank">the lavaan project</a><a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>more on this below!! see the section on Cautions!<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>one of my favourite writers of stats related content - she has so many useful papers on all sorts of things, so do <a href="https://scholar.google.com/citations?user=Bg2qoJEAAAAJ&amp;hl=de" target="blank">check them out</a><a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>the reason for this is weirdly complex and unintuitive. In our original model, excluding smoking, the direct effect was “the effect of the lemon diet on scurvy, holding vitamin C constant”. If you have two people with the same Vitamin C levels, but one eats lots of lemons and the other eats none, there must be a reason why their Vitamin C levels are the same. There is! It’s because (unbeknownst to the model), one of them smokes a lot!<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>read <code>y~m|x</code> as <code>y~m</code> controlling for <code>x</code><a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>sometimes referred to as “steps approach”<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

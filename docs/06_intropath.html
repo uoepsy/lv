@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>6: Path Analysis – Latent Variable Modelling</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-af8acd9e0062ec246c222f4d4317722b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script>
+
+function toggle_visibility(id1, id2) {
+
+var e = document.getElementById(id1);
+
+var f = document.getElementById(id2);
+
+e.style.display = ((e.style.display!='none') ? 'none' : 'block');
+
+if(f.classList.contains('jk-circle-right')) {
+
+    f.classList.add('jk-circle-down')
+
+    f.classList.remove('jk-circle-right')
+
+} else {
+
+    f.classList.add('jk-circle-right')
+
+    f.classList.remove('jk-circle-down')
+
+}
+
+}
+
+</script>
+
+
+
+<!---<script src="https://kit.fontawesome.com/120b08a6f5.js" crossorigin="anonymous"></script>-->
+
+<link href="site_libs/panelset-0.3.0/panelset.css" rel="stylesheet">
+
+<script src="site_libs/panelset-0.3.0/panelset.js"></script>
+
+<link rel="stylesheet" href="https://uoepsy.github.io/assets/css/ccfooter.css">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
+      Latent Variable Modelling
+      </li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Latent Variable Modelling</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_dimension_reduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1: Dimension Reduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_pca.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2: PCA Walkthrough</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_efa.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3: Exploratory Factor Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">Additional Docs</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./z_eigen.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Optional: Eigen Decomposition</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#more-thinking-in-diagrams" id="toc-more-thinking-in-diagrams" class="nav-link active" data-scroll-target="#more-thinking-in-diagrams">More thinking in diagrams!</a></li>
+  <li><a href="#covariance-modelling-and-graphical-models" id="toc-covariance-modelling-and-graphical-models" class="nav-link" data-scroll-target="#covariance-modelling-and-graphical-models">Covariance modelling and graphical models</a>
+  <ul class="collapse">
+  <li><a href="#model-implied-covariances" id="toc-model-implied-covariances" class="nav-link" data-scroll-target="#model-implied-covariances">Model implied covariances</a></li>
+  <li><a href="#path-tracing" id="toc-path-tracing" class="nav-link" data-scroll-target="#path-tracing">Path tracing</a></li>
+  </ul></li>
+  <li><a href="#example-1" id="toc-example-1" class="nav-link" data-scroll-target="#example-1">Example 1</a></li>
+  <li><a href="#example-2" id="toc-example-2" class="nav-link" data-scroll-target="#example-2">Example 2</a></li>
+  <li><a href="#example-3" id="toc-example-3" class="nav-link" data-scroll-target="#example-3">Example 3</a>
+  <ul class="collapse">
+  <li><a href="#model-comparison" id="toc-model-comparison" class="nav-link" data-scroll-target="#model-comparison">model comparison</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">6: Path Analysis</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="lo">
+<p>This reading:</p>
+<ul>
+<li>The high level idea of path analysis, and presenting models in diagrams.</li>
+<li>An introduction to ‘path tracing’ — how a graphical model can imply the covariances we would expect to observe.</li>
+</ul>
+</div>
+<section id="more-thinking-in-diagrams" class="level1">
+<h1>More thinking in diagrams!</h1>
+<p>Over the last few chapters, we have started to use diagrams as a way of presenting the structure of different models. The diagrams are made up of variables and the relationships between them, and we have followed certain conventions:</p>
+<ul>
+<li>squares = variables we observe</li>
+<li>circles = variables we don’t observe<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
+<li>single-headed arrows = regression paths (pointed at the outcome)</li>
+<li>double-headed arrows = covariance/correlation</li>
+</ul>
+<p>We are going to delve more into these diagrams, and to do that we are going to start distinguishing between variables in a diagram that are <strong>exogenous</strong> (only arrows out) and those that are <strong>endogenous</strong> (arrows in).</p>
+<div class="sticky">
+<p><strong>Terminology</strong></p>
+<ul>
+<li><strong>Exogenous variables</strong> are a bit like what we have been describing with words like “independent variable” or “predictor”. In a path diagram, they have no arrows coming into them from other variables in the system, but have paths <em>going out</em> to other variables.<br>
+</li>
+<li><strong>Endogenous variables</strong> are more like the “outcome”/“dependent”/“response” variables we are used to. They have some arrow coming into them from another variable in the system (and may also - but not necessarily - have paths going out from them).<br>
+</li>
+</ul>
+</div>
+<p>These sort of diagrams represent theoretical models in that they indicate a theorised flow of information between variables. For example, the diagram in <a href="#fig-patheg1" class="quarto-xref">Figure&nbsp;1</a> posits that variable Y1 listens to variable X1 (i.e., if the value of X1 changes, we predict that variable Y1 changes by amount a) and that it doesn’t listen to variable X2 or Y2.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-patheg1" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-patheg1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/simplepath.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-patheg1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: A simple path analysis
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The term “path analysis” gets used to refer to how these sort of diagrams work — and the method of estimating the parameters (the values on the arrows) — when there are no latent variables (don’t worry, we’ll bring them back in a couple of chapters!).</p>
+<div class="rtip">
+<p><strong>Fitting path models in R</strong></p>
+<p>This reading is mainly focused on how path analysis works. The examples will show R being used to fit path analysis models, but we will primarily be getting to grips with how the diagrams function as presentations of the models, and how we can numerically compare the implications of different diagrams.</p>
+<p>As a brief introduction to the basics of doing path analysis in R, we can liken it to fitting CFA models (as in <a href="04_cfa.html#cfa-in-r---the-lavaan-package">Chapter 4</a>). The process is very similar: we specify all the different theorised paths in our model and then fit it to the data (this time using using the <code>sem()</code> function instead of <code>cfa()</code>). So for the model presented in <a href="#fig-patheg1" class="quarto-xref">Figure&nbsp;1</a>, we would specify our model (including all 3 regression paths, and the covariance between X1 and X2), before fitting the model to the data.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># specify the model: </span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="st">"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="st">Y1 ~ X1</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="st">Y2 ~ X1 + X2</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="st">X1 ~~ X2</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># fit the model</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>mod.est <span class="ot">&lt;-</span> <span class="fu">sem</span>(mod, <span class="at">data =</span> somedata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can then use functions like <code>summary()</code>, <code>parameterestimates()</code> and <code>fitmeasures()</code> to examine the fitted model.</p>
+</div>
+</section>
+<section id="covariance-modelling-and-graphical-models" class="level1">
+<h1>Covariance modelling and graphical models</h1>
+<p>The logic behind “path analysis” is to estimate a system of equations that maximise the probability of observing our sample data.</p>
+<ol type="1">
+<li>We specify our theoretical model of the world as a system of paths between variables that represent which variables influence which other variables. This is simply a diagramatic way of specifying a set of equations.
+<ul>
+<li>A single headed arrow from <span class="math inline">\(X \rightarrow Y\)</span> indicates that Y “listens to” X — if X changes, then Y will change accordingly (but not vice versa)</li>
+<li>A double headed arrow between <span class="math inline">\(X \leftrightarrow Y\)</span> indicates that these two variables are related, not because one causes the other, but because there is some mechanism outside of our model that results in these two variables being associated.</li>
+</ul></li>
+<li>We collect data on the relevant variables and we observe a covariance matrix (i.e.&nbsp;how each variable covaries with every other variable).</li>
+<li>We fit our model to the data, and evaluate how well our theoretical model (the estimated values for our path coefficients) can reproduce the observed covariance matrix.</li>
+</ol>
+<p>Step 3 here may feel a little opaque. One way to think of it is that in a simple regression model <code>lm(Y ~ 1 + X + Z + W)</code>, we fit the model to some data, and get out coefficients. We can then use these coefficients to calculate a predicted value of Y for each observation in the data. So the model is trying to ‘reproduce’ Y from the coefficients.<br>
+In path analysis, this logic is the same, but instead of trying to reproduce a single outcome variable, our models are trying to reproduce all the covariances between all the variables. To understand this better, we’ll take a look at how a path model implies a set of relationships we would observe.</p>
+<section id="model-implied-covariances" class="level2">
+<h2 class="anchored" data-anchor-id="model-implied-covariances">Model implied covariances</h2>
+<p>When we put estimates on the arrows in that diagram, we are <strong>implying</strong> what covariances we would expect to see between our observed variables.</p>
+<p>To take this to the extreme, consider two theoretical models presented graphically:</p>
+<p><img src="images/intropathtrace/Slide4.png" class="img-fluid"></p>
+<p>Model 1 claims that y1 to y4 are uncorrelated. Model 2 claims that y1 and y4 are all correlated with one another. Neither of these models are very useful, but think about what they say about the variables. Model 2 is just saying “everything is related to everything else”, and Model 1 is a stronger claim of “nothing is related to anything else”.</p>
+<p>So both of these theoretical models <strong>imply</strong> what we would expect to see in the covariances between the variables. In fact, with the labels on the arrows, they imply <em>specific values</em> for what we would expect see. Model 1 implies that we would see covariances of zero between all variables. Model 2 implies we would see covariances that correspond to each of the paths <span class="math inline">\(a, b, \ldots, f\)</span> in the diagram.</p>
+<p><img src="images/intropathtrace/Slide5.png" class="img-fluid"> In practice, these two models are two extreme ends of the spectrum — Model 2 will fit <em>perfectly</em> (i.e., we just need to estimate <span class="math inline">\(a, b, \ldots, f\)</span> to be whatever the observed covariances are, and we can perfectly reproduce what we observe), and Model 1 will only fit well if none of the variables are <em>in any way</em> related to one another (not directly, and not via any other variables that we haven’t drawn here).</p>
+<p>In practice, our theoretical models will be somewhere in between, but they will still provide us with a set of implied covariances. These implied covariances will still be based on the estimated values of the paths in our model, but it becomes a bit more complex to work out how.</p>
+<p>Now that we have seen the basic logic, we are going to go on a little exploration to see how this works for more complicated diagrams.<br>
+<strong>Note:</strong> in practice we won’t have to do this ourselves. It all gets handled by the packages we will use in R.</p>
+</section>
+<section id="path-tracing" class="level2">
+<h2 class="anchored" data-anchor-id="path-tracing">Path tracing</h2>
+<p>Thanks to <a href="https://www.jstor.org/stable/pdf/2527551.pdf?casa_token=3QF0ad2ZoBcAAAAA:MbEkDNNdoLZr1SXE4LrnK--qrhhsTXLgsRtcWre1UvWxiQiGNUl5vWytGp34XIxhAYMZJe-MbIcBnEwXSfX6MAONevz04-sMXpEDI3IaYKk6mMX46QvX">Sewal Wright</a>, we can figure out the covariance between any two variables in a diagram by taking the sum of all <em>“compound paths”</em> between the two variables<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+<p><em>compound paths</em> are the products of any paths you can trace between A and B for which there are:</p>
+<ul>
+<li>no loops. If you are tracing from one variable to another, you cannot pass through the same variable twice in a particular path.</li>
+<li>no going forward then backward (and no going forward then across a curved arrow)<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></li>
+<li>maximum of one curved arrow per path</li>
+</ul>
+<p>If we look at a path diagram and find all the distinct routes to get from variable A to variable B that adhere to the 3 rules above, and sum these routes up, then we get the implied covariance between A and B. Routes are ‘distinct’ if they contain different coefficients, or encounter coefficients in a different order.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+other assumptions
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For us to be able to do this, a path diagram must have no two-way causal relations or feedback loops (e.g.&nbsp;A<span class="math inline">\(\rightarrow\)</span>B<span class="math inline">\(\rightarrow\)</span>C<span class="math inline">\(\rightarrow\)</span>A).</p>
+<p>We will also be assuming various things when we use this method.</p>
+<ul>
+<li>All relations are linear and additive (this is because an arrow is essentially a regression, so we have these regression assumptions)</li>
+<li>‘Causes’ are unitary (if A<span class="math inline">\(\rightarrow\)</span>B and A<span class="math inline">\(\rightarrow\)</span>C, then it is presumed that this is the same aspect of A resulting in a change in both B and C, and not two distinct aspects of A, which would be better represented by two correlated variables A1 and A2).<br>
+</li>
+<li>The variables are measured without error (we will relax this assumption later on by bringing back in the latent variables).</li>
+<li>Endogenous variables are not connected by correlations (we would correlate the residuals instead, because residuals are not endogenous).<br>
+</li>
+<li>The residuals (error terms) are uncorrelated with exogenous variables.<br>
+</li>
+<li>All our exogenous variables are correlated (unless we specifically assume that their correlation is zero).</li>
+</ul>
+</div>
+</div>
+</div>
+<p>This technique is known as “Path Tracing”, because we do just that - we trace our finger from one variable to another, along the paths, and we get out their implied covariance.</p>
+<p>Let’s see it in action!</p>
+</section>
+</section>
+<section id="example-1" class="level1">
+<h1>Example 1</h1>
+<div class="statbox">
+<p><strong>Note</strong>: this process works with <em>covariances</em>, but it’s usually easier for us to think in <em>correlations</em> (because it’s a standardised metric), so in the examples below all the variables are standardised to have a variance of 1, meaning that covariance = correlation.</p>
+</div>
+<p>Let’s start with an example in which we have two exogenous variables X1 and X2 that both influence a single outcome Y. As a diagram our model looks like <a href="#fig-patheq1" class="quarto-xref">Figure&nbsp;2</a>, and we have labelled all the paths with lower case letters <span class="math inline">\(a, b, c, \text{and } d\)</span>.</p>
+<p>This is actually just a multiple regression expressed as a path diagram!</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-patheq1" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-patheq1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/patheq1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-patheq1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: A multiple regression model as a path diagram
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>According to Wright’s tracing rules above, we can write out the equations corresponding to the 3 covariances between our observed variables (remember that <span class="math inline">\(cov_{a,b} = cov_{b,a}\)</span>, so it doesn’t matter at which variable we start the paths).</p>
+<ul>
+<li>There is only one way to move between X1 and X2, according to Wright’s rules, and that is to go via the double headed arrow <span class="math inline">\(c\)</span>.</li>
+<li>There are two ways to go from X1 to Y:
+<ul>
+<li>we can go across the double headed arrow to X2, and then go from X2 to y (path <span class="math inline">\(bc\)</span>)<br>
+</li>
+<li>or we can go directly from X1 to Y (path <span class="math inline">\(a\)</span>).<br>
+</li>
+</ul></li>
+<li>To get from X2 to Y, we can either:
+<ul>
+<li>go via X1 (path <span class="math inline">\(ac\)</span>)</li>
+<li>go directly (path <span class="math inline">\(b\)</span>)</li>
+</ul></li>
+</ul>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>covariance</th>
+<th>paths</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(cov_{x1,x2}\)</span></td>
+<td>c</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(cov_{x1,y}\)</span></td>
+<td>a + bc</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(cov_{x2,y}\)</span></td>
+<td>b + ac</td>
+</tr>
+</tbody>
+</table>
+<p>So now lets fit this model to some data. We can do this using the <strong>lavaan</strong> package, which will use maximum likelihood estimation (finding the set of values for a, b, c, and d that result in the maximum probability of seeing our sample data).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaan)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># our data:</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>egdata1 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"https://uoepsy.github.io/data/path_eg1.csv"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># our model formula</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>mod.formula1 <span class="ot">&lt;-</span> <span class="st">"y ~ x1 + x2"</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># fitted to some data</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>mod.est1 <span class="ot">&lt;-</span> <span class="fu">sem</span>(mod.formula1, <span class="at">data =</span> egdata1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>What we get out of the model are the estimates for the path coefficients:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract parameters:</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">parameterestimates</span>(mod.est1) <span class="sc">|&gt;</span> <span class="fu">select</span>(lhs,op,rhs,est)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  lhs op rhs   est
+1   y  ~  x1 0.612
+2   y  ~  x2 0.382
+3   y ~~   y 0.310
+4  x1 ~~  x1 0.995
+5  x1 ~~  x2 0.359
+6  x2 ~~  x2 0.995</code></pre>
+</div>
+</div>
+<p>With this set of path estimates (<span class="math inline">\(a = 0.61\)</span>, <span class="math inline">\(b = 0.38\)</span>, and <span class="math inline">\(c = 0.36\)</span>), we can calculate the covariance that is <em>implied</em> by our estimated model:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>covariance</th>
+<th>paths</th>
+<th>model implied covariance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(cov_{x1,x2}\)</span></td>
+<td>c</td>
+<td><span class="math inline">\(0.36\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(cov_{x1,y}\)</span></td>
+<td>a + bc</td>
+<td><span class="math inline">\(0.61 + (0.38 \times 0.36) = 0.75\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(cov_{x2,y}\)</span></td>
+<td>b + ac</td>
+<td><span class="math inline">\(0.38 + (0.61 \times 0.36) = 0.60\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><br> We can then examine how far off this is from the observed covariance matrix. In this specific case, our covariance matrix has 6 values in it, and we are estimating 6 things (see the parameters above). This means that there is unique solution, and our model is <strong>just-identified</strong> (or “saturated”), and is capable of <strong>perfectly</strong> reproducing the covariance matrix.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cov</span>(egdata1) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     x1   x2    y
+x1 1.00 0.36 0.75
+x2 0.36 1.00 0.60
+y  0.75 0.60 1.00</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+why 6? the model in full
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The variances of individual variables (also covariances of each variable with itself) are also in our covariance matrix on the diagonals, and in full, our model also includes the estimation of variances of exogenous variables, as well as the residual variance of endogenous variables. These can be represented as the paths <span class="math inline">\(d\)</span>, <span class="math inline">\(e\)</span> and <span class="math inline">\(f\)</span> in <a href="#fig-patheq1a" class="quarto-xref">Figure&nbsp;3</a>.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>covariance</th>
+<th>paths</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(cov_{x1,x2}\)</span></td>
+<td>c</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(cov_{x1,y}\)</span></td>
+<td>a + bc</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(cov_{x2,y}\)</span></td>
+<td>b + ac</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(cov_{x1,x1}\)</span></td>
+<td>e</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(cov_{x2,x2}\)</span></td>
+<td>f</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(cov_{y,y}\)</span></td>
+<td>d + a<span class="math inline">\(^2\)</span> + b<span class="math inline">\(^2\)</span> + acb + bca</td>
+</tr>
+</tbody>
+</table>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-patheq1a" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-patheq1a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/patheq1a.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-patheq1a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: A multiple regression model as a path diagram with variances of exogenous variables and residuals indicated
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Although this is really neat (we can now actually calculate multiple regression coefficients from seeing the covariance matrix - we don’t need the actual data!), it doesn’t really show off the benefits of this type of modelling, because it is really nothing more than we got from <code>lm(y~x1+x2)</code>. But the path analysis approach extends to much more complex theoretical models.</p>
+</section>
+<section id="example-2" class="level1">
+<h1>Example 2</h1>
+<p>One benefit of a path model over a regression model is that we can include multiple endogenous variables. In <a href="#fig-patheq2" class="quarto-xref">Figure&nbsp;4</a>, we can see now a model in which we have two outcomes (Y1 and Y2), an exogenous predictor X, and a variable M that sits on the path between X and the two outcomes. In this case, M is itself an outcome of Z.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-patheq2" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-patheq2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/patheq2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-patheq2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: A model with 2 outcomes
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Using the path tracing rules:</p>
+<ul>
+<li>There is only one way to get between X and M, and that is the path <span class="math inline">\(a\)</span>.</li>
+<li>There is only one way to get between M and Y1 (path <span class="math inline">\(b\)</span>)</li>
+<li>And only one way to get between M and Y2 (path <span class="math inline">\(c\)</span>)</li>
+<li>To get between X and Y1, we can only go via <span class="math inline">\(ab\)</span></li>
+<li>And to get between X and Y2, we can only go via <span class="math inline">\(ac\)</span></li>
+<li>To get between Y1 and Y2, we can go backwards to M and then forwards to Y2, the path <span class="math inline">\(bc\)</span>.</li>
+</ul>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>covariance</th>
+<th>paths</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(cov_{x,m}\)</span></td>
+<td>a</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(cov_{m,y1}\)</span></td>
+<td>b</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(cov_{m,y2}\)</span></td>
+<td>c</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(cov_{x,y1}\)</span></td>
+<td>ab</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(cov_{x,y2}\)</span></td>
+<td>ac</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(cov_{y1,y2}\)</span></td>
+<td>bc</td>
+</tr>
+</tbody>
+</table>
+<p>As with the previous example, we fit our model to some sample data, and get some estimates for the parameters:</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># our data:</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>egdata2 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"https://uoepsy.github.io/data/path_eg2.csv"</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># our model formula</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>mod.formula2 <span class="ot">&lt;-</span> <span class="st">"</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="st">y1 ~ m</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="st">y2 ~ m</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="st">m ~ x</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="st"># by default, lavaan will correlate the residual variance</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="st"># for the purposes of this example, to match our model exactly, </span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="st"># we'll constrain it to 0:  </span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="st">y1~~0*y2</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># fitted to some data</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>mod.est2 <span class="ot">&lt;-</span> <span class="fu">sem</span>(mod.formula2, <span class="at">data =</span> egdata2)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># extract parameters:</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="fu">parameterestimates</span>(mod.est2) <span class="sc">|&gt;</span> <span class="fu">select</span>(lhs,op,rhs,est)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  lhs op rhs   est
+1  y1  ~   m 0.520
+2  y2  ~   m 0.187
+3   m  ~   x 0.461
+4  y1 ~~  y2 0.000
+5  y1 ~~  y1 0.728
+6  y2 ~~  y2 0.963
+7   m ~~   m 0.786
+8   x ~~   x 0.998</code></pre>
+</div>
+</div>
+<p>And these estimated path coefficients of <span class="math inline">\(a = 0.46\)</span>, <span class="math inline">\(b = 0.52\)</span> and <span class="math inline">\(c = 0.19\)</span>, imply that our covariances are:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>covariance</th>
+<th>paths</th>
+<th>model implied covariance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(cov_{x,m}\)</span></td>
+<td>a</td>
+<td><span class="math inline">\(0.46\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(cov_{m,y1}\)</span></td>
+<td>b</td>
+<td><span class="math inline">\(0.52\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(cov_{m,y2}\)</span></td>
+<td>c</td>
+<td><span class="math inline">\(0.19\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(cov_{x,y1}\)</span></td>
+<td>ab</td>
+<td><span class="math inline">\(0.46 \times 0.52 = 0.24\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(cov_{x,y2}\)</span></td>
+<td>ac</td>
+<td><span class="math inline">\(0.46 \times 0.19 = 0.09\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(cov_{y1,y2}\)</span></td>
+<td>bc</td>
+<td><span class="math inline">\(0.52 \times 0.19 = 0.10\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><br><br>
+Finally, our <strong>observed</strong> covariances are here:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cov</span>(egdata2) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     y1   y2    m    x
+y1 1.00 0.06 0.52 0.49
+y2 0.06 1.00 0.19 0.06
+m  0.52 0.19 1.00 0.46
+x  0.49 0.06 0.46 1.00</code></pre>
+</div>
+</div>
+<p>But wait.. unlike the first example, this one does <em>not</em> perfectly reproduce our the covariances we observe. This is because our model is <strong>over-identified</strong>. We are trying to recreate our covariance matrix with 10 values in it using only <strong>7</strong> unknown parameters. Over-identification is a <strong>good thing!</strong> It means that we can assess the fit of the model to the data — we can ask “how badly does it fit?” (whereas the previous model by definition just fit perfectly). and evaluate the plausibility of the proposed relationships!</p>
+<p>This is just like the discussion in the Chapter on CFA, where we had lots of metrics of “model fit”. The most basic on is the <span class="math inline">\(\chi^2\)</span> test of the discrepancy between model-implied and observed covariance matrices. The significant result here suggests our model fits <strong>poorly</strong></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fitMeasures</span>(mod.est2, <span class="fu">c</span>(<span class="st">"chisq"</span>, <span class="st">"df"</span>, <span class="st">"pvalue"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> chisq     df pvalue 
+57.074  3.000  0.000 </code></pre>
+</div>
+</div>
+<p>We can see this specifically — some of our “model implied covariances” are quite different to those in our observed covariance matrix (e.g, the model implies that <span class="math inline">\(r_{x,y1} = 0.24\)</span>, but we actually observe it to be <span class="math inline">\(0.49\)</span>!).</p>
+</section>
+<section id="example-3" class="level1">
+<h1>Example 3</h1>
+<p>In Example 2, our theoretical model proposed that <em>all</em> of the association that we might observe between X and Y1 is due to the relationship that X has with M, and that M in turn has with Y1.</p>
+<p>Let’s use the same dataset, but now consider an alternative model (see <a href="#fig-patheq3" class="quarto-xref">Figure&nbsp;5</a>) could propose that X still directly influences Y1 beyond the influence it exerts via M. We would indicate this via an additional path (path <span class="math inline">\(g\)</span> in <a href="#fig-patheq3" class="quarto-xref">Figure&nbsp;5</a>).</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-patheq3" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-patheq3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/patheq3.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-patheq3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: X now directly influences Y, as well as its influence via M
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Fitting this model (to the same data), we get out estimates for the paths (including this additional parameter):</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># our model formula</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>mod.formula3 <span class="ot">&lt;-</span> <span class="st">"</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="st">y1 ~ m + x</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="st">y2 ~ m</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="st">m ~ x</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="st"># by default, lavaan will correlate the residual variance</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="st"># for the purposes of this example, to match our model exactly, </span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="st"># we'll constrain it to 0:  </span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="st">y1~~0*y2</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co"># fitted to the same data as for example 2</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>mod.est3 <span class="ot">&lt;-</span> <span class="fu">sem</span>(mod.formula3, <span class="at">data =</span> egdata2)</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co"># extract parameters:</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="fu">parameterestimates</span>(mod.est3) <span class="sc">|&gt;</span> <span class="fu">select</span>(lhs,op,rhs,est)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  lhs op rhs   est
+1  y1  ~   m 0.375
+2  y1  ~   x 0.313
+3  y2  ~   m 0.187
+4   m  ~   x 0.461
+5  y1 ~~  y2 0.000
+6  y1 ~~  y1 0.651
+7  y2 ~~  y2 0.963
+8   m ~~   m 0.786
+9   x ~~   x 0.998</code></pre>
+</div>
+</div>
+<p>Our covariances between variables are, in this model, expressed as:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 52%">
+<col style="width: 21%">
+<col style="width: 26%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>covariance</th>
+<th>paths</th>
+<th>model implied covariance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(cov_{x,m}\)</span></td>
+<td>a</td>
+<td><span class="math inline">\(0.46\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(cov_{m,y1}\)</span></td>
+<td>b + ag</td>
+<td><span class="math inline">\(0.38 + (0.46 \times 0.31) = 0.52\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(cov_{m,y2}\)</span></td>
+<td>c</td>
+<td><span class="math inline">\(0.19\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(cov_{x,y1}\)</span></td>
+<td>ab + g</td>
+<td><span class="math inline">\((0.46 \times 0.38) + 0.31 = 0.49\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(cov_{x,y2}\)</span></td>
+<td>ac</td>
+<td><span class="math inline">\(0.46 \times 0.19 = 0.09\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(cov_{y1,y2}\)</span></td>
+<td>bc + gac</td>
+<td><span class="math inline">\((0.38 \times 0.19) + (0.31 \times 0.46 \times 0.19) = 0.10\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>And now, when we look at our observed covariance matrix, we are doing a much better job of recreating it, than we did with the model from Example 2!</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cov</span>(egdata2) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     y1   y2    m    x
+y1 1.00 0.06 0.52 0.49
+y2 0.06 1.00 0.19 0.06
+m  0.52 0.19 1.00 0.46
+x  0.49 0.06 0.46 1.00</code></pre>
+</div>
+</div>
+<p>And note that this model is not indicated as fitting poorly:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fitMeasures</span>(mod.est3, <span class="fu">c</span>(<span class="st">"chisq"</span>, <span class="st">"df"</span>, <span class="st">"pvalue"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> chisq     df pvalue 
+ 1.062  2.000  0.588 </code></pre>
+</div>
+</div>
+<section id="model-comparison" class="level2">
+<h2 class="anchored" data-anchor-id="model-comparison">model comparison</h2>
+<p>We can now do things such as compare models. So if we have competing theories about the same set of variables, we can now test them against one another!</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lavTestLRT</span>(mod.est2, mod.est3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Chi-Squared Difference Test
+
+         Df    AIC    BIC   Chisq Chisq diff  RMSEA Df diff Pr(&gt;Chisq)    
+mod.est3  2 3916.8 3946.3  1.0624                                         
+mod.est2  3 3970.8 3996.1 57.0741     56.012 0.3317       1  7.204e-14 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>hexagons = composite variables, like our diagrams for PCA but these are rarely used in practice!<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>if we were wanting <em>correlations</em>, and we didn’t have standardised variables, then these would have to be divided by the corresponding standard deviation estimates for the variables<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>You can’t go out of one arrow-head into another arrow-head. We can go heads-to-tails, or tails-to-heads, not heads-heads<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
