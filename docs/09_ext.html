@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Latent Growth Curve Models – Latent Variable Modelling</title>
+<title>9: Further SEM – Latent Variable Modelling</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -195,15 +229,21 @@ if(f.classList.contains('jk-circle-right')) {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Latent Growth Curve Models</h1>
+<h1 class="title">9: Further SEM</h1>
 </div>
 
 
@@ -221,11 +261,137 @@ if(f.classList.contains('jk-circle-right')) {
 
 
 <div class="lo">
-<p>Below are various datasets from these readings and from lectures and exercises across our courses. For each one, there is a quick explanation of the study design which also details the research aims of the project.</p>
-<p>Pick one of the datasets to test yourself with fitting, checking, interpreting, and reporting on multilevel models.</p>
+<p>This reading:</p>
+<ul>
+<li>more uses of SEM!</li>
+</ul>
+</div>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>There is a ~50 year history of structural equation modelling in behavioural and social sciences, with its component parts having originated over 100 years ago (factor analysis from Charles Spearman in 1904, and path analysis from Sewall Wright in 1918).</p>
+<p>One key benefit of SEM is that it can force us as researchers to face the theoretical assumptions that underpin our analysis. This may be, for instance, having to explicitly define how our observed measurements relate to the underlying concepts we believe they represent. Similarly, representing our models as diagrams forces transparency of our theorised relationships, the variables we have chosen to include, and, perhaps more importantly, those we have omitted.</p>
+<p>Despite this, there has been a tendency to view certain structures as a bit like a set of ‘plug-and-play’ models that can be applied to data without us having to think too deeply of the underlying theory. If there is one bit of advice for any work you do in statistics, it would be to <em>always think carefully and deliberately</em> and to always ask <em>“how might i be misleading myself here?”</em></p>
+<p>Below are various examples of some of the more common structures of models that you will see in the literature, that they may serve as examples of “what can be done” in the SEM framework.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">pos =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>),</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">ex =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>,.<span class="dv">5</span><span class="sc">*</span>pos),</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">mood =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>,.<span class="dv">3</span><span class="sc">*</span>pos),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">ex2 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>,ex<span class="sc">+</span>mood),</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">mood2 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>,ex<span class="sc">+</span>mood),</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">ex3 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>,ex2<span class="sc">+</span>mood2),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">mood3 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>,ex2<span class="sc">+</span>mood2),</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">ex4 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>,ex3<span class="sc">+</span>mood3),</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">mood4 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>,ex3<span class="sc">+</span>mood3)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="st">"</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>- measurement invariance
+- other types of indicators (CCC)
+- mnlfa
+- multi-trait multi-method models
+- multi-group analysis
+- multi-level SEM
+- cross-lagged panel models
+  - RI-CLPM
+- latent class mixture models
+- growth curves
+    - random effects as latent variables?
+    </code></pre>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> junk<span class="sc">::</span><span class="fu">sim_basicrs</span>() <span class="sc">|&gt;</span> <span class="fu">filter</span>(x<span class="sc">&lt;=</span><span class="dv">5</span>) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">x=</span>x<span class="dv">-1</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(y <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> x <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> x <span class="sc">|</span> g), df, <span class="at">REML=</span><span class="cn">FALSE</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>dfw <span class="ot">&lt;-</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  df <span class="sc">|&gt;</span> <span class="fu">select</span>(x,g,y) <span class="sc">|&gt;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>x,<span class="at">values_from=</span>y,<span class="at">names_prefix =</span> <span class="st">"t"</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="st">"</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="st">int =~ 1*t0 + 1*t1 + 1*t2 + 1*t3 + 1*t4</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="st">slope =~ 0*t0 + 1*t1 + 2*t2 + 3*t3 + 4*t4</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaan)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">growth</span>(mod, <span class="at">data =</span> dfw)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>lavaan 0.6-20 ended normally after 39 iterations
+
+  Estimator                                         ML
+  Optimization method                           NLMINB
+  Number of model parameters                        10
+
+  Number of observations                            20
+
+Model Test User Model:
+                                                      
+  Test statistic                                18.678
+  Degrees of freedom                                10
+  P-value (Chi-square)                           0.045
+
+Parameter Estimates:
+
+  Standard errors                             Standard
+  Information                                 Expected
+  Information saturated (h1) model          Structured
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)
+  int =~                                              
+    t0                1.000                           
+    t1                1.000                           
+    t2                1.000                           
+    t3                1.000                           
+    t4                1.000                           
+  slope =~                                            
+    t0                0.000                           
+    t1                1.000                           
+    t2                2.000                           
+    t3                3.000                           
+    t4                4.000                           
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)
+  int ~~                                              
+    slope             1.074    0.380    2.830    0.005
+
+Intercepts:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)
+    int               0.197    0.262    0.750    0.453
+    slope             0.779    0.286    2.723    0.006
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)
+   .t0                2.378    0.802    2.966    0.003
+   .t1                1.355    0.453    2.994    0.003
+   .t2                1.133    0.398    2.842    0.004
+   .t3                0.219    0.325    0.674    0.500
+   .t4                2.127    0.824    2.581    0.010
+    int               0.257    0.511    0.503    0.615
+    slope             1.486    0.519    2.866    0.004</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fixef</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)           x 
+  0.2653259   0.6825143 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Groups   Name        Std.Dev. Corr 
+ g        (Intercept) 0.87446       
+          x           1.20930  0.770
+ Residual             1.09798       </code></pre>
+</div>
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -16,12 +16,12 @@ website:
       - 01_dimension_reduction.qmd
       - 02_pca.qmd
       - 03_efa.qmd
-      # - 04_cfa.qmd
+      - 04_cfa.qmd
       # - 05_reliability.qmd
       # - 06_intropath.qmd
       # - 07_mediation.qmd
       # - 08_sem.qmd
-      # - 00_datawrangle.qmd
+      - 00_datawrangle.qmd
       - section: "Additional Docs"
         contents:
           - z_eigen.qmd

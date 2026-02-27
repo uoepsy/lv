@@ -28,7 +28,11 @@ library(lme4)
 ```
 
 :::lo
+This reading:
 
+- Combining a "measurement model" (see confirmatory factor analysis (CFA)) with a "structural model" (see path analysis), all at once --- SEM!  
+- The process of doing SEM
+- Other things we will need to bear in mind (normality of measured variables, categorical data, and missing data)
 
 :::
 
@@ -188,7 +192,7 @@ And then examine the fitted model using all the same functions we have already s
 
 <div class="divider div-transparent div-dot"></div>
 
-# The steps of SEM?  
+# The six steps of SEM?  
 
 There are quite a lot of books, papers, tutorials and resources that tend to present SEM as a step-by-step procedure. These are generally something along the lines of:
 
@@ -450,7 +454,18 @@ __What can we do?__
 In the event of non-normality, we can still use maximum likelihood to find our estimated factor loadings, coefficients and covariances. However, our standard errors (and our $\chi^2$ model fit) will be biased. We can use a robust maximum likelihood estimator that essentially applies corrections to the standard errors^[These are similar corrections to ones that we apply in a regression world, see [LM Troubleshooting](https://uoepsy.github.io/lmm/00_lm_assumpt.html#heteroscedastic-robust-standard-errors-huber-white){target="_blank"}] and $\chi^2$ statistic.  
 
 There are a few robust estimators in **lavaan**, but one of the more frequently used ones is "MLR" (maximum likelihood with robust SEs). You can find all the other options at [https://lavaan.ugent.be/tutorial/est.html](https://lavaan.ugent.be/tutorial/est.html).  
-We can make use of these with: `sem(model, estimator="MLR")` or `cfa(model, estimator="MLR")`.  
+We can make use of these estimators^[(also works with the `cfa()` function)] with:   
+```{r}
+#| eval: false
+sem(model, estimator="MLR")
+```
+
+When we use these estimators, we will often be able to get out "robust" versions of the model fit statistics. `summary(model, fitmeasures = TRUE)` will print these out alongside the standard metrics, or we can ask for them specifically:  
+
+```{r}
+#| eval: false
+fitmeasures(model)[c("rmsea.robust","srmr","cfi.robust","tli.robust")]
+```
 
 :::
 
@@ -478,24 +493,111 @@ There are a few options for us here:
 
 If we have endogenous variables that are categorical, then things become a bit more tricky.  
 
-This might be a far more common problem than you might think! Just remember how we tend to set up questionnaires using Likert scales --- a lot of the time, we ask people to rate agreement with statements, and people choose from "Strongly Disagree", .... , to "Strongly Agree".  
+This might be a far more common problem than you might think! 
+Remember that if we are using a variable as an indicator of a latent factor, then it is endogenous, and think about how we tend to set up questionnaires - we use Likert scales that ask people to rate agreement with statements, and people choose from "Strongly Disagree", .... , to "Strongly Agree".  
 
 These response options are **not** on a continuous scale, yet we often pretend that they are! We convert them to numbers from 1 to 5, and then go ahead with our modelling.   
 
-This is a contentious issue: some statisticians might maintain that it is *never* appropriate to treat ordinal data as continuous. Others feel that it's generally okay --- an often used rule of thumb is that Likert data with $\geq 5$ levels can be treated as if they are continuous without unduly influencing results (see [Johnson, D.R., & Creech, J.C. (1983). Ordinal measures in multiple indicator models: A simulation study of categorization error](https://discovered.ed.ac.uk/permalink/f/1s15qcp/TN_cdi_crossref_primary_10_2307_2095231)).  
+This is a contentious issue: some statisticians might maintain that it is *never* appropriate to treat ordinal data as continuous. Others feel that it's generally okay --- an often used rule of thumb is that Likert data with $\geq 5$ levels can be treated as if they are continuous without unduly influencing results.^[see [Johnson, D.R., & Creech, J.C. (1983). Ordinal measures in multiple indicator models: A simulation study of categorization error](https://discovered.ed.ac.uk/permalink/f/1s15qcp/TN_cdi_crossref_primary_10_2307_2095231)]  
 
 But what if we don't have 5+ levels? Or we just don't want to assume Likert data is continuous? An important note is that even if our questionnaire included 5 response options for people to choose from, if participants only _used_ 3 of them, then we would actually have a variable with just 3 levels. 
 
 Estimation techniques exist that allow us to model such variables by considering the set of ordered responses to correspond to portions of an underlying continuum. This involves estimating the 'thresholds' of that underlying distribution at which people switch from giving one response to the next.  
 
+The intuition to this is to imagine a distribution that represents the unmeasured continuum --- so if we are measuring agreement with a statement, but we have only the options "disagree","neutral","agree", then these options will represents _sections_ of a continuous distribution of "agreement". If we had the same number of responses to each option (e.g., 30 "disagree", 30 "neutral", and 30 "agree") then we would split the distribution into equal thirds. A predictor's coefficient shifts this underlying distribution, essentially adjusting the probability of responses falling into each category based on value of the predictor.  
+
+```{r}
+#| echo: false
+#| label: fig-ordpred
+#| fig-cap: "modelling ordinal outcomes typically involves modelling 'thresholds' (cut-points) on an underlying continuum"
+library(lavaan)
+library(tidyverse)
+set.seed(57)
+dgp="y~1+1*x"
+df <- simulateData(dgp, sample.nobs = 200) |>
+  mutate(
+    y2=cut(y,c(-Inf,-2,.5,5)),
+    y3=cut(y,c(-Inf,0,1,5)),
+    )
+# summary(df)
+# table(df$y2)
+# m = sem("y2~1+x",df,ordered="y2")
+# summary(m)
+# curve(dnorm(x),from=-3,3)
+# abline(v=parameterestimates(m)[3,4])
+# abline(v=parameterestimates(m)[4,4])
+# df$x = scale(df$x)[,1]*2+6
+# MASS::polr(y2~1+x,df,method="probit")$zeta
+ts = MASS::polr(y2~1+x,df,method="probit")$zeta
+
+df$y2a<-df$y2
+levels(df$y2a) <- c(
+  ts[1] + diff(c(ts[1],-3))/2,
+  mean(ts),
+  ts[2] + diff(c(ts[2],3))/2
+)
+df$y2a <- as.numeric(as.character(df$y2a))
+
+library(ggdist)
+library(distributional)
+ggplot(df, aes(x=x,y=y2a))+
+  geom_jitter(height=.2,width=0,alpha=.2,size=3)+
+  
+  stat_eye(side="left",
+         data=tibble(x=0,y2a=0),
+         aes(x=-4.5,ydist=dist_normal(0,1)))+
+  geom_segment(x=-4.5,xend=-6,y=ts[1],yend=ts[1],
+               col="red",lwd=.75)+
+  geom_segment(x=-4.5,xend=-6,y=ts[2],yend=ts[2],
+               col="red",lwd=.75)+
+  scale_y_continuous("Agreement",breaks=-3:3,limits=c(-3,4),
+                     labels=NULL)+
+  scale_x_continuous("predictor", limits=c(-5.5,2.5),breaks=NULL,labels=NULL)+
+  geom_text(
+    data = tibble(x=-4.4, y=c(-3:3)),
+    aes(x=x,y=y,label=y), size=4
+  )+
+  annotate("label",label="Agree",x=-3.5,y=max(df$y2a))+
+  annotate("label",label="Neutral",x=-3.5,y=median(df$y2a))+
+  annotate("label",label="Disgree",x=-3.5,y=min(df$y2a)) +
+  annotate("text",label="Measured\nResponses",x=-3.5,y=3.5)+
+  annotate("text",label="Underlying\nContinuum",x=-5.1,y=3)+
+  annotate("text",label="Thresholds",x=-5.3,y=-.5)+
+  geom_segment(aes(x=-3.5, y=3.2,xend=-3.5,yend=2.3),
+                 arrow = arrow(length = unit(0.2, "inches")))+
+  geom_curve(aes(x=-5.3, y=2.7,xend=-4.9,yend=1.3),curvature=0.2,
+                 arrow = arrow(length = unit(0.2, "inches")))+
+  geom_segment(aes(x=-5.5, y=-.45,xend=-5.5,yend=.4),
+                 arrow = arrow(length = unit(0.1, "inches")))+
+  geom_segment(aes(x=-5.5, y=-.6,xend=-5.2,yend=-1.8),
+                 arrow = arrow(length = unit(0.1, "inches")))+
+  theme_light()+
+  theme(#panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank())
+```
 
 
 
 :::rtip
 **What can we do?**  
 
-In R, **lavaan** will automatically switch to a categorical estimator (called "DWLS"^[Diagonally Weighted Least Squares]) if we tell it that we have some ordered-categorical variables. We can use the `ordered = c("item1name","item2name","item3name", ...)` argument.  
-This is true for both the `cfa()` and `sem()` functions.  
+In R, **lavaan** will automatically switch to an appropriate estimator for categorical variables (called "DWLS"^[Diagonally Weighted Least Squares]) if we tell it that we have some ordered-categorical variables:^[(also works with the `cfa()` function)]
+
+```{r}
+#| eval: false
+sem(model, 
+    ordered = c("item1","item2","item3", ...))
+```
+
+Or if *all* of our endogenous variables are categorical, we can simply use: 
+
+```{r}
+#| eval: false
+sem(model, 
+    ordered = TRUE)
+```
+
+Although very rarely of interest to us, the resulting models will also print out the set of estimated thresholds (along with the loadings, regressions, covariances, residual variances etc). For each variable, if there are $k$ levels to the response scale, then there will be $k-1$ estimated thresholds in the output. 
 
 :::
 
@@ -511,16 +613,16 @@ There are three main reasons that we certain data may be missing, and the acrony
 
 - **MCAR: Missing Completely At Random.** Data which are MCAR are missing data for which the propensity for missingness is completely independent of any observed or unobserved variables. It is truly random if the data are missing or not.  
 
-- **MAR: Missing At Random.** Data which are MAR are missing data for which the propensity for missingness is not random, but it can be fully explained by some variables for which there is complete data. In other words, there is a systematic relationship between missing values and observed values. For example, people who are unemployed at time of assessment will likely not respond to questions on work-life satisfaction. Missing values on work-life satisfaction is unrelated to the levels of work-life satisfaction, but related to their employment status. 
+- **MAR: Missing At Random.** Data which are MAR are missing data for which the propensity for missingness can be fully explained by some other variables for which there *are* measurements. In other words, there is a systematic relationship between missing values and observed values. For example, people who are unemployed at time of assessment will likely not respond to questions on work-life satisfaction. If we have also measured employment status then the missing values of work-life satisfaction can be explained by the observed values of employment status. 
 
-- **MNAR: Missing Not At Random.** Data which are MNAR are missing data for which the propensity for missingness is related to the value which is missing. For example, suppose an employer tells employees that there are a limited number of bonuses to hand out, and then employees are asked to fill out a questionnaire. Thos who are less satisfied with their job may not respond to questions on job satisfaction (if they believe it will negatively impact their chances of receiving a bonus). 
+- **MNAR: Missing Not At Random.** Data which are MNAR are missing data for which the propensity for missingness is related to the value which is missing. For example, suppose an employer tells employees that there are a limited number of bonuses to hand out, and then employees are asked to fill out a questionnaire. Those who are less satisfied with their job may not respond to questions on job satisfaction (if they believe it will negatively impact their chances of receiving a bonus). 
 
 :::rtip
 **What can we do?**
 
 In SEM, there is an extremely useful method known as **full information maximum likelihood (FIML)** which, allows us to use all our available data (*including* those that have only _some_ values present).  
 
-FIML separates data into the different patterns of missingness (i.e. those that are missing on `IQ1`, those missing on `IQ1` and `IQ2`, those missing on just `IQ2`, and so on). The likelihood of each group can be estimated from the parameters that are available for that pattern. The estimation process then finds the set of parameters that maximise the likelihood of the full dataset (we can sum up the loglikelihoods of the datsets with each missingness pattern). This way it utilises *all* observed variables (hence "full information") to estimate the model parameters.   
+FIML separates data into the different patterns of missingness (i.e. those that are missing on `IQ1`, those missing on `IQ1` and `IQ2`, those missing on just `IQ2`, and so on). The likelihood ("probability of seeing this data given these parameters") of each group can be estimated from the parameters that are available for that pattern. The estimation process then finds the set of parameters that maximise the likelihood of the full dataset (we can combine likelihoods of the datasets with each missingness pattern). This way it utilises *all* observed variables (hence "full information") to estimate the model parameters.   
 
 ```{r}
 #| include: false
@@ -541,37 +643,18 @@ A downside, one could argue, is that you may have specific theoretical considera
   
 In lavaan, we can make use of full information maximum likelihood by using either `missing = "FIML"` or `missing = "ML"` (they're the same) in the functions `cfa()` and `sem()`.  
 
-:::
-
 ::: {.callout-caution collapse="true"}
 #### optional: other approaches to missingness
 
 Thus far in our analyses, we have been simply excluding any row for which there is missingness. This is typically known as "listwise deletion", and is the default for many modelling approaches. Any person who is missing _some_ data on a variable in our model will simply not be included. This method _assumes_ that the data are "Missing Completely At Random", because we make the assumption that studying only the people who have complete data does not bias our results in any way.  
 
-Other traditional approaches are to use basic imputation methods such as "mean/median imputation" (replace missing values with the average of that variable). These can be okay, but they assume that the imputed values are **exactly** what we _would_ have observed had it not been missing, rather than estimates. The lack of variability around this imputed value will shrink the standard errors because it is assumed that no deviations exist among the substituted values. 
+Other traditional approaches are to use basic imputation methods such as "mean/median imputation" (replace missing values with the average of that variable). These can be okay, but they assume that the imputed values are **exactly** what we _would_ have observed had it not been missing, rather than estimates. The lack of variability around this imputed value will shrink the standard errors because it is assumed that no deviations exist among the substituted values.  
+
 Another option is "regression imputation", where we replace missing values with the predicted values from a regression model of the variable with missingness onto some relevant predictors. This is better because our estimates of the values of missing observations could be much better, but we still make an assumption that these estimates are perfect, when we know they are just estimates.  
 
 A more sophisticated approach to this is "Multiple Imputation" (MI). Multiple imputation is similar to the regression imputation approach described above in that it predicts the value of missing observations based on the covariates, but instead of predicting just one value, it predicts many. Rather than saying "the predicted value for this missing observation is 5", we say "the predicted value for this missing observation is from the distribution $\sim N(5,2)$". So we simulate $m$ draws from that distribution, and we end up with $m$ predicted values. We make $m$ copies of our data and replace the missing observations with each of our $m$ predicted values. We then do our analysis on each $m$ imputed dataset, and pool the results!  
 
 :::
 
-
-
-
-
-
-- other uses of SEM
-- note not a list of plug-play models. 
-    - measurement invariance
-    - other types of indicators (CCC)
-    - multi-trait multi-method models
-    - multi-group analysis
-    - multi-level SEM
-    - cross-lagged panel models
-    - latent class mixture models
-    - growth curves
-        - random effects as latent variables?
-        
-
-
+:::
 
