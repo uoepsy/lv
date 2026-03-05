@@ -203,6 +203,24 @@ if(f.classList.contains('jk-circle-right')) {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./05_reliability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Extra: Validity &amp; Reliability</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_intropath.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">6: Path Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_mediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">7: Mediation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./00_datawrangle.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Extra: Data Wrangling for Questionnaires</span></a>
   </div>
@@ -321,7 +339,7 @@ if(f.classList.contains('jk-circle-right')) {
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>lavaan 0.6-20 ended normally after 39 iterations
+<pre><code>lavaan 0.6-20 ended normally after 48 iterations
 
   Estimator                                         ML
   Optimization method                           NLMINB
@@ -331,9 +349,9 @@ if(f.classList.contains('jk-circle-right')) {
 
 Model Test User Model:
                                                       
-  Test statistic                                18.678
+  Test statistic                                15.010
   Degrees of freedom                                10
-  P-value (Chi-square)                           0.045
+  P-value (Chi-square)                           0.132
 
 Parameter Estimates:
 
@@ -359,34 +377,34 @@ Latent Variables:
 Covariances:
                    Estimate  Std.Err  z-value  P(&gt;|z|)
   int ~~                                              
-    slope             1.074    0.380    2.830    0.005
+    slope             1.784    0.654    2.727    0.006
 
 Intercepts:
                    Estimate  Std.Err  z-value  P(&gt;|z|)
-    int               0.197    0.262    0.750    0.453
-    slope             0.779    0.286    2.723    0.006
+    int               1.188    0.455    2.611    0.009
+    slope             1.169    0.270    4.326    0.000
 
 Variances:
                    Estimate  Std.Err  z-value  P(&gt;|z|)
-   .t0                2.378    0.802    2.966    0.003
-   .t1                1.355    0.453    2.994    0.003
-   .t2                1.133    0.398    2.842    0.004
-   .t3                0.219    0.325    0.674    0.500
-   .t4                2.127    0.824    2.581    0.010
-    int               0.257    0.511    0.503    0.615
-    slope             1.486    0.519    2.866    0.004</code></pre>
+   .t0                1.137    0.508    2.241    0.025
+   .t1                0.929    0.353    2.635    0.008
+   .t2                0.275    0.172    1.604    0.109
+   .t3                0.949    0.404    2.347    0.019
+   .t4                1.251    0.642    1.949    0.051
+    int               3.567    1.318    2.706    0.007
+    slope             1.347    0.463    2.911    0.004</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fixef</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept)           x 
-  0.2653259   0.6825143 </code></pre>
+   1.195886    1.165386 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> Groups   Name        Std.Dev. Corr 
- g        (Intercept) 0.87446       
-          x           1.20930  0.770
- Residual             1.09798       </code></pre>
+ g        (Intercept) 1.91377       
+          x           1.17852  0.750
+ Residual             0.91031       </code></pre>
 </div>
 </div>
 

@@ -1,5 +1,5 @@
 ---
-title: "5: Validity & Reliability"
+title: "Extra: Validity & Reliability"
 params: 
     SHOW_SOLS: FALSE
     TOGGLE: TRUE
