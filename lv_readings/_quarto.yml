@@ -20,7 +20,7 @@ website:
       - 05_reliability.qmd
       - 06_intropath.qmd
       - 07_mediation.qmd
-      # - 08_sem.qmd
+      - 08_sem.qmd
       - 00_datawrangle.qmd
       - section: "Additional Docs"
         contents:

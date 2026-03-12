@@ -1,0 +1,45 @@
+---
+title: "Optional: Causes"
+params: 
+    SHOW_SOLS: TRUE
+    TOGGLE: TRUE
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r}
+#| label: setup
+#| include: false
+source('assets/setup.R')
+library(xaringanExtra)
+library(tidyverse)
+library(patchwork)
+xaringanExtra::use_panelset()
+```
+
+
+- we've seen lots of diagrams, and the word cause has come up a bit more
+- define cause - y listens to x (if you change x, y will change)
+    - i.e., somewhat interventional (if we intervene on x, what happens to y?)
+    - counterfactual (in a world where x was A instead of B, what would y be like?)
+- statistical estimates are never more than associations
+- our assumptions about the design/dgp/theory are what (sometimes) allow us to more confidently infer an estimate to be representative of causal effect
+- diagrams show our causal assumptions
+
+- silly examples
+- two columns. RCT vs simple confounding. two diagrams
+- whether estimates represent "the amount y changes if we intervene on x" depends entirely on if we're right in how we drew those diagrams.  
+    - depends on if we got arrows right way round
+    - depends on if we measured and adjusted for all relevant confounders
+    - depends on if we can assume no issues like non compliance in RCTs
+- **IFF** we're right, then estimates we get out of statistical machinery like lm will be unbiased estimates of how much y changes in response to a change in x
+    - we'll never really know if we're right. we can test certain implications (e.g., conditional independences), but no result will ever tell us if we've correctly identified x->y
+
+- so we can never "test" causality. 
+- causality isn't something that is separate from traditional stats, or some fancy methods we can do that suddenly allow us to say "[estimate] is the causal effect of x on y"  
+    - there are fancy methods for better adjustment of confounding variables, but obviously the identification of what those confounds are is not something statistics can tell us. 
+    - causal quartet
+- it is the logical antecedent to statistical inference
+
+
+

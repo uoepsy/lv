@@ -221,6 +221,12 @@ if(f.classList.contains('jk-circle-right')) {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./08_sem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">8: Structural Equation Modelling</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./00_datawrangle.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Extra: Data Wrangling for Questionnaires</span></a>
   </div>
@@ -339,7 +345,7 @@ if(f.classList.contains('jk-circle-right')) {
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>lavaan 0.6-20 ended normally after 24 iterations
+<pre><code>lavaan 0.6-20 ended normally after 36 iterations
 
   Estimator                                         ML
   Optimization method                           NLMINB
@@ -349,9 +355,9 @@ if(f.classList.contains('jk-circle-right')) {
 
 Model Test User Model:
                                                       
-  Test statistic                                 3.146
+  Test statistic                                23.400
   Degrees of freedom                                10
-  P-value (Chi-square)                           0.978
+  P-value (Chi-square)                           0.009
 
 Parameter Estimates:
 
@@ -377,34 +383,34 @@ Latent Variables:
 Covariances:
                    Estimate  Std.Err  z-value  P(&gt;|z|)
   int ~~                                              
-    slope            -0.134    0.192   -0.695    0.487
+    slope             1.607    0.549    2.927    0.003
 
 Intercepts:
                    Estimate  Std.Err  z-value  P(&gt;|z|)
-    int               0.925    0.206    4.495    0.000
-    slope             0.890    0.187    4.755    0.000
+    int               0.848    0.391    2.169    0.030
+    slope             0.950    0.262    3.619    0.000
 
 Variances:
                    Estimate  Std.Err  z-value  P(&gt;|z|)
-   .t0                1.291    0.501    2.574    0.010
-   .t1                0.468    0.208    2.253    0.024
-   .t2                0.619    0.239    2.590    0.010
-   .t3                1.044    0.428    2.439    0.015
-   .t4                0.411    0.529    0.776    0.438
-    int               0.385    0.297    1.297    0.195
-    slope             0.635    0.225    2.820    0.005</code></pre>
+   .t0                1.402    0.548    2.560    0.010
+   .t1                0.877    0.321    2.735    0.006
+   .t2                0.193    0.194    0.994    0.320
+   .t3                1.494    0.592    2.525    0.012
+   .t4                2.824    1.106    2.553    0.011
+    int               2.353    0.982    2.397    0.017
+    slope             1.208    0.437    2.762    0.006</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fixef</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept)           x 
-  0.8824484   0.9091451 </code></pre>
+  0.8895569   0.9972677 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> Groups   Name        Std.Dev. Corr  
- g        (Intercept) 0.71661        
-          x           0.78451  -0.236
- Residual             0.86322        </code></pre>
+<pre><code> Groups   Name        Std.Dev. Corr 
+ g        (Intercept) 1.3490        
+          x           1.0784   0.919
+ Residual             1.1026        </code></pre>
 </div>
 </div>
 

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Tests – Latent Variable Modelling</title>
+<title>Optional: Causes – Latent Variable Modelling</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -227,7 +227,7 @@ if(f.classList.contains('jk-circle-right')) {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Tests</h1>
+<h1 class="title">Optional: Causes</h1>
 </div>
 
 
@@ -244,66 +244,36 @@ if(f.classList.contains('jk-circle-right')) {
 </header>
 
 
-<div class="lo">
-<p>learning obj</p>
-</div>
-<div class="imp">
-<p>important</p>
-</div>
-<div class="sticky">
-<p>sticky</p>
-</div>
-<div class="div-dot">
-
-</div>
-<div class="rtip">
-<p>r tips</p>
-</div>
-<div class="statbox">
-<p>statbox</p>
-</div>
-<div class="int">
-<p>interprtation interprtation interprtation</p>
-</div>
-<div class="question-begin">
-Question
-</div>
-<div class="question-body">
-<p>question</p>
-</div>
-<p class="question-end">
-</p>
-<div class="solution-begin">
-<button id="sol-start-1" class="jk-circle-right solution-icon clickable" onclick="toggle_visibility('sol-body-1', 'sol-start-1')">
-Solution
-</button>
-</div>
-<div id="sol-body-1" class="solution-body proof solution" style="display: none;">
-<p><span class="proof-title"><em>Solution 1</em>. </span>solution</p>
-</div>
-<p class="solution-end">
-</p>
-<div class="optional-begin">
-<button id="opt-start-2" class="jk-circle-right optional-icon clickable" onclick="toggle_visibility('opt-body-2', 'opt-start-2')">
-Optional hello my optional friend
-</button>
-</div>
-<div id="opt-body-2" class="optional-body" style="display: none;">
-<p>it’s nice to see you again</p>
-</div>
-<p class="optional-end">
-</p>
-<div class="panelset">
-<div class="panel">
-<p>this is not a panel</p>
-</div>
-<div class="panel">
-<p>this is a panel</p>
-</div>
-<div class="panel">
-<p>this is a panel</p>
-</div>
-</div>
+<ul>
+<li><p>we’ve seen lots of diagrams, and the word cause has come up a bit more</p></li>
+<li><p>define cause - y listens to x (if you change x, y will change)</p>
+<ul>
+<li>i.e., somewhat interventional (if we intervene on x, what happens to y?)</li>
+<li>counterfactual (in a world where x was A instead of B, what would y be like?)</li>
+</ul></li>
+<li><p>statistical estimates are never more than associations</p></li>
+<li><p>our assumptions about the design/dgp/theory are what (sometimes) allow us to more confidently infer an estimate to be representative of causal effect</p></li>
+<li><p>diagrams show our causal assumptions</p></li>
+<li><p>silly examples</p></li>
+<li><p>two columns. RCT vs simple confounding. two diagrams</p></li>
+<li><p>whether estimates represent “the amount y changes if we intervene on x” depends entirely on if we’re right in how we drew those diagrams.</p>
+<ul>
+<li>depends on if we got arrows right way round</li>
+<li>depends on if we measured and adjusted for all relevant confounders</li>
+<li>depends on if we can assume no issues like non compliance in RCTs</li>
+</ul></li>
+<li><p><strong>IFF</strong> we’re right, then estimates we get out of statistical machinery like lm will be unbiased estimates of how much y changes in response to a change in x</p>
+<ul>
+<li>we’ll never really know if we’re right. we can test certain implications (e.g., conditional independences), but no result will ever tell us if we’ve correctly identified x-&gt;y</li>
+</ul></li>
+<li><p>so we can never “test” causality.</p></li>
+<li><p>causality isn’t something that is separate from traditional stats, or some fancy methods we can do that suddenly allow us to say “[estimate] is the causal effect of x on y”</p>
+<ul>
+<li>there are fancy methods for better adjustment of confounding variables, but obviously the identification of what those confounds are is not something statistics can tell us.</li>
+<li>causal quartet</li>
+</ul></li>
+<li><p>it is the logical antecedent to statistical inference</p></li>
+</ul>
 
 
 
