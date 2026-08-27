@@ -137,13 +137,13 @@ It might help to read the $\lambda$s as beta-weights ($b$, or $\beta$), because 
 
 The "Exploratory" in Exploratory Factor Analysis reflects that we are **not** wanting to test any specific hypothesis about the structure of the dimensions underlying our variables. Instead, we are interested in discovery of that structure.  
 
-Consider extending our example of tiredness to a situation in which we ask people to rate agreement on 10 statements:  
+Consider extending our example of tiredness to a situation in which we ask people to rate agreement on 10 statements: 
 
 1. I find it difficult to concentrate on mentally demanding tasks.
-2. I feel mentally drained after cognitive work.
+2. I feel mentally drained.
 3. I am experiencing mental exhaustion or "brain fog."
 4. It takes significant effort for me to think clearly.
-5. My muscles feel tired even without physical activity.
+5. My muscles feel tired.
 6. I feel physically drained and lacking energy.
 7. My limbs feel heavy or weak.
 8. Simple physical tasks would require considerable effort.
@@ -365,7 +365,18 @@ The associations between each item and the factor are called "factor loadings".
 
 Let's make this a bit more concrete.
 In the tiredness example from above, we have ten observed variables, so our correlation matrix would be 10x10: ten rows by ten columns.
-But to keep things reasonable, we'll look at an example below with just three observed variables, meaning that we have a 3x3 correlation matrix.
+But to keep things reasonable, we'll look back at an example with just three observed variables ("Physical Fatigue", "Mental Fatigue" and "Sleepiness"), meaning that we have a 3x3 correlation matrix: 
+
+```{r}
+#| eval: false
+#| echo: true
+cor(mydata)
+```
+```{r}
+#| eval: true
+#| echo: false
+round(cor(mydata),2)
+```
 
 In our example with the 3x3 correlation matrix, we've decided that we'll model these items with just one factor.
 Our three variables each have one loading onto the single factor, so our model is represented by three numbers: the loadings of each variable onto the factor.
@@ -412,42 +423,42 @@ $$
 \quad \\
 \color{red}
 \begin{bmatrix}
-   1 & 0.22 & 0.44 \\
-0.22 &    1 & 0.35 \\
-0.44 & 0.35 &    1 \\
+   1 & 0.60 & 0.75 \\
+0.60 &    1 & 0.77 \\
+0.75 & 0.77 &    1 \\
 \end{bmatrix} &= 
 \color{blue}
 \begin{bmatrix}
-0.520 \\ 0.415 \\ 0.854 \\
+0.764 \\ 0.783  \\ 0.980 \\
 \end{bmatrix}
 \begin{bmatrix}
-0.520 & 0.415 & 0.854 \\
+0.764 & 0.783 & 0.980  \\
 \end{bmatrix} \,+\,
  \color{magenta} 
 \begin{bmatrix}
-0.73 & 0 & 0  \\
-0 & 0.83 & 0 \\
-0 & 0 & 0.27 \\
+0.42 & 0 & 0  \\
+0 & 0.39 & 0 \\
+0 & 0 & 0.04 \\
 \end{bmatrix} \\
 \quad \\
  &= 
   \color{blue} 
 \begin{bmatrix}
-0.27 & 0.22 & 0.44 \\
-0.22 & 0.17 & 0.35 \\
-0.44 & 0.35 & 0.73 \\
+0.58 & 0.260 & 0.75 \\
+0.60 & 0.61 & 0.77 \\
+0.75 & 0.77 & 0.96 \\
 \end{bmatrix} \,+\,
   \color{magenta} 
 \begin{bmatrix}
-0.73 & 0 & 0  \\
-0 & 0.83 & 0 \\
-0 & 0 & 0.27 \\
+0.42 & 0 & 0  \\
+0 & 0.39 & 0 \\
+0 & 0 & 0.04 \\
 \end{bmatrix} \\
 \end{align}
 $$
 
 
-Suppose our three variables were all questions about anxiety. For agreement with a statement like like "I struggle to say still and am often fidgeting", people will vary in their responses due to 1) their level of anxiety, 2) their general fidgeting behaviours that are separate from their anxiety, and 3) measurement error (responses of "agree" and "strongly agree" are very inexact measurements here!)
+Our three variables are all self-reported questions that aim to get at the construct of fatigue. For agreement with a statement like "I feel mentally drained", people will vary in their responses due to 1) their level of general fatigue, 2) their mental exhaustion that is separate from more general fatigue (e.g., it's the end of a work day) and 3) measurement error (responses of "agree" and "strongly agree" are very inexact measurements here!)  
 
 Factor analysis is concerned with the first of these - the variance shared across multiple items. So a way to think of the factor model is as trying to separate out common variance from unique variance (which could be 'true' variability or just error):    
 
@@ -1481,7 +1492,7 @@ Developing measurement instruments (often called "scale development") is lot of 
 <div class="divider div-transparent div-dot"></div>
 
 
-# Hold on, I want some scores?  
+# Scores
 
 After all the focus on trying to better understand the underlying structure of factors that are resulting in our observed responses, we have somewhat lost sight of the fact that this might all be in aid of some other purpose - trying to create a score for each person in our dataset for each of the factors!  
 

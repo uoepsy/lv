@@ -65,8 +65,9 @@ There are many reasons we might want to "reduce the dimensionality" of data:
 - Test construction
   - How should I group my questionnaire items into subsets?
   - Which items are the best measures of my construct(s)?
+  - What are the number and nature of underlying constructs that best explain the pattern of responses to a set of questions?  
 - Theory testing
-  - What are the number and nature of dimensions that best describe a theoretical construct?
+  - Does a pre-defined theory about the number and nature of underlying constructs fit well to this dataset?  
   
 :::
 
@@ -168,7 +169,7 @@ The long dimension captures that all three variables tend to co-vary (there are 
 
 One way to see this is to just follow the green line to each end of the ellipse and figure out roughly what the scores would be at that point. At one end of the green line we have people scoring 2 on all 3 variables, and at the other end we have them scoring 8 on all 3. 
 
-The next longest dimension of the ellipse (the red line) shows another form of variability - there are people with similar sleepiness scores but some people are high on physical fatigue and low on mental fatigue, and others are low on physical fatigue but high on mental fatigue (i.e., at one end of the red line we have scores of MF=8, PF=2, Sl=4, and at the other end we have MF=2, PF=8, Sl=4).  
+The next longest dimension of the ellipse (the red line) shows another way in which people vary - there are people with similar sleepiness scores but some people are high on physical fatigue and low on mental fatigue, and others are low on physical fatigue but high on mental fatigue (i.e., at one end of the red line we have scores of MF=6, PF=4, Sl=5, and at the other end we have MF=4, PF=6, Sl=5). Notice also that people don't vary as much along this red line as they did on the green line (we're talking differences of ~2 points, rather than of ~6).  
 
 Finally the blue dimension of the ellipse is the shortest, capturing the least variability. This dimension seems to differentiate between people who are more sleepy but less fatigued, and those who are less sleepy but more fatigued. It makes sense that there isn't much variability here - we would expect people who are sleepy to be fatigued and vice versa!  
 
@@ -296,12 +297,14 @@ rglwidget()
 :::
 ::::
 
+<div class="divider div-transparent div-dot"></div>
 
-The conceptual idea of these new 'dimensions' that we're working with here is pretty abstract, and it only gets weirder to think about when we have more than 3 variables and we can no longer easily visualise it. 
+
+# Dimension Reduction, Discovery, and Testing
 
 The key thing we are doing here is:
 
-1. Identify the dimensions that capture (co)variability across a set of measured variables
+1. Identify dimensions through their capturing of (co)variability across a set of measured variables
 2. Retain a subset of those dimensions
 
 Depending upon what the goal of our research is, the key questions are going to be:
@@ -309,11 +312,8 @@ Depending upon what the goal of our research is, the key questions are going to 
 1. how do we find the dimensions?
 2. how many dimensions should we retain?
 3. how does each dimension relate back to the original measured variables?  
-
-<div class="divider div-transparent div-dot"></div>
-
-
-# The key methods
+4. How well do the set of dimensions explain the observed data?  
+5. How do we represent a person's standing on the dimensions?  
 
 ```{r}
 #| include: false
@@ -357,20 +357,25 @@ physfunc <- bind_cols(physfunc,physfunc2) |>
 
 ## Naive 'Scale Scores'
 
-Goal: Pragmatic. I want 1 thing to use in some other setting (e.g., in a further analysis, or in a clinical setting)
+**Goal:** Pragmatic. I want 1 thing to use in some other setting (e.g., in a further analysis, or in a clinical setting).  
 
 1. How do we find the dimensions?
-    - There's only one
+    - Assume there's only one
 2. How many dimensions should we retain?
-    - There's only one
+    - Assume there's only one
 3. How does each dimension relate back to the original measured variables?  
-    - All variables equally related to dimension
+    - All variables are equally related to the dimension
+4. How well do the set of dimensions explain the observed data?  
+    - Compute a measure of "reliability"
+5. How do we represent a person's standing on the dimensions?
+    - Add up all the responses on each variable $\text{sum score} = y_{1i} + y_{2i} + y_{3i} +\, ... \, + y_{pi}$, and if you want a mean-score, we then divide by the number of variables: $\text{mean score} = \frac{y_{1i} + y_{2i} + y_{3i} +\, ... \, + y_{pi}}{p}$.
     
 For example, the [AQ10](https://embrace-autism.com/aq-10/) is a ten-question survey which (despite some well-established issues) is used by the NHS for autism screening.
 Participants essentially respond "agree" or "disagree" to each question, and the result is scored by summing up the number of responses in the expected direction.
 People must score above a 6 in order to be referred for autism diagnosis on the NHS.
 
-This is a naive scale score, because there is only one dimension (some measure of autism), and all questions are assumed to be equally related to this dimension.
+This is a naive scale score. There is only one dimension (some measure of autism), and all questions are assumed to be equally related to this dimension.
+
 
   
 ::: {.callout-note collapse="true"}
@@ -406,7 +411,7 @@ somedata <-
 
 ## Principal Component Analysis (PCA)
 
-Goal: Pragmatic. I want fewer things for use in a subsequent analysis but don't want to lose too much variability. I want those things to be uncorrelated.^[I might want this if, e.g., I have issues with multicollinearity of predictors in a regression model]
+**Goal:** Pragmatic. I want fewer things for use in a subsequent analysis but don't want to lose too much variability. I want those things to be uncorrelated.^[I might want this if, e.g., I have issues with multicollinearity of predictors in a regression model]
 
 1. How do we find the dimensions?
     - Set of orthogonal (i.e., perpendicular^[like all those that we've seen above] therefore uncorrelated) dimensions that sequentially capture most variability.
@@ -417,11 +422,15 @@ Goal: Pragmatic. I want fewer things for use in a subsequent analysis but don't 
 3. how does each dimension relate back to the original measured variables?  
     - Examine correlations between dimensions and variables
     - Somewhat irrelevant for 'pure' PCA, where we are agnostic/don't care about what the dimensions _are._  
+4. How well do the set of dimensions explain the observed data?  
+    - Strictly speaking, PCA is not an "explanatory" tool. It simply combines variables to preserve variance. The closest we might get is to consider how much variance is captured by each dimension.  
+5. How do we represent a person's standing on the dimensions?
+    - Extract PCA scores (these are a weighted sum of the scores on each variables: $\text{score}_{\text{component j}} = w_{1j}y_1 + w_{2j}y_2 + w_{3j}y_3 +\, ... \, + w_{pj}y_p$). See [PCA Walkthrough](02_pca.html#scores).  
     
 
 ## Exploratory Factor Analysis (EFA)
 
-Goal: Exploratory/Discovery/Measure development. I don't have a strong theoretical model yet, but I suspect there are underlying constructs that explain why these variables correlate with each other. I want to discover what those constructs might be and how the variables relate to them.
+**Goal:** Exploratory/Discovery/Measure development. I don't have a strong theoretical model yet, but I believe there are underlying constructs that explain why these variables correlate with each other. I want to understand what those construct(s) might be and how the variables relate to them.
 
 1. How do we find the dimensions?
     - Estimation
@@ -431,11 +440,15 @@ Goal: Exploratory/Discovery/Measure development. I don't have a strong theoretic
     - "best explains" = a theoretical question as much as a numerical one!  
 3. How does each dimension relate back to the original measured variables?  
     - Examine "loadings" between dimensions and variables
+4. How well do the set of dimensions explain the observed data?  
+    - For EFA, this question is subsumed into questions 2 and 3. The aim is to settle on the model that makes most sense. 
+5. How do we represent a person's standing on the dimensions?
+    - The dimensions in EFA are "latent" in that they are never directly observed and people's standing on dimensions cannot be perfectly determined. There are infinitely many sets of scores for the dimensions that would work equally well for a given model ("factor score indeterminacy"). This means that there are many different ways to *estimate* scores. See [EFA#scores](03_efa.html#scores)
     
     
 ## Confirmatory Factor Analysis (CFA)
 
-Goal: Theory testing. I have a theoretical model of how these variables relate to these constructs. I want to test how well that model is reflected in these data  
+**Goal:** Theory testing. I have a theoretical model of how these variables relate to these constructs. I want to test how well that model is reflected in these data  
 
 1. How do we find the dimensions?
     - We define them
@@ -443,4 +456,9 @@ Goal: Theory testing. I have a theoretical model of how these variables relate t
     - Irrelevant as the dimensions are pre-defined
 3. How does each dimension relate back to the original measured variables?  
     - Pre-defined mapping of which variables to which dimensions. Magnitudes and directions are estimated.   
+4. How well do the set of dimensions explain the observed data?  
+    - This is the key part of CFA. There are various measures of "model fit" that are ultimately asking "how well can the model reproduce the observed covariance matrix?"  
+5. How do we represent a person's standing on the dimensions?
+    - Similar to EFA, standing is represented by estimated "Factor Scores" for the latent dimensions. Because the model structure is pre-defined, these scores are more "theoretically pure" reflections of the construct, though they still carry the same inherent uncertainty (indeterminacy) as EFA scores. 
+    - In practice, CFA naturally extends to more advanced methods that allow us to estimate things of interest (e.g., relationships between constructs) _without_ having to ever estimate individual scores on the construct. Rather than a 2 step process of 1) estimate scores, 2) use scores in subsequent analysis, methods such as Structural Equation Modelling (SEM) allow us to do it all in one.
     
